@@ -14,7 +14,8 @@ Puis ouvre `http://localhost:4173`.
 
 - Nombres de 0 à 10
 - Deux mains animées avec des doigts à toucher
-- Modes Jouer et Apprendre
+- Modes Jouer, Apprendre et Compter
+- Jeu de réponse où l'enfant compte les doigts levés et choisit un nombre de 0 à 10
 - Conseils doux et étoiles de récompense
 - Effets sonores optionnels
 - Fichiers audio locaux en français pour les nombres de 0 à 10

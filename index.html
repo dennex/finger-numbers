@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#2f766f">
     <title>Les nombres avec les doigts</title>
-    <link rel="manifest" href="manifest.webmanifest?v=19">
-    <link rel="stylesheet" href="styles.css?v=19">
+    <link rel="manifest" href="manifest.webmanifest?v=20">
+    <link rel="stylesheet" href="styles.css?v=20">
   </head>
   <body>
     <main class="app-shell" aria-live="polite">
       <section class="top-bar" aria-label="Commandes du jeu">
         <div>
           <p class="eyebrow">Les doigts et les nombres</p>
-          <h1>Fais <span id="targetNumber">3</span></h1>
+          <h1><span id="actionVerb">Fais</span> <span id="targetNumber">3</span></h1>
         </div>
         <div class="mode-switch" role="group" aria-label="Mode">
           <button class="mode-button active" type="button" data-mode="play">Jouer</button>
           <button class="mode-button" type="button" data-mode="learn">Apprendre</button>
+          <button class="mode-button" type="button" data-mode="count">Compter</button>
         </div>
       </section>
 
@@ -36,6 +37,20 @@
             <button class="speak-button" type="button" id="speakButton">Écoute 3</button>
           </div>
         </div>
+      </section>
+
+      <section class="answer-pad" id="answerPad" aria-label="Choisis le nombre de doigts" hidden>
+        <button class="answer-button" type="button" data-answer="0">0</button>
+        <button class="answer-button" type="button" data-answer="1">1</button>
+        <button class="answer-button" type="button" data-answer="2">2</button>
+        <button class="answer-button" type="button" data-answer="3">3</button>
+        <button class="answer-button" type="button" data-answer="4">4</button>
+        <button class="answer-button" type="button" data-answer="5">5</button>
+        <button class="answer-button" type="button" data-answer="6">6</button>
+        <button class="answer-button" type="button" data-answer="7">7</button>
+        <button class="answer-button" type="button" data-answer="8">8</button>
+        <button class="answer-button" type="button" data-answer="9">9</button>
+        <button class="answer-button" type="button" data-answer="10">10</button>
       </section>
 
       <section class="hands-stage" aria-label="Deux mains avec des doigts à toucher">
@@ -103,7 +118,7 @@
 
     <div class="big-cursor" aria-hidden="true"></div>
     <div class="sprinkle-field" id="sprinkleField" aria-hidden="true"></div>
-    <script src="audio-data.js?v=19"></script>
-    <script src="app.js?v=19" defer></script>
+    <script src="audio-data.js?v=20"></script>
+    <script src="app.js?v=20" defer></script>
   </body>
 </html>

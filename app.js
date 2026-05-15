@@ -18,6 +18,7 @@ const state = {
   solvedRounds: 0,
   roundSolved: false,
   nextLocked: false,
+  selectedAnswer: null,
   soundOn: false,
   audioContext: null,
   preferredVoice: null,
@@ -41,6 +42,7 @@ const numberWords = [
 
 const els = {
   app: document.querySelector(".app-shell"),
+  actionVerb: document.querySelector("#actionVerb"),
   targetNumber: document.querySelector("#targetNumber"),
   bigNumber: document.querySelector("#bigNumber"),
   roundTitle: document.querySelector("#roundTitle"),
@@ -48,6 +50,8 @@ const els = {
   currentCount: document.querySelector("#currentCount"),
   fingers: [...document.querySelectorAll(".finger")],
   modeButtons: [...document.querySelectorAll(".mode-button")],
+  answerPad: document.querySelector("#answerPad"),
+  answerButtons: [...document.querySelectorAll(".answer-button")],
   soundButton: document.querySelector("#soundButton"),
   speakButton: document.querySelector("#speakButton"),
   showButton: document.querySelector("#showButton"),
@@ -66,10 +70,16 @@ const friendlyHints = {
 function setTarget(target) {
   state.target = target;
   state.raised.clear();
+  state.selectedAnswer = null;
   state.roundSolved = false;
   els.app.classList.toggle("guided", state.mode === "learn");
+  els.app.classList.toggle("count-mode", state.mode === "count");
+  if (state.mode === "count") {
+    state.raised = new Set(fingerOrder.slice(0, state.target));
+  }
   updateFingerDisplay();
   updateCopyPattern();
+  updateAnswerPad();
   updateStatus();
 }
 
@@ -83,11 +93,27 @@ function nextTarget() {
 
 function updateStatus() {
   const count = state.raised.size;
-  els.targetNumber.textContent = state.target;
-  els.bigNumber.textContent = state.target;
+  const isCounting = state.mode === "count";
+  els.actionVerb.textContent = isCounting ? "Compte" : "Fais";
+  els.targetNumber.textContent = isCounting ? "?" : state.target;
+  els.bigNumber.textContent = isCounting ? "?" : state.target;
   els.currentCount.textContent = count;
   els.speakButton.textContent = `Écoute ${state.target}`;
   els.speakButton.setAttribute("aria-label", `Écouter le nombre ${state.target}`);
+  if (isCounting) {
+    els.roundTitle.textContent = "Combien de doigts sont levés ?";
+    if (state.roundSolved) {
+      els.hintText.textContent = `Oui, c'est ${state.target} !`;
+    } else if (state.selectedAnswer === null) {
+      els.hintText.textContent = "Compte les doigts levés, puis touche le bon nombre.";
+    } else {
+      els.hintText.textContent = state.selectedAnswer < state.target
+        ? "Il y en a un peu plus. Essaie encore."
+        : "Il y en a un peu moins. Essaie encore.";
+    }
+    return;
+  }
+
   els.roundTitle.textContent = state.mode === "learn"
     ? `Apprenons ${state.target}`
     : `Peux-tu faire ${state.target} ?`;
@@ -123,7 +149,9 @@ function updateFingerDisplay() {
     const id = finger.dataset.finger;
     const isRaised = state.raised.has(id);
     finger.classList.toggle("raised", isRaised);
+    finger.classList.toggle("folded", state.mode === "count" && !isRaised);
     finger.setAttribute("aria-pressed", String(isRaised));
+    finger.disabled = state.mode === "count";
   });
 }
 
@@ -135,6 +163,20 @@ function updateCopyPattern() {
   });
 }
 
+function updateAnswerPad() {
+  const isCounting = state.mode === "count";
+  els.answerPad.hidden = !isCounting;
+  els.answerButtons.forEach((button) => {
+    const answer = Number(button.dataset.answer);
+    const isSelected = state.selectedAnswer === answer;
+    button.classList.toggle("selected", isSelected);
+    button.classList.toggle("correct", state.roundSolved && answer === state.target);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+  els.showButton.hidden = isCounting;
+  els.speakButton.hidden = isCounting;
+}
+
 function setRaisedToTarget() {
   state.raised = new Set(fingerOrder.slice(0, state.target));
   updateFingerDisplay();
@@ -144,6 +186,9 @@ function setRaisedToTarget() {
 }
 
 function toggleFinger(finger) {
+  if (state.mode === "count") {
+    return;
+  }
   const id = finger.dataset.finger;
   if (state.raised.has(id)) {
     state.raised.delete(id);
@@ -152,6 +197,26 @@ function toggleFinger(finger) {
   }
   updateFingerDisplay();
   updateCopyPattern();
+  updateStatus();
+  playTone("tap");
+}
+
+function chooseAnswer(answer) {
+  if (state.mode !== "count" || state.roundSolved) {
+    return;
+  }
+  state.selectedAnswer = answer;
+  if (answer === state.target) {
+    state.roundSolved = true;
+    updateAnswerPad();
+    updateStatus();
+    celebrate();
+    launchSprinkles();
+    playFestiveSound();
+    speakNumber();
+    return;
+  }
+  updateAnswerPad();
   updateStatus();
   playTone("tap");
 }
@@ -271,7 +336,9 @@ function launchSprinkles() {
 
 function goToNextRound() {
   nextTarget();
-  speakNumber();
+  if (state.mode !== "count") {
+    speakNumber();
+  }
 }
 
 function handleNextRound() {
@@ -428,6 +495,10 @@ els.fingers.forEach((finger) => {
 
 els.modeButtons.forEach((button) => {
   button.addEventListener("click", () => switchMode(button.dataset.mode));
+});
+
+els.answerButtons.forEach((button) => {
+  button.addEventListener("click", () => chooseAnswer(Number(button.dataset.answer)));
 });
 
 els.showButton.addEventListener("click", setRaisedToTarget);

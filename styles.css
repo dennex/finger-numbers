@@ -46,7 +46,7 @@ button {
   margin: 0 auto;
   padding: clamp(12px, 2.5vw, 28px);
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-rows: auto auto auto 1fr auto auto;
   gap: clamp(10px, 1.6vw, 18px);
 }
 
@@ -81,7 +81,7 @@ h1 {
 
 .mode-switch {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   padding: 6px;
   background: rgba(255, 255, 255, 0.72);
@@ -177,6 +177,43 @@ h1 {
   background: #ffffff;
   border: 2px solid rgba(23, 50, 51, 0.12);
   border-radius: 8px;
+}
+
+.count-mode .counter-row {
+  display: none;
+}
+
+.answer-pad {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(48px, 1fr));
+  gap: 8px;
+}
+
+.answer-pad[hidden] {
+  display: none;
+}
+
+.answer-button {
+  min-height: clamp(54px, 7vw, 72px);
+  border: 3px solid var(--outline);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 7px 0 rgba(20, 61, 61, 0.22);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 1000;
+}
+
+.answer-button.selected {
+  color: #ffffff;
+  background: var(--blue);
+  box-shadow: 0 7px 0 #37548b;
+}
+
+.answer-button.correct {
+  color: #ffffff;
+  background: var(--teal);
+  box-shadow: 0 7px 0 var(--teal-dark);
 }
 
 .counter-label {
@@ -278,6 +315,20 @@ h1 {
   box-shadow: inset -7px -9px 0 rgba(215, 142, 98, 0.18), 0 10px 0 rgba(20, 61, 61, 0.15);
 }
 
+.count-mode .finger {
+  pointer-events: none;
+}
+
+.count-mode .finger.folded {
+  z-index: 3;
+  transform: scaleY(0.34);
+  filter: saturate(0.82);
+}
+
+.count-mode .finger.folded span {
+  opacity: 0;
+}
+
 .pointer {
   left: 25%;
   bottom: 38%;
@@ -310,6 +361,10 @@ h1 {
   transform-origin: 82% 88%;
 }
 
+.count-mode .thumb.folded {
+  transform: rotate(-48deg) scale(0.34);
+}
+
 .thumb.raised {
   transform: translate(-12%, -16%) rotate(-70deg);
 }
@@ -319,6 +374,10 @@ h1 {
   right: 11%;
   transform: rotate(48deg);
   transform-origin: 18% 88%;
+}
+
+.count-mode .right-hand .thumb.folded {
+  transform: rotate(48deg) scale(0.34);
 }
 
 .right-hand .thumb.raised {
@@ -392,33 +451,33 @@ button:not(.finger):active {
   box-shadow: none;
 }
 
-.finger:hover,
-.finger:active {
+.finger:not(.folded):hover,
+.finger:not(.folded):active {
   transform: scale(1.06);
 }
 
-.finger.raised:hover,
-.finger.raised:active {
+.finger.raised:not(.folded):hover,
+.finger.raised:not(.folded):active {
   transform: translateY(-23%) scale(1.06);
 }
 
-.thumb:hover,
-.thumb:active {
+.thumb:not(.folded):hover,
+.thumb:not(.folded):active {
   transform: rotate(-48deg) scale(1.06);
 }
 
-.thumb.raised:hover,
-.thumb.raised:active {
+.thumb.raised:not(.folded):hover,
+.thumb.raised:not(.folded):active {
   transform: translate(-12%, -16%) rotate(-70deg) scale(1.06);
 }
 
-.right-hand .thumb:hover,
-.right-hand .thumb:active {
+.right-hand .thumb:not(.folded):hover,
+.right-hand .thumb:not(.folded):active {
   transform: rotate(48deg) scale(1.06);
 }
 
-.right-hand .thumb.raised:hover,
-.right-hand .thumb.raised:active {
+.right-hand .thumb.raised:not(.folded):hover,
+.right-hand .thumb.raised:not(.folded):active {
   transform: translate(12%, -16%) rotate(70deg) scale(1.06);
 }
 
@@ -592,6 +651,10 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .answer-pad {
+    grid-template-columns: repeat(6, minmax(44px, 1fr));
+  }
+
   .hand-wrap {
     min-height: 290px;
   }
@@ -641,6 +704,11 @@ button:focus-visible {
 
   .hands-stage {
     min-height: 205px;
+  }
+
+  .answer-button {
+    min-height: 46px;
+    font-size: 1.25rem;
   }
 
   .hand-wrap {
@@ -720,6 +788,16 @@ button:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 4px;
     min-height: 185px;
+  }
+
+  .answer-pad {
+    grid-template-columns: repeat(6, minmax(38px, 1fr));
+    gap: 6px;
+  }
+
+  .answer-button {
+    min-height: 44px;
+    font-size: 1.15rem;
   }
 
   .hand-wrap {
