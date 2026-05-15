@@ -13,6 +13,7 @@ const fingerOrder = [
 
 const state = {
   target: 3,
+  lang: "fr",
   mode: "play",
   raised: new Set(),
   solvedRounds: 0,
@@ -28,19 +29,207 @@ const state = {
   promptBuffers: {}
 };
 
-const numberWords = [
-  "zéro",
-  "un",
-  "deux",
-  "trois",
-  "quatre",
-  "cinq",
-  "six",
-  "sept",
-  "huit",
-  "neuf",
-  "dix"
-];
+const translations = {
+  fr: {
+    htmlLang: "fr",
+    title: "Les nombres avec les doigts",
+    brand: "Les doigts et les nombres",
+    langLabel: "Langue",
+    modesLabel: "Mode",
+    actionMake: "Fais",
+    actionCount: "Compte",
+    modes: { play: "Jouer", learn: "Apprendre", count: "Compter" },
+    numberWords: ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"],
+    roundTitle: {
+      play: (target) => `Peux-tu faire ${target} ?`,
+      learn: (target) => `Apprenons ${target}`,
+      count: () => "Combien de doigts sont levés ?"
+    },
+    hints: {
+      initial: "Touche les doigts pour les lever.",
+      low: ["Un doigt de plus peut aider.", "Essaie de lever un autre doigt.", "Tu y es presque. Ajoute-en un."],
+      high: ["Essaie de baisser un doigt.", "Il y en a un peu trop.", "Enlève-en un et regarde encore."],
+      zero: ["Zéro, c'est aucun doigt levé.", "Pour zéro, garde tous les doigts baissés."],
+      solvedZero: "Oui. Aucun doigt n'est levé.",
+      made: (target) => `Tu as fait ${target} !`,
+      learn: "Regarde les doigts qui brillent, puis touche-les.",
+      countStart: "Compte les doigts levés, puis touche le bon nombre.",
+      countSolved: (target) => `Oui, c'est ${target} !`,
+      countLow: "Il y en a un peu plus. Essaie encore.",
+      countHigh: "Il y en a un peu moins. Essaie encore.",
+      bravo: "Bravo !",
+      loadingSound: (word) => `Chargement du son : ${word}`,
+      soundPlaying: (word) => `Son en cours : ${word}`,
+      heard: (word) => `Tu as entendu : ${word}`,
+      soundBlocked: (name) => `Son bloqué : ${name}`,
+      audioError: (code) => `Erreur audio ${code}. J'essaie une autre voix.`,
+      noSound: "Le son n'est pas disponible dans ce navigateur.",
+      cannotSpeak: "Je n'arrive pas à parler ici.",
+      cannotPlay: "Je n'arrive pas à jouer le son ici. Essaie la version localhost."
+    },
+    counterLabel: "Tu as fait",
+    listen: (target) => `Écoute ${target}`,
+    listenLabel: (target) => `Écouter le nombre ${target}`,
+    show: "Montre-moi",
+    next: "Suivant",
+    soundOn: "Désactiver le son",
+    soundOff: "Activer le son",
+    handsLabel: "Deux mains avec des doigts à toucher",
+    topBarLabel: "Commandes du jeu",
+    actionBarLabel: "Actions du tour",
+    numberCardLabel: "Nombre à faire",
+    answerPadLabel: "Choisis le nombre de doigts",
+    rewardsLabel: "Étoiles gagnées",
+    left: "Gauche",
+    right: "Droite",
+    fingers: {
+      thumb: "Pouce",
+      pointer: "Index",
+      middle: "Majeur",
+      ring: "Annulaire",
+      pinky: "Auriculaire"
+    },
+    promptAudio: {
+      count: "Combien de doigts sont levés ?",
+      play: "Peux-tu faire le chiffre ?"
+    },
+    voiceLang: "fr-FR"
+  },
+  en: {
+    htmlLang: "en",
+    title: "Finger Numbers",
+    brand: "Fingers and numbers",
+    langLabel: "Language",
+    modesLabel: "Mode",
+    actionMake: "Make",
+    actionCount: "Count",
+    modes: { play: "Play", learn: "Learn", count: "Count" },
+    numberWords: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
+    roundTitle: {
+      play: (target) => `Can you make ${target}?`,
+      learn: (target) => `Let's learn ${target}`,
+      count: () => "How many fingers are raised?"
+    },
+    hints: {
+      initial: "Tap fingers to raise them.",
+      low: ["One more finger can help.", "Try raising another finger.", "Almost there. Add one more."],
+      high: ["Try lowering one finger.", "That's a little too many.", "Take one away and look again."],
+      zero: ["Zero means no fingers raised.", "For zero, keep every finger down."],
+      solvedZero: "Yes. No fingers are raised.",
+      made: (target) => `You made ${target}!`,
+      learn: "Look for the glowing fingers, then tap them.",
+      countStart: "Count the raised fingers, then tap the right number.",
+      countSolved: (target) => `Yes, that's ${target}!`,
+      countLow: "There are a little more. Try again.",
+      countHigh: "There are a little fewer. Try again.",
+      bravo: "Great job!",
+      loadingSound: (word) => `Loading sound: ${word}`,
+      soundPlaying: (word) => `Playing: ${word}`,
+      heard: (word) => `You heard: ${word}`,
+      soundBlocked: (name) => `Sound blocked: ${name}`,
+      audioError: (code) => `Audio error ${code}. Trying another voice.`,
+      noSound: "Sound is not available in this browser.",
+      cannotSpeak: "I cannot speak here.",
+      cannotPlay: "I cannot play the sound here. Try the localhost version."
+    },
+    counterLabel: "You made",
+    listen: (target) => `Hear ${target}`,
+    listenLabel: (target) => `Hear the number ${target}`,
+    show: "Show me",
+    next: "Next",
+    soundOn: "Turn sound off",
+    soundOff: "Turn sound on",
+    handsLabel: "Two hands with fingers to touch",
+    topBarLabel: "Game controls",
+    actionBarLabel: "Round actions",
+    numberCardLabel: "Number to make",
+    answerPadLabel: "Choose the number of fingers",
+    rewardsLabel: "Stars earned",
+    left: "Left",
+    right: "Right",
+    fingers: {
+      thumb: "Thumb",
+      pointer: "Index",
+      middle: "Middle",
+      ring: "Ring",
+      pinky: "Pinky"
+    },
+    promptAudio: {
+      count: "How many fingers are raised?",
+      play: "Can you make the number?"
+    },
+    voiceLang: "en-US"
+  },
+  yue: {
+    htmlLang: "zh-HK",
+    title: "手指數字",
+    brand: "手指同數字",
+    langLabel: "語言",
+    modesLabel: "模式",
+    actionMake: "做",
+    actionCount: "數",
+    modes: { play: "玩", learn: "學", count: "數" },
+    numberWords: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
+    roundTitle: {
+      play: (target) => `你可唔可以做 ${target}？`,
+      learn: (target) => `一齊學 ${target}`,
+      count: () => "有幾多隻手指舉起咗？"
+    },
+    hints: {
+      initial: "撳手指舉起佢哋。",
+      low: ["再加一隻手指。", "試吓舉多一隻手指。", "差唔多喇，再加一隻。"],
+      high: ["試吓放低一隻手指。", "有少少多咗。", "放低一隻再睇吓。"],
+      zero: ["零即係冇手指舉起。", "零就放低晒所有手指。"],
+      solvedZero: "啱喇。冇手指舉起。",
+      made: (target) => `你做咗 ${target}！`,
+      learn: "睇住發光嘅手指，然後撳佢哋。",
+      countStart: "數吓舉起咗嘅手指，然後撳啱嘅數字。",
+      countSolved: (target) => `啱喇，係 ${target}！`,
+      countLow: "仲有多少少。再試吓。",
+      countHigh: "少啲先啱。再試吓。",
+      bravo: "叻叻！",
+      loadingSound: (word) => `載入聲音：${word}`,
+      soundPlaying: (word) => `播放緊：${word}`,
+      heard: (word) => `你聽到：${word}`,
+      soundBlocked: (name) => `聲音被擋住：${name}`,
+      audioError: (code) => `聲音錯誤 ${code}。試另一把聲。`,
+      noSound: "呢個瀏覽器冇聲音。",
+      cannotSpeak: "呢度講唔到聲。",
+      cannotPlay: "呢度播唔到聲。試吓 localhost 版本。"
+    },
+    counterLabel: "你做咗",
+    listen: (target) => `聽 ${target}`,
+    listenLabel: (target) => `聽數字 ${target}`,
+    show: "示範",
+    next: "下一個",
+    soundOn: "關聲",
+    soundOff: "開聲",
+    handsLabel: "兩隻可以撳嘅手",
+    topBarLabel: "遊戲控制",
+    actionBarLabel: "今次動作",
+    numberCardLabel: "要做嘅數字",
+    answerPadLabel: "揀手指數量",
+    rewardsLabel: "得到嘅星星",
+    left: "左",
+    right: "右",
+    fingers: {
+      thumb: "拇指",
+      pointer: "食指",
+      middle: "中指",
+      ring: "無名指",
+      pinky: "尾指"
+    },
+    promptAudio: {
+      count: "有幾多隻手指舉起咗？",
+      play: "你可唔可以做呢個數字？"
+    },
+    voiceLang: "zh-HK"
+  }
+};
+
+function copy() {
+  return translations[state.lang] || translations.fr;
+}
 
 const els = {
   app: document.querySelector(".app-shell"),
@@ -52,6 +241,7 @@ const els = {
   currentCount: document.querySelector("#currentCount"),
   fingers: [...document.querySelectorAll(".finger")],
   modeButtons: [...document.querySelectorAll(".mode-button")],
+  languageButtons: [...document.querySelectorAll(".language-button")],
   answerPad: document.querySelector("#answerPad"),
   answerButtons: [...document.querySelectorAll(".answer-button")],
   soundButton: document.querySelector("#soundButton"),
@@ -59,15 +249,60 @@ const els = {
   showButton: document.querySelector("#showButton"),
   nextButton: document.querySelector("#nextButton"),
   stars: [...document.querySelectorAll(".star")],
+  counterLabel: document.querySelector(".counter-label"),
+  eyebrow: document.querySelector(".eyebrow"),
+  modeSwitch: document.querySelector(".mode-switch"),
+  languageSwitch: document.querySelector(".language-switch"),
+  handsStage: document.querySelector(".hands-stage"),
+  handLabels: [...document.querySelectorAll(".hand-label")],
+  hands: [...document.querySelectorAll(".hand")],
+  numberCard: document.querySelector(".number-card"),
+  topBar: document.querySelector(".top-bar"),
+  actionBar: document.querySelector(".action-bar"),
+  rewardTray: document.querySelector(".reward-tray"),
   cursor: document.querySelector(".big-cursor"),
   sprinkleField: document.querySelector("#sprinkleField")
 };
 
-const friendlyHints = {
-  low: ["Un doigt de plus peut aider.", "Essaie de lever un autre doigt.", "Tu y es presque. Ajoute-en un."],
-  high: ["Essaie de baisser un doigt.", "Il y en a un peu trop.", "Enlève-en un et regarde encore."],
-  zero: ["Zéro, c'est aucun doigt levé.", "Pour zéro, garde tous les doigts baissés."]
-};
+function updateStaticCopy() {
+  const text = copy();
+  document.documentElement.lang = text.htmlLang;
+  document.title = text.title;
+  els.eyebrow.textContent = text.brand;
+  els.modeSwitch.setAttribute("aria-label", text.modesLabel);
+  els.topBar.setAttribute("aria-label", text.topBarLabel);
+  els.actionBar.setAttribute("aria-label", text.actionBarLabel);
+  els.languageSwitch.setAttribute("aria-label", text.langLabel);
+  els.numberCard.setAttribute("aria-label", text.numberCardLabel);
+  els.answerPad.setAttribute("aria-label", text.answerPadLabel);
+  els.handsStage.setAttribute("aria-label", text.handsLabel);
+  els.rewardTray.setAttribute("aria-label", text.rewardsLabel);
+  els.counterLabel.textContent = text.counterLabel;
+  els.showButton.textContent = text.show;
+  els.nextButton.textContent = text.next;
+  els.soundButton.setAttribute("aria-label", state.soundOn ? text.soundOn : text.soundOff);
+  els.handLabels[0].textContent = text.left;
+  els.handLabels[1].textContent = text.right;
+  els.hands[0].setAttribute("aria-label", text.left);
+  els.hands[1].setAttribute("aria-label", text.right);
+
+  els.modeButtons.forEach((button) => {
+    button.textContent = text.modes[button.dataset.mode];
+  });
+  els.languageButtons.forEach((button) => {
+    const active = button.dataset.lang === state.lang;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+
+  els.fingers.forEach((finger) => {
+    const [, fingerName] = finger.dataset.finger.split("-");
+    const handName = finger.dataset.finger.startsWith("left") ? text.left : text.right;
+    const label = text.fingers[fingerName];
+    finger.querySelector("span").textContent = label;
+    finger.setAttribute("aria-label", `${label} ${handName}`);
+  });
+}
 
 function setTarget(target) {
   state.target = target;
@@ -94,36 +329,35 @@ function nextTarget() {
 }
 
 function updateStatus() {
+  const text = copy();
   const count = state.raised.size;
   const isCounting = state.mode === "count";
-  els.actionVerb.textContent = isCounting ? "Compte" : "Fais";
+  els.actionVerb.textContent = isCounting ? text.actionCount : text.actionMake;
   els.targetNumber.textContent = isCounting ? "?" : state.target;
   els.bigNumber.textContent = isCounting ? "?" : state.target;
   els.currentCount.textContent = count;
-  els.speakButton.textContent = `Écoute ${state.target}`;
-  els.speakButton.setAttribute("aria-label", `Écouter le nombre ${state.target}`);
+  els.speakButton.textContent = text.listen(state.target);
+  els.speakButton.setAttribute("aria-label", text.listenLabel(state.target));
   if (isCounting) {
-    els.roundTitle.textContent = "Combien de doigts sont levés ?";
+    els.roundTitle.textContent = text.roundTitle.count();
     if (state.roundSolved) {
-      els.hintText.textContent = `Oui, c'est ${state.target} !`;
+      els.hintText.textContent = text.hints.countSolved(state.target);
     } else if (state.selectedAnswer === null) {
-      els.hintText.textContent = "Compte les doigts levés, puis touche le bon nombre.";
+      els.hintText.textContent = text.hints.countStart;
     } else {
       els.hintText.textContent = state.selectedAnswer < state.target
-        ? "Il y en a un peu plus. Essaie encore."
-        : "Il y en a un peu moins. Essaie encore.";
+        ? text.hints.countLow
+        : text.hints.countHigh;
     }
     return;
   }
 
-  els.roundTitle.textContent = state.mode === "learn"
-    ? `Apprenons ${state.target}`
-    : `Peux-tu faire ${state.target} ?`;
+  els.roundTitle.textContent = text.roundTitle[state.mode](state.target);
 
   if (count === state.target) {
     els.hintText.textContent = state.target === 0
-      ? "Oui. Aucun doigt n'est levé."
-      : `Tu as fait ${state.target} !`;
+      ? text.hints.solvedZero
+      : text.hints.made(state.target);
     if (!state.roundSolved) {
       state.roundSolved = true;
       celebrate();
@@ -132,13 +366,13 @@ function updateStatus() {
   }
 
   if (state.target === 0) {
-    els.hintText.textContent = friendlyHints.zero[0];
+    els.hintText.textContent = text.hints.zero[0];
   } else if (state.mode === "learn") {
-    els.hintText.textContent = "Regarde les doigts qui brillent, puis touche-les.";
+    els.hintText.textContent = text.hints.learn;
   } else if (count < state.target) {
-    els.hintText.textContent = pickHint(friendlyHints.low, state.target - count);
+    els.hintText.textContent = pickHint(text.hints.low, state.target - count);
   } else {
-    els.hintText.textContent = pickHint(friendlyHints.high, count - state.target);
+    els.hintText.textContent = pickHint(text.hints.high, count - state.target);
   }
 }
 
@@ -254,6 +488,18 @@ function switchMode(mode) {
   }
 }
 
+function switchLanguage(lang) {
+  if (!translations[lang] || state.lang === lang) {
+    return;
+  }
+  state.lang = lang;
+  state.preferredVoice = null;
+  updateStaticCopy();
+  updateCopyPattern();
+  updateAnswerPad();
+  updateStatus();
+}
+
 function ensureAudio() {
   if (!state.audioContext) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -364,7 +610,7 @@ function handleNextRound() {
 
   state.nextLocked = true;
   els.nextButton.disabled = true;
-  els.hintText.textContent = "Bravo !";
+  els.hintText.textContent = copy().hints.bravo;
   launchSprinkles();
   playFestiveSound();
   window.setTimeout(() => {
@@ -374,22 +620,47 @@ function handleNextRound() {
   }, 720);
 }
 
-function chooseFrenchVoice() {
+function choosePreferredVoice() {
   if (!("speechSynthesis" in window)) {
     return null;
   }
+  const text = copy();
   const voices = window.speechSynthesis.getVoices();
-  state.preferredVoice = voices.find((voice) => voice.lang === "fr-FR")
-    || voices.find((voice) => voice.lang.startsWith("fr"))
+  const voicePrefix = text.voiceLang.split("-")[0];
+  state.preferredVoice = voices.find((voice) => voice.lang === text.voiceLang)
+    || voices.find((voice) => voice.lang.startsWith(voicePrefix))
     || voices.find((voice) => voice.default)
     || voices[0]
     || null;
   return state.preferredVoice;
 }
 
+function getNumberAudioSource() {
+  return window.APP_AUDIO?.[state.lang]?.numbers?.[String(state.target)]
+    || window.NUMBER_AUDIO?.[String(state.target)];
+}
+
+function getPromptAudioSource(mode) {
+  return window.APP_AUDIO?.[state.lang]?.prompts?.[mode]
+    || window.PROMPT_AUDIO?.[mode];
+}
+
+function getNumberAudioPath() {
+  return state.lang === "fr"
+    ? `audio/${state.target}.wav`
+    : `audio/${state.lang}-${state.target}.wav`;
+}
+
+function getPromptAudioPath(mode) {
+  return state.lang === "fr"
+    ? `audio/${mode}-prompt.wav`
+    : `audio/${state.lang}-${mode}-prompt.wav`;
+}
+
 function speakNumber() {
-  const spokenNumber = numberWords[state.target] || String(state.target);
-  els.hintText.textContent = `Chargement du son : ${spokenNumber}`;
+  const text = copy();
+  const spokenNumber = text.numberWords[state.target] || String(state.target);
+  els.hintText.textContent = text.hints.loadingSound(spokenNumber);
   playNumberWithWebAudio(spokenNumber).catch((error) => {
     console.warn("Web Audio number playback failed", error.name, error.message);
     playNumberAudio(spokenNumber);
@@ -398,19 +669,20 @@ function speakNumber() {
 
 async function playNumberWithWebAudio(spokenNumber) {
   const audioContext = await unlockAudio();
-  const embeddedSource = window.NUMBER_AUDIO && window.NUMBER_AUDIO[String(state.target)];
+  const embeddedSource = getNumberAudioSource();
   if (!audioContext || !embeddedSource) {
     throw new Error("Web Audio source unavailable");
   }
 
-  if (!state.numberBuffers[state.target]) {
+  const bufferKey = `${state.lang}-${state.target}`;
+  if (!state.numberBuffers[bufferKey]) {
     const base64 = embeddedSource.split(",")[1];
     const binary = atob(base64);
     const bytes = new Uint8Array(binary.length);
     for (let index = 0; index < binary.length; index += 1) {
       bytes[index] = binary.charCodeAt(index);
     }
-    state.numberBuffers[state.target] = await audioContext.decodeAudioData(bytes.buffer);
+    state.numberBuffers[bufferKey] = await audioContext.decodeAudioData(bytes.buffer);
   }
 
   const source = audioContext.createBufferSource();
@@ -418,7 +690,7 @@ async function playNumberWithWebAudio(spokenNumber) {
   const chime = audioContext.createOscillator();
   const chimeGain = audioContext.createGain();
   const now = audioContext.currentTime;
-  source.buffer = state.numberBuffers[state.target];
+  source.buffer = state.numberBuffers[bufferKey];
   gain.gain.value = 2.4;
   source.connect(gain).connect(audioContext.destination);
   chime.frequency.value = 660;
@@ -428,10 +700,10 @@ async function playNumberWithWebAudio(spokenNumber) {
   chimeGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
   chime.connect(chimeGain).connect(audioContext.destination);
   source.onended = () => {
-    els.hintText.textContent = `Tu as entendu : ${spokenNumber}`;
+    els.hintText.textContent = copy().hints.heard(spokenNumber);
     console.info("Web Audio number finished", spokenNumber);
   };
-  els.hintText.textContent = `Son en cours : ${spokenNumber}`;
+  els.hintText.textContent = copy().hints.soundPlaying(spokenNumber);
   console.info("Web Audio number playing", spokenNumber, audioContext.state);
   chime.start(now);
   chime.stop(now + 0.12);
@@ -439,8 +711,8 @@ async function playNumberWithWebAudio(spokenNumber) {
 }
 
 function playNumberAudio(spokenNumber) {
-  const embeddedSource = window.NUMBER_AUDIO && window.NUMBER_AUDIO[String(state.target)];
-  const source = embeddedSource || new URL(`audio/${state.target}.wav`, window.location.href).href;
+  const embeddedSource = getNumberAudioSource();
+  const source = embeddedSource || new URL(getNumberAudioPath(), window.location.href).href;
   if (!state.numberAudio) {
     state.numberAudio = new Audio();
     state.numberAudio.preload = "auto";
@@ -448,16 +720,16 @@ function playNumberAudio(spokenNumber) {
       console.info("Number audio ready", state.numberAudio.currentSrc);
     });
     state.numberAudio.addEventListener("playing", () => {
-      els.hintText.textContent = `Son en cours : ${spokenNumber}`;
+      els.hintText.textContent = copy().hints.soundPlaying(spokenNumber);
       console.info("Number audio playing", state.numberAudio.currentSrc);
     });
     state.numberAudio.addEventListener("ended", () => {
-      els.hintText.textContent = `Tu as entendu : ${spokenNumber}`;
+      els.hintText.textContent = copy().hints.heard(spokenNumber);
       console.info("Number audio finished");
     });
     state.numberAudio.addEventListener("error", () => {
       const errorCode = state.numberAudio.error ? state.numberAudio.error.code : "unknown";
-      els.hintText.textContent = `Erreur audio ${errorCode}. J'essaie une autre voix.`;
+      els.hintText.textContent = copy().hints.audioError(errorCode);
       console.warn("Number audio failed", errorCode, state.numberAudio.currentSrc);
       speakNumberWithBrowserVoice(spokenNumber);
     });
@@ -470,7 +742,7 @@ function playNumberAudio(spokenNumber) {
   const playPromise = state.numberAudio.play();
   if (playPromise) {
     playPromise.catch((error) => {
-      els.hintText.textContent = `Son bloqué : ${error.name}`;
+      els.hintText.textContent = copy().hints.soundBlocked(error.name);
       console.warn("Number audio play rejected", error.name, error.message);
       speakNumberWithBrowserVoice(spokenNumber);
     });
@@ -479,17 +751,13 @@ function playNumberAudio(spokenNumber) {
 
 function speakNumberWithBrowserVoice(spokenNumber) {
   speakPhrase(spokenNumber, {
-    onStartText: `Écoute : ${spokenNumber}`,
-    onErrorText: "Je n'arrive pas à jouer le son ici. Essaie la version localhost."
+    onStartText: copy().hints.soundPlaying(spokenNumber),
+    onErrorText: copy().hints.cannotPlay
   });
 }
 
 function speakModePrompt(mode) {
-  const prompts = {
-    count: "Combien de doigts sont levés ?",
-    play: "Peux-tu faire le chiffre ?"
-  };
-  const prompt = prompts[mode];
+  const prompt = copy().promptAudio[mode];
   if (!prompt) {
     return;
   }
@@ -501,24 +769,25 @@ function speakModePrompt(mode) {
 
 async function playPromptWithWebAudio(mode, prompt) {
   const audioContext = await unlockAudio();
-  const embeddedSource = window.PROMPT_AUDIO && window.PROMPT_AUDIO[mode];
+  const embeddedSource = getPromptAudioSource(mode);
   if (!audioContext || !embeddedSource) {
     throw new Error("Prompt audio source unavailable");
   }
 
-  if (!state.promptBuffers[mode]) {
+  const bufferKey = `${state.lang}-${mode}`;
+  if (!state.promptBuffers[bufferKey]) {
     const base64 = embeddedSource.split(",")[1];
     const binary = atob(base64);
     const bytes = new Uint8Array(binary.length);
     for (let index = 0; index < binary.length; index += 1) {
       bytes[index] = binary.charCodeAt(index);
     }
-    state.promptBuffers[mode] = await audioContext.decodeAudioData(bytes.buffer);
+    state.promptBuffers[bufferKey] = await audioContext.decodeAudioData(bytes.buffer);
   }
 
   const source = audioContext.createBufferSource();
   const gain = audioContext.createGain();
-  source.buffer = state.promptBuffers[mode];
+  source.buffer = state.promptBuffers[bufferKey];
   gain.gain.value = 2.2;
   source.connect(gain).connect(audioContext.destination);
   source.onended = () => {
@@ -529,8 +798,8 @@ async function playPromptWithWebAudio(mode, prompt) {
 }
 
 function playPromptAudio(mode, prompt) {
-  const embeddedSource = window.PROMPT_AUDIO && window.PROMPT_AUDIO[mode];
-  const source = embeddedSource || new URL(`audio/${mode}-prompt.wav`, window.location.href).href;
+  const embeddedSource = getPromptAudioSource(mode);
+  const source = embeddedSource || new URL(getPromptAudioPath(mode), window.location.href).href;
   if (!state.promptAudio) {
     state.promptAudio = new Audio();
     state.promptAudio.preload = "auto";
@@ -562,16 +831,17 @@ function playPromptAudio(mode, prompt) {
 
 function speakPhrase(phrase, options = {}) {
   if (!("speechSynthesis" in window)) {
-    els.hintText.textContent = "Le son n'est pas disponible dans ce navigateur.";
+    els.hintText.textContent = copy().hints.noSound;
     return;
   }
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(phrase);
-  const voice = state.preferredVoice || chooseFrenchVoice();
+  const text = copy();
+  const voice = state.preferredVoice || choosePreferredVoice();
   if (voice) {
     utterance.voice = voice;
   }
-  utterance.lang = "fr-FR";
+  utterance.lang = text.voiceLang;
   utterance.volume = 1;
   utterance.rate = 0.68;
   utterance.pitch = 1.12;
@@ -581,7 +851,7 @@ function speakPhrase(phrase, options = {}) {
     };
   }
   utterance.onerror = () => {
-    els.hintText.textContent = options.onErrorText || "Je n'arrive pas à parler ici.";
+    els.hintText.textContent = options.onErrorText || text.hints.cannotSpeak;
   };
   window.speechSynthesis.speak(utterance);
 }
@@ -592,6 +862,10 @@ els.fingers.forEach((finger) => {
 
 els.modeButtons.forEach((button) => {
   button.addEventListener("click", () => switchMode(button.dataset.mode));
+});
+
+els.languageButtons.forEach((button) => {
+  button.addEventListener("click", () => switchLanguage(button.dataset.lang));
 });
 
 els.answerButtons.forEach((button) => {
@@ -605,7 +879,7 @@ els.nextButton.addEventListener("click", handleNextRound);
 els.soundButton.addEventListener("click", async () => {
   state.soundOn = !state.soundOn;
   els.soundButton.setAttribute("aria-pressed", String(state.soundOn));
-  els.soundButton.setAttribute("aria-label", state.soundOn ? "Désactiver le son" : "Activer le son");
+  els.soundButton.setAttribute("aria-label", state.soundOn ? copy().soundOn : copy().soundOff);
   els.soundButton.textContent = state.soundOn ? "♫" : "♪";
   await unlockAudio();
   playTone("show");
@@ -641,8 +915,9 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
 }
 
 if ("speechSynthesis" in window) {
-  chooseFrenchVoice();
-  window.speechSynthesis.addEventListener("voiceschanged", chooseFrenchVoice);
+  choosePreferredVoice();
+  window.speechSynthesis.addEventListener("voiceschanged", choosePreferredVoice);
 }
 
+updateStaticCopy();
 setTarget(3);

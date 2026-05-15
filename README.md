@@ -13,10 +13,11 @@ Puis ouvre `http://localhost:4173`.
 ## Ce qui est inclus
 
 - Nombres de 0 à 10
+- Langues français, anglais et cantonais
 - Deux mains animées avec des doigts à toucher
 - Modes Jouer, Apprendre et Compter
 - Jeu de réponse où l'enfant compte les doigts levés et choisit un nombre de 0 à 10
 - Conseils doux et étoiles de récompense
 - Effets sonores optionnels
-- Fichiers audio locaux en français pour les nombres de 0 à 10
+- Fichiers audio locaux pour les nombres de 0 à 10 et les consignes
 - Manifeste PWA de base et cache hors ligne
