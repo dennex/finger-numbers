@@ -175,6 +175,7 @@ function updateAnswerPad() {
   });
   els.showButton.hidden = isCounting;
   els.speakButton.hidden = isCounting;
+  els.nextButton.hidden = isCounting;
 }
 
 function setRaisedToTarget() {
@@ -214,6 +215,11 @@ function chooseAnswer(answer) {
     launchSprinkles();
     playFestiveSound();
     speakNumber();
+    window.setTimeout(() => {
+      if (state.mode === "count") {
+        nextTarget();
+      }
+    }, 900);
     return;
   }
   updateAnswerPad();
