@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v22";
+const CACHE_NAME = "finger-numbers-v23";
 const ASSETS = [
   "./",
   "./index.html",
@@ -17,7 +17,9 @@ const ASSETS = [
   "./audio/7.wav",
   "./audio/8.wav",
   "./audio/9.wav",
-  "./audio/10.wav"
+  "./audio/10.wav",
+  "./audio/count-prompt.wav",
+  "./audio/play-prompt.wav"
 ];
 
 self.addEventListener("install", (event) => {

@@ -23,7 +23,9 @@ const state = {
   audioContext: null,
   preferredVoice: null,
   numberAudio: null,
-  numberBuffers: {}
+  numberBuffers: {},
+  promptAudio: null,
+  promptBuffers: {}
 };
 
 const numberWords = [
@@ -491,7 +493,71 @@ function speakModePrompt(mode) {
   if (!prompt) {
     return;
   }
-  speakPhrase(prompt);
+  playPromptWithWebAudio(mode, prompt).catch((error) => {
+    console.warn("Web Audio prompt playback failed", error.name, error.message);
+    playPromptAudio(mode, prompt);
+  });
+}
+
+async function playPromptWithWebAudio(mode, prompt) {
+  const audioContext = await unlockAudio();
+  const embeddedSource = window.PROMPT_AUDIO && window.PROMPT_AUDIO[mode];
+  if (!audioContext || !embeddedSource) {
+    throw new Error("Prompt audio source unavailable");
+  }
+
+  if (!state.promptBuffers[mode]) {
+    const base64 = embeddedSource.split(",")[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    state.promptBuffers[mode] = await audioContext.decodeAudioData(bytes.buffer);
+  }
+
+  const source = audioContext.createBufferSource();
+  const gain = audioContext.createGain();
+  source.buffer = state.promptBuffers[mode];
+  gain.gain.value = 2.2;
+  source.connect(gain).connect(audioContext.destination);
+  source.onended = () => {
+    console.info("Web Audio prompt finished", mode);
+  };
+  console.info("Web Audio prompt playing", mode, prompt, audioContext.state);
+  source.start();
+}
+
+function playPromptAudio(mode, prompt) {
+  const embeddedSource = window.PROMPT_AUDIO && window.PROMPT_AUDIO[mode];
+  const source = embeddedSource || new URL(`audio/${mode}-prompt.wav`, window.location.href).href;
+  if (!state.promptAudio) {
+    state.promptAudio = new Audio();
+    state.promptAudio.preload = "auto";
+    state.promptAudio.addEventListener("playing", () => {
+      console.info("Prompt audio playing", state.promptAudio.currentSrc);
+    });
+    state.promptAudio.addEventListener("ended", () => {
+      console.info("Prompt audio finished", mode);
+    });
+    state.promptAudio.addEventListener("error", () => {
+      const errorCode = state.promptAudio.error ? state.promptAudio.error.code : "unknown";
+      console.warn("Prompt audio failed", errorCode, state.promptAudio.currentSrc);
+      speakPhrase(prompt);
+    });
+  }
+  state.promptAudio.pause();
+  state.promptAudio.src = source;
+  state.promptAudio.load();
+  state.promptAudio.currentTime = 0;
+  state.promptAudio.volume = 1;
+  const playPromise = state.promptAudio.play();
+  if (playPromise) {
+    playPromise.catch((error) => {
+      console.warn("Prompt audio play rejected", error.name, error.message);
+      speakPhrase(prompt);
+    });
+  }
 }
 
 function speakPhrase(phrase, options = {}) {
