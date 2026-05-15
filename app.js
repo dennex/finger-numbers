@@ -239,6 +239,7 @@ function celebrate() {
 }
 
 function switchMode(mode) {
+  const previousMode = state.mode;
   state.mode = mode;
   els.modeButtons.forEach((button) => {
     const active = button.dataset.mode === mode;
@@ -246,6 +247,9 @@ function switchMode(mode) {
     button.setAttribute("aria-pressed", String(active));
   });
   setTarget(state.target);
+  if (previousMode !== mode) {
+    speakModePrompt(mode);
+  }
 }
 
 function ensureAudio() {
@@ -472,12 +476,31 @@ function playNumberAudio(spokenNumber) {
 }
 
 function speakNumberWithBrowserVoice(spokenNumber) {
+  speakPhrase(spokenNumber, {
+    onStartText: `Écoute : ${spokenNumber}`,
+    onErrorText: "Je n'arrive pas à jouer le son ici. Essaie la version localhost."
+  });
+}
+
+function speakModePrompt(mode) {
+  const prompts = {
+    count: "Combien de doigts sont levés ?",
+    play: "Peux-tu faire le chiffre ?"
+  };
+  const prompt = prompts[mode];
+  if (!prompt) {
+    return;
+  }
+  speakPhrase(prompt);
+}
+
+function speakPhrase(phrase, options = {}) {
   if (!("speechSynthesis" in window)) {
     els.hintText.textContent = "Le son n'est pas disponible dans ce navigateur.";
     return;
   }
   window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(spokenNumber);
+  const utterance = new SpeechSynthesisUtterance(phrase);
   const voice = state.preferredVoice || chooseFrenchVoice();
   if (voice) {
     utterance.voice = voice;
@@ -486,11 +509,13 @@ function speakNumberWithBrowserVoice(spokenNumber) {
   utterance.volume = 1;
   utterance.rate = 0.68;
   utterance.pitch = 1.12;
-  utterance.onstart = () => {
-    els.hintText.textContent = `Écoute : ${spokenNumber}`;
-  };
+  if (options.onStartText) {
+    utterance.onstart = () => {
+      els.hintText.textContent = options.onStartText;
+    };
+  }
   utterance.onerror = () => {
-    els.hintText.textContent = "Je n'arrive pas à jouer le son ici. Essaie la version localhost.";
+    els.hintText.textContent = options.onErrorText || "Je n'arrive pas à parler ici.";
   };
   window.speechSynthesis.speak(utterance);
 }
