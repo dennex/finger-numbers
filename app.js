@@ -189,6 +189,81 @@ const translations = {
       play: "你可唔可以做呢個數字？"
     },
     voiceLang: "zh-HK"
+  },
+  zh: {
+    htmlLang: "zh-CN",
+    title: "手指数字",
+    brand: "手指和数字",
+    langLabel: "语言",
+    modesLabel: "模式",
+    actionMake: "做",
+    actionCount: "数",
+    actionBoxing: "打",
+    modes: { play: "玩", learn: "学", count: "数", boxing: "拳击" },
+    numberWords: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
+    roundTitle: {
+      play: (target) => `你能做出 ${numberLabel(target)} 吗？`,
+      learn: (target) => `一起学 ${numberLabel(target)}`,
+      count: () => "有几根手指举起来？",
+      boxing: () => "打对手指！"
+    },
+    hints: {
+      initial: "点手指把它们举起来。",
+      low: ["再加一根手指。", "试着再举一根手指。", "快对了，再加一根。"],
+      high: ["试着放下一根手指。", "有一点多了。", "放下一根，再看一看。"],
+      zero: ["零就是没有手指举起来。", "零的时候，把手指都放下。"],
+      solvedZero: "对了。没有手指举起来。",
+      made: (target) => `你做出了 ${numberLabel(target)}！`,
+      learn: "看发亮的手指，然后点它们。",
+      countStart: "数一数举起来的手指，然后点正确的数字。",
+      countSolved: (target) => `对了，是 ${numberLabel(target)}！`,
+      countLow: "还要多一点。再试试。",
+      countHigh: "少一点才对。再试试。",
+      bravo: "真棒！",
+      loadingSound: (word) => `正在加载声音：${word}`,
+      soundPlaying: (word) => `正在播放：${word}`,
+      heard: (word) => `你听到了：${word}`,
+      soundBlocked: (name) => `声音被阻止：${name}`,
+      audioError: (code) => `声音错误 ${code}。我试试别的声音。`,
+      noSound: "这个浏览器不能播放声音。",
+      cannotSpeak: "这里不能说话。",
+      cannotPlay: "这里不能播放声音。试试 localhost 版本。",
+      boxingStart: "在零之前点正确的数字。",
+      boxingPunch: (damage) => `做得好！对手扣 ${damage}。`,
+      boxingHit: (damage) => `哎呀！你扣 ${damage}。`,
+      boxingWin: "你赢了！",
+      boxingLose: "你输了！"
+    },
+    counterLabel: "你做出了",
+    listen: (target) => `听 ${target}`,
+    listenLabel: (target) => `听数字 ${target}`,
+    show: "示范",
+    next: "下一个",
+    soundOn: "关声音",
+    soundOff: "开声音",
+    handsLabel: "两只可以点的手",
+    topBarLabel: "游戏控制",
+    actionBarLabel: "本轮操作",
+    numberCardLabel: "要做的数字",
+    answerPadLabel: "选择手指数量",
+    rewardsLabel: "得到的星星",
+    boxingLabel: "拳击游戏",
+    playerLabel: "你",
+    opponentLabel: "对手",
+    left: "左",
+    right: "右",
+    fingers: {
+      thumb: "拇指",
+      pointer: "食指",
+      middle: "中指",
+      ring: "无名指",
+      pinky: "小指"
+    },
+    promptAudio: {
+      count: "有几根手指举起来？",
+      play: "你能做出这个数字吗？"
+    },
+    voiceLang: "zh-CN"
   }
 };
 
@@ -197,7 +272,7 @@ function copy() {
 }
 
 function numberLabel(value) {
-  return state.lang === "yue"
+  return state.lang === "yue" || state.lang === "zh"
     ? copy().numberWords[value]
     : String(value);
 }

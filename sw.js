@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v30";
+const CACHE_NAME = "finger-numbers-v31";
 const ASSETS = [
   "./",
   "./index.html",
@@ -36,7 +36,22 @@ const ASSETS = [
   "./audio/yue-count-prompt.wav",
   "./audio/yue-play-prompt.wav",
   "./audio/yue-win.wav",
-  "./audio/yue-lose.wav"
+  "./audio/yue-lose.wav",
+  "./audio/zh-0.wav",
+  "./audio/zh-1.wav",
+  "./audio/zh-2.wav",
+  "./audio/zh-3.wav",
+  "./audio/zh-4.wav",
+  "./audio/zh-5.wav",
+  "./audio/zh-6.wav",
+  "./audio/zh-7.wav",
+  "./audio/zh-8.wav",
+  "./audio/zh-9.wav",
+  "./audio/zh-10.wav",
+  "./audio/zh-count-prompt.wav",
+  "./audio/zh-play-prompt.wav",
+  "./audio/zh-win.wav",
+  "./audio/zh-lose.wav"
 ];
 
 self.addEventListener("install", (event) => {
