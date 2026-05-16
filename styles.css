@@ -263,6 +263,17 @@ h1 {
   grid-column: 2;
   grid-row: 4;
   align-self: center;
+  justify-self: center;
+  width: min(100%, 430px);
+  grid-template-columns: repeat(4, minmax(66px, 1fr));
+  gap: 10px;
+}
+
+.boxing-mode .answer-button {
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: 0;
+  font-size: clamp(1.55rem, 3.2vw, 2.5rem);
 }
 
 .boxing-mode .action-bar {
@@ -999,6 +1010,9 @@ button:focus-visible {
 
   .boxing-mode .answer-pad {
     grid-row: 5;
+    width: min(100%, 390px);
+    grid-template-columns: repeat(4, minmax(58px, 1fr));
+    justify-self: center;
   }
 
   .boxing-mode .action-bar {
@@ -1156,6 +1170,11 @@ button:focus-visible {
   .answer-button {
     min-height: 44px;
     font-size: 1.15rem;
+  }
+
+  .boxing-mode .answer-button {
+    min-height: 0;
+    font-size: clamp(1.25rem, 9vw, 2rem);
   }
 
   .mode-button {
