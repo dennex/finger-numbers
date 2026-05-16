@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v28";
+const CACHE_NAME = "finger-numbers-v29";
 const ASSETS = [
   "./",
   "./index.html",

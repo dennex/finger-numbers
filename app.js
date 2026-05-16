@@ -720,27 +720,66 @@ async function playPunchSound(kind) {
     return;
   }
   const now = audioContext.currentTime;
+  const isPlayer = kind === "player";
   const thump = audioContext.createOscillator();
+  const body = audioContext.createOscillator();
   const snap = audioContext.createOscillator();
+  const noise = audioContext.createBufferSource();
   const thumpGain = audioContext.createGain();
+  const bodyGain = audioContext.createGain();
   const snapGain = audioContext.createGain();
-  thump.type = "triangle";
+  const noiseGain = audioContext.createGain();
+  const noiseFilter = audioContext.createBiquadFilter();
+  const master = audioContext.createGain();
+  const noiseBuffer = audioContext.createBuffer(1, Math.floor(audioContext.sampleRate * 0.09), audioContext.sampleRate);
+  const samples = noiseBuffer.getChannelData(0);
+  for (let index = 0; index < samples.length; index += 1) {
+    const fade = 1 - index / samples.length;
+    samples[index] = (Math.random() * 2 - 1) * fade;
+  }
+
+  master.gain.setValueAtTime(0.9, now);
+  master.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+  thump.type = "sine";
+  body.type = "triangle";
   snap.type = "square";
-  thump.frequency.setValueAtTime(kind === "player" ? 120 : 82, now);
-  thump.frequency.exponentialRampToValueAtTime(45, now + 0.16);
-  snap.frequency.setValueAtTime(kind === "player" ? 360 : 180, now);
+  thump.frequency.setValueAtTime(isPlayer ? 155 : 105, now);
+  thump.frequency.exponentialRampToValueAtTime(isPlayer ? 42 : 34, now + 0.18);
+  body.frequency.setValueAtTime(isPlayer ? 92 : 72, now + 0.012);
+  body.frequency.exponentialRampToValueAtTime(38, now + 0.2);
+  snap.frequency.setValueAtTime(isPlayer ? 980 : 720, now);
+  snap.frequency.exponentialRampToValueAtTime(isPlayer ? 320 : 240, now + 0.055);
+  noise.buffer = noiseBuffer;
+  noiseFilter.type = "bandpass";
+  noiseFilter.frequency.setValueAtTime(isPlayer ? 1850 : 1350, now);
+  noiseFilter.Q.value = 1.6;
+
   thumpGain.gain.setValueAtTime(0.0001, now);
-  thumpGain.gain.exponentialRampToValueAtTime(kind === "player" ? 0.42 : 0.32, now + 0.012);
-  thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+  thumpGain.gain.exponentialRampToValueAtTime(isPlayer ? 0.72 : 0.58, now + 0.01);
+  thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+  bodyGain.gain.setValueAtTime(0.0001, now + 0.012);
+  bodyGain.gain.exponentialRampToValueAtTime(isPlayer ? 0.36 : 0.28, now + 0.025);
+  bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.19);
   snapGain.gain.setValueAtTime(0.0001, now);
-  snapGain.gain.exponentialRampToValueAtTime(kind === "player" ? 0.16 : 0.1, now + 0.01);
-  snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
-  thump.connect(thumpGain).connect(audioContext.destination);
-  snap.connect(snapGain).connect(audioContext.destination);
+  snapGain.gain.exponentialRampToValueAtTime(isPlayer ? 0.38 : 0.28, now + 0.004);
+  snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+  noiseGain.gain.setValueAtTime(0.0001, now);
+  noiseGain.gain.exponentialRampToValueAtTime(isPlayer ? 0.32 : 0.22, now + 0.003);
+  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+  thump.connect(thumpGain).connect(master).connect(audioContext.destination);
+  body.connect(bodyGain).connect(master);
+  snap.connect(snapGain).connect(master);
+  noise.connect(noiseFilter).connect(noiseGain).connect(master);
   thump.start(now);
+  body.start(now + 0.012);
   snap.start(now);
-  thump.stop(now + 0.22);
-  snap.stop(now + 0.08);
+  noise.start(now);
+  thump.stop(now + 0.25);
+  body.stop(now + 0.21);
+  snap.stop(now + 0.07);
+  noise.stop(now + 0.09);
 }
 
 function launchSprinkles() {
