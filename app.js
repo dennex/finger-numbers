@@ -264,6 +264,156 @@ const translations = {
       play: "你能做出这个数字吗？"
     },
     voiceLang: "zh-CN"
+  },
+  ko: {
+    htmlLang: "ko",
+    title: "손가락 숫자",
+    brand: "손가락과 숫자",
+    langLabel: "언어",
+    modesLabel: "모드",
+    actionMake: "만들기",
+    actionCount: "세기",
+    actionBoxing: "치기",
+    modes: { play: "놀이", learn: "배우기", count: "세기", boxing: "복싱" },
+    numberWords: ["영", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구", "십"],
+    roundTitle: {
+      play: (target) => `${numberLabel(target)}을 만들 수 있을까?`,
+      learn: (target) => `${numberLabel(target)}을 배워 보자`,
+      count: () => "손가락이 몇 개 올라갔을까?",
+      boxing: () => "맞는 손가락을 쳐!"
+    },
+    hints: {
+      initial: "손가락을 눌러서 올려 보자.",
+      low: ["손가락을 하나 더 올려 봐.", "하나 더 올리면 돼.", "거의 다 왔어. 하나 더."],
+      high: ["손가락을 하나 내려 봐.", "조금 많아.", "하나 내리고 다시 봐."],
+      zero: ["영은 올라간 손가락이 없는 거야.", "영은 손가락을 모두 내려."],
+      solvedZero: "맞아. 올라간 손가락이 없어.",
+      made: (target) => `${numberLabel(target)}을 만들었어!`,
+      learn: "빛나는 손가락을 보고 눌러 봐.",
+      countStart: "올라간 손가락을 세고 맞는 숫자를 눌러.",
+      countSolved: (target) => `맞아, ${numberLabel(target)}이야!`,
+      countLow: "조금 더 많아. 다시 해 봐.",
+      countHigh: "조금 더 적어. 다시 해 봐.",
+      bravo: "잘했어!",
+      loadingSound: (word) => `소리 불러오는 중: ${word}`,
+      soundPlaying: (word) => `재생 중: ${word}`,
+      heard: (word) => `들었어: ${word}`,
+      soundBlocked: (name) => `소리가 막혔어: ${name}`,
+      audioError: (code) => `오디오 오류 ${code}. 다른 목소리를 써 볼게.`,
+      noSound: "이 브라우저에서는 소리를 쓸 수 없어.",
+      cannotSpeak: "여기서는 말할 수 없어.",
+      cannotPlay: "여기서는 소리를 재생할 수 없어. localhost 버전을 써 봐.",
+      boxingStart: "영이 되기 전에 맞는 숫자를 눌러.",
+      boxingPunch: (damage) => `좋았어! 상대가 ${damage}만큼 줄었어.`,
+      boxingHit: (damage) => `아야! 네가 ${damage}만큼 줄었어.`,
+      boxingWin: "이겼어!",
+      boxingLose: "졌어!"
+    },
+    counterLabel: "만든 숫자",
+    listen: (target) => `${target} 듣기`,
+    listenLabel: (target) => `숫자 ${target} 듣기`,
+    show: "보여줘",
+    next: "다음",
+    soundOn: "소리 끄기",
+    soundOff: "소리 켜기",
+    handsLabel: "누를 수 있는 두 손",
+    topBarLabel: "게임 조작",
+    actionBarLabel: "이번 차례 동작",
+    numberCardLabel: "만들 숫자",
+    answerPadLabel: "손가락 개수 고르기",
+    rewardsLabel: "받은 별",
+    boxingLabel: "복싱 게임",
+    playerLabel: "나",
+    opponentLabel: "상대",
+    left: "왼손",
+    right: "오른손",
+    fingers: {
+      thumb: "엄지",
+      pointer: "검지",
+      middle: "중지",
+      ring: "약지",
+      pinky: "새끼"
+    },
+    promptAudio: {
+      count: "손가락이 몇 개 올라갔을까?",
+      play: "숫자를 만들어 볼까?"
+    },
+    voiceLang: "ko-KR"
+  },
+  ja: {
+    htmlLang: "ja",
+    title: "指で数字",
+    brand: "指と数字",
+    langLabel: "言語",
+    modesLabel: "モード",
+    actionMake: "作って",
+    actionCount: "数えて",
+    actionBoxing: "パンチ",
+    modes: { play: "あそぶ", learn: "まなぶ", count: "かぞえる", boxing: "ボクシング" },
+    numberWords: ["ゼロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
+    roundTitle: {
+      play: (target) => `${numberLabel(target)}を作れるかな？`,
+      learn: (target) => `${numberLabel(target)}を覚えよう`,
+      count: () => "何本の指が上がっているかな？",
+      boxing: () => "正しい指をパンチ！"
+    },
+    hints: {
+      initial: "指をタップして上げてみよう。",
+      low: ["指をもう一本上げてみよう。", "もう一本でいいよ。", "もう少し。一本足してみよう。"],
+      high: ["指を一本下げてみよう。", "少し多いよ。", "一本下げて、もう一度見てみよう。"],
+      zero: ["ゼロは指が一本も上がっていないことだよ。", "ゼロは全部の指を下げるよ。"],
+      solvedZero: "そう。指は一本も上がっていないね。",
+      made: (target) => `${numberLabel(target)}ができた！`,
+      learn: "光っている指を見て、タップしてみよう。",
+      countStart: "上がっている指を数えて、正しい数字をタップしてね。",
+      countSolved: (target) => `そう、${numberLabel(target)}だよ！`,
+      countLow: "もう少し多いよ。もう一度。",
+      countHigh: "もう少し少ないよ。もう一度。",
+      bravo: "すごい！",
+      loadingSound: (word) => `音を読み込み中: ${word}`,
+      soundPlaying: (word) => `再生中: ${word}`,
+      heard: (word) => `聞こえたね: ${word}`,
+      soundBlocked: (name) => `音が止められたよ: ${name}`,
+      audioError: (code) => `音のエラー ${code}。別の声で試すね。`,
+      noSound: "このブラウザでは音が使えません。",
+      cannotSpeak: "ここでは話せません。",
+      cannotPlay: "ここでは音を再生できません。localhost版を試してね。",
+      boxingStart: "ゼロになる前に正しい数字をタップしてね。",
+      boxingPunch: (damage) => `やった！相手が ${damage} 減ったよ。`,
+      boxingHit: (damage) => `いたい！きみが ${damage} 減ったよ。`,
+      boxingWin: "勝ったよ！",
+      boxingLose: "負けちゃった！"
+    },
+    counterLabel: "できた数",
+    listen: (target) => `${target}を聞く`,
+    listenLabel: (target) => `数字 ${target} を聞く`,
+    show: "見せて",
+    next: "次へ",
+    soundOn: "音を消す",
+    soundOff: "音を出す",
+    handsLabel: "タップできる二つの手",
+    topBarLabel: "ゲームの操作",
+    actionBarLabel: "この番の操作",
+    numberCardLabel: "作る数字",
+    answerPadLabel: "指の数を選ぶ",
+    rewardsLabel: "もらった星",
+    boxingLabel: "ボクシングゲーム",
+    playerLabel: "きみ",
+    opponentLabel: "相手",
+    left: "左",
+    right: "右",
+    fingers: {
+      thumb: "親指",
+      pointer: "人差し指",
+      middle: "中指",
+      ring: "薬指",
+      pinky: "小指"
+    },
+    promptAudio: {
+      count: "何本の指が上がっているかな？",
+      play: "数字を作れるかな？"
+    },
+    voiceLang: "ja-JP"
   }
 };
 
@@ -272,7 +422,7 @@ function copy() {
 }
 
 function numberLabel(value) {
-  return state.lang === "yue" || state.lang === "zh"
+  return state.lang === "yue" || state.lang === "zh" || state.lang === "ko" || state.lang === "ja"
     ? copy().numberWords[value]
     : String(value);
 }

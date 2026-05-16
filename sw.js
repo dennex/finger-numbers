@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v31";
+const CACHE_NAME = "finger-numbers-v32";
 const ASSETS = [
   "./",
   "./index.html",
@@ -51,7 +51,37 @@ const ASSETS = [
   "./audio/zh-count-prompt.wav",
   "./audio/zh-play-prompt.wav",
   "./audio/zh-win.wav",
-  "./audio/zh-lose.wav"
+  "./audio/zh-lose.wav",
+  "./audio/ko-0.wav",
+  "./audio/ko-1.wav",
+  "./audio/ko-2.wav",
+  "./audio/ko-3.wav",
+  "./audio/ko-4.wav",
+  "./audio/ko-5.wav",
+  "./audio/ko-6.wav",
+  "./audio/ko-7.wav",
+  "./audio/ko-8.wav",
+  "./audio/ko-9.wav",
+  "./audio/ko-10.wav",
+  "./audio/ko-count-prompt.wav",
+  "./audio/ko-play-prompt.wav",
+  "./audio/ko-win.wav",
+  "./audio/ko-lose.wav",
+  "./audio/ja-0.wav",
+  "./audio/ja-1.wav",
+  "./audio/ja-2.wav",
+  "./audio/ja-3.wav",
+  "./audio/ja-4.wav",
+  "./audio/ja-5.wav",
+  "./audio/ja-6.wav",
+  "./audio/ja-7.wav",
+  "./audio/ja-8.wav",
+  "./audio/ja-9.wav",
+  "./audio/ja-10.wav",
+  "./audio/ja-count-prompt.wav",
+  "./audio/ja-play-prompt.wav",
+  "./audio/ja-win.wav",
+  "./audio/ja-lose.wav"
 ];
 
 self.addEventListener("install", (event) => {
