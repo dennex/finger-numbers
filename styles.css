@@ -50,6 +50,16 @@ button {
   gap: clamp(10px, 1.6vw, 18px);
 }
 
+.app-shell.hit-flash::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(239, 75, 75, 0.24);
+  animation: hit-flash 420ms ease forwards;
+  z-index: 850;
+}
+
 .top-bar,
 .prompt-panel,
 .action-bar {
@@ -88,7 +98,7 @@ h1 {
 
 .mode-switch {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   padding: 6px;
   background: rgba(255, 255, 255, 0.72);
@@ -213,6 +223,13 @@ h1 {
   display: none;
 }
 
+.boxing-mode .counter-row,
+.boxing-mode .prompt-actions,
+.boxing-mode .hands-stage,
+.boxing-mode .reward-tray {
+  display: none;
+}
+
 .answer-pad {
   display: grid;
   grid-template-columns: repeat(11, minmax(48px, 1fr));
@@ -244,6 +261,158 @@ h1 {
   color: #ffffff;
   background: var(--teal);
   box-shadow: 0 7px 0 var(--teal-dark);
+}
+
+.boxing-stage {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(220px, 1.2fr) minmax(150px, 1fr);
+  align-items: stretch;
+  gap: 12px;
+}
+
+.boxing-stage[hidden] {
+  display: none;
+}
+
+.fighter-card,
+.boxing-ring {
+  border: 3px solid rgba(23, 50, 51, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.fighter-card {
+  padding: 12px;
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.energy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ink);
+  font-weight: 1000;
+}
+
+.energy-track {
+  height: 24px;
+  overflow: hidden;
+  border: 3px solid var(--outline);
+  border-radius: 999px;
+  background: rgba(20, 61, 61, 0.12);
+}
+
+.energy-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transform-origin: left center;
+  transition: transform 260ms ease;
+}
+
+.opponent-card .energy-track span {
+  background: linear-gradient(90deg, var(--coral), var(--gold));
+}
+
+.boxing-ring {
+  min-height: 168px;
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  padding: 18px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #d6efe9 100%);
+}
+
+.timer-badge {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  color: #ffffff;
+  background: var(--blue);
+  border: 4px solid var(--outline);
+  border-radius: 50%;
+  box-shadow: 0 7px 0 rgba(20, 61, 61, 0.22);
+  font-size: 2rem;
+  font-weight: 1000;
+}
+
+.timer-badge.danger {
+  background: var(--coral);
+}
+
+.fighter {
+  position: relative;
+  width: 90px;
+  height: 118px;
+}
+
+.fighter-head,
+.fighter-body,
+.glove {
+  position: absolute;
+  display: block;
+  border: 4px solid var(--outline);
+}
+
+.fighter-head {
+  top: 0;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #ffd19f;
+}
+
+.fighter-body {
+  left: 50%;
+  bottom: 0;
+  width: 52px;
+  height: 76px;
+  transform: translateX(-50%);
+  border-radius: 28px 28px 16px 16px;
+  background: var(--teal);
+}
+
+.opponent-fighter .fighter-body {
+  background: var(--coral);
+}
+
+.glove {
+  top: 48px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50% 50% 45% 45%;
+  background: var(--gold);
+  z-index: 3;
+}
+
+.glove-left {
+  left: 0;
+}
+
+.glove-right {
+  right: 0;
+}
+
+.player-fighter.punching .glove-right,
+.opponent-fighter.punching .glove-left {
+  animation: punch-out 360ms ease;
+}
+
+.opponent-fighter.hit,
+.player-fighter.hit {
+  animation: fighter-hit 360ms ease;
 }
 
 .counter-label {
@@ -657,6 +826,41 @@ button:focus-visible {
   }
 }
 
+@keyframes hit-flash {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes punch-out {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  45% {
+    transform: translateX(34px) scale(1.08);
+  }
+}
+
+@keyframes fighter-hit {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  35% {
+    transform: translateX(10px) rotate(2deg);
+  }
+  70% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+}
+
 @media (max-width: 760px) {
   .app-shell {
     min-height: 100svh;
@@ -692,6 +896,10 @@ button:focus-visible {
 
   .answer-pad {
     grid-template-columns: repeat(6, minmax(44px, 1fr));
+  }
+
+  .boxing-stage {
+    grid-template-columns: 1fr;
   }
 
   .hand-wrap {
@@ -748,6 +956,10 @@ button:focus-visible {
   .answer-button {
     min-height: 46px;
     font-size: 1.25rem;
+  }
+
+  .boxing-ring {
+    min-height: 142px;
   }
 
   .hand-wrap {
@@ -837,6 +1049,21 @@ button:focus-visible {
   .answer-button {
     min-height: 44px;
     font-size: 1.15rem;
+  }
+
+  .mode-button {
+    padding-inline: 8px;
+    font-size: 0.92rem;
+  }
+
+  .fighter-card {
+    padding: 9px;
+  }
+
+  .timer-badge {
+    width: 58px;
+    height: 58px;
+    font-size: 1.55rem;
   }
 
   .hand-wrap {

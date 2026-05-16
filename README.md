@@ -15,8 +15,9 @@ Puis ouvre `http://localhost:4173`.
 - Nombres de 0 à 10
 - Langues français et cantonais
 - Deux mains animées avec des doigts à toucher
-- Modes Jouer, Apprendre et Compter
+- Modes Jouer, Apprendre, Compter et Boxe
 - Jeu de réponse où l'enfant compte les doigts levés et choisit un nombre de 0 à 10
+- Jeu de boxe avec minuterie, barres d'énergie, sons et effets visuels
 - Conseils doux et étoiles de récompense
 - Effets sonores optionnels
 - Fichiers audio locaux pour les nombres de 0 à 10 et les consignes

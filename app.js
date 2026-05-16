@@ -26,7 +26,15 @@ const state = {
   numberAudio: null,
   numberBuffers: {},
   promptAudio: null,
-  promptBuffers: {}
+  promptBuffers: {},
+  boxing: {
+    playerEnergy: 20,
+    opponentEnergy: 20,
+    timeLeft: 5,
+    timerId: null,
+    resolving: false,
+    gameOver: false
+  }
 };
 
 const translations = {
@@ -38,12 +46,14 @@ const translations = {
     modesLabel: "Mode",
     actionMake: "Fais",
     actionCount: "Compte",
-    modes: { play: "Jouer", learn: "Apprendre", count: "Compter" },
+    actionBoxing: "Frappe",
+    modes: { play: "Jouer", learn: "Apprendre", count: "Compter", boxing: "Boxe" },
     numberWords: ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"],
     roundTitle: {
       play: (target) => `Peux-tu faire ${target} ?`,
       learn: (target) => `Apprenons ${target}`,
-      count: () => "Combien de doigts sont levés ?"
+      count: () => "Combien de doigts sont levés ?",
+      boxing: (target) => `Frappe ${numberLabel(target)} !`
     },
     hints: {
       initial: "Touche les doigts pour les lever.",
@@ -65,7 +75,12 @@ const translations = {
       audioError: (code) => `Erreur audio ${code}. J'essaie une autre voix.`,
       noSound: "Le son n'est pas disponible dans ce navigateur.",
       cannotSpeak: "Je n'arrive pas à parler ici.",
-      cannotPlay: "Je n'arrive pas à jouer le son ici. Essaie la version localhost."
+      cannotPlay: "Je n'arrive pas à jouer le son ici. Essaie la version localhost.",
+      boxingStart: "Touche le bon nombre avant zéro.",
+      boxingPunch: (damage) => `Bien joué ! L'adversaire perd ${damage}.`,
+      boxingHit: (damage) => `Ouille ! Tu perds ${damage}.`,
+      boxingWin: "Victoire !",
+      boxingLose: "Encore une fois !"
     },
     counterLabel: "Tu as fait",
     listen: (target) => `Écoute ${target}`,
@@ -80,6 +95,9 @@ const translations = {
     numberCardLabel: "Nombre à faire",
     answerPadLabel: "Choisis le nombre de doigts",
     rewardsLabel: "Étoiles gagnées",
+    boxingLabel: "Jeu de boxe",
+    playerLabel: "Toi",
+    opponentLabel: "Adversaire",
     left: "Gauche",
     right: "Droite",
     fingers: {
@@ -103,12 +121,14 @@ const translations = {
     modesLabel: "模式",
     actionMake: "做",
     actionCount: "數",
-    modes: { play: "玩", learn: "學", count: "數" },
+    actionBoxing: "打",
+    modes: { play: "玩", learn: "學", count: "數", boxing: "拳擊" },
     numberWords: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
     roundTitle: {
       play: (target) => `你可唔可以做 ${numberLabel(target)}？`,
       learn: (target) => `一齊學 ${numberLabel(target)}`,
-      count: () => "有幾多隻手指舉起咗？"
+      count: () => "有幾多隻手指舉起咗？",
+      boxing: (target) => `打 ${numberLabel(target)}！`
     },
     hints: {
       initial: "撳手指舉起佢哋。",
@@ -130,7 +150,12 @@ const translations = {
       audioError: (code) => `聲音錯誤 ${code}。試另一把聲。`,
       noSound: "呢個瀏覽器冇聲音。",
       cannotSpeak: "呢度講唔到聲。",
-      cannotPlay: "呢度播唔到聲。試吓 localhost 版本。"
+      cannotPlay: "呢度播唔到聲。試吓 localhost 版本。",
+      boxingStart: "零之前撳啱嘅數字。",
+      boxingPunch: (damage) => `好嘢！對手扣 ${damage}。`,
+      boxingHit: (damage) => `哎呀！你扣 ${damage}。`,
+      boxingWin: "贏咗！",
+      boxingLose: "再嚟一次！"
     },
     counterLabel: "你做咗",
     listen: (target) => `聽 ${target}`,
@@ -145,6 +170,9 @@ const translations = {
     numberCardLabel: "要做嘅數字",
     answerPadLabel: "揀手指數量",
     rewardsLabel: "得到嘅星星",
+    boxingLabel: "拳擊遊戲",
+    playerLabel: "你",
+    opponentLabel: "對手",
     left: "左",
     right: "右",
     fingers: {
@@ -185,6 +213,16 @@ const els = {
   languageButtons: [...document.querySelectorAll(".language-button")],
   answerPad: document.querySelector("#answerPad"),
   answerButtons: [...document.querySelectorAll(".answer-button")],
+  boxingStage: document.querySelector("#boxingStage"),
+  boxingTimer: document.querySelector("#boxingTimer"),
+  playerEnergyFill: document.querySelector("#playerEnergyFill"),
+  opponentEnergyFill: document.querySelector("#opponentEnergyFill"),
+  playerEnergyText: document.querySelector("#playerEnergyText"),
+  opponentEnergyText: document.querySelector("#opponentEnergyText"),
+  playerLabel: document.querySelector("#playerLabel"),
+  opponentLabel: document.querySelector("#opponentLabel"),
+  playerFighter: document.querySelector(".player-fighter"),
+  opponentFighter: document.querySelector(".opponent-fighter"),
   soundButton: document.querySelector("#soundButton"),
   speakButton: document.querySelector("#speakButton"),
   showButton: document.querySelector("#showButton"),
@@ -216,11 +254,14 @@ function updateStaticCopy() {
   els.languageSwitch.setAttribute("aria-label", text.langLabel);
   els.numberCard.setAttribute("aria-label", text.numberCardLabel);
   els.answerPad.setAttribute("aria-label", text.answerPadLabel);
+  els.boxingStage.setAttribute("aria-label", text.boxingLabel);
   els.handsStage.setAttribute("aria-label", text.handsLabel);
   els.rewardTray.setAttribute("aria-label", text.rewardsLabel);
   els.counterLabel.textContent = text.counterLabel;
   els.showButton.textContent = text.show;
   els.nextButton.textContent = text.next;
+  els.playerLabel.textContent = text.playerLabel;
+  els.opponentLabel.textContent = text.opponentLabel;
   els.soundButton.setAttribute("aria-label", state.soundOn ? text.soundOn : text.soundOff);
   els.handLabels[0].textContent = text.left;
   els.handLabels[1].textContent = text.right;
@@ -246,19 +287,25 @@ function updateStaticCopy() {
 }
 
 function setTarget(target) {
+  stopBoxingTimer();
   state.target = target;
   state.raised.clear();
   state.selectedAnswer = null;
   state.roundSolved = false;
   els.app.classList.toggle("guided", state.mode === "learn");
   els.app.classList.toggle("count-mode", state.mode === "count");
+  els.app.classList.toggle("boxing-mode", state.mode === "boxing");
   if (state.mode === "count") {
     state.raised = new Set(fingerOrder.slice(0, state.target));
   }
   updateFingerDisplay();
   updateCopyPattern();
   updateAnswerPad();
+  updateBoxingDisplay();
   updateStatus();
+  if (state.mode === "boxing" && !state.boxing.gameOver) {
+    startBoxingTimer();
+  }
 }
 
 function nextTarget() {
@@ -273,12 +320,22 @@ function updateStatus() {
   const text = copy();
   const count = state.raised.size;
   const isCounting = state.mode === "count";
-  els.actionVerb.textContent = isCounting ? text.actionCount : text.actionMake;
+  const isBoxing = state.mode === "boxing";
+  els.actionVerb.textContent = isBoxing ? text.actionBoxing : (isCounting ? text.actionCount : text.actionMake);
   els.targetNumber.textContent = isCounting ? "?" : numberLabel(state.target);
   els.bigNumber.textContent = isCounting ? "?" : numberLabel(state.target);
   els.currentCount.textContent = count;
   els.speakButton.textContent = text.listen(numberLabel(state.target));
   els.speakButton.setAttribute("aria-label", text.listenLabel(numberLabel(state.target)));
+  if (isBoxing) {
+    els.roundTitle.textContent = text.roundTitle.boxing(state.target);
+    if (state.boxing.gameOver) {
+      els.hintText.textContent = state.boxing.opponentEnergy <= 0 ? text.hints.boxingWin : text.hints.boxingLose;
+    } else {
+      els.hintText.textContent = text.hints.boxingStart;
+    }
+    return;
+  }
   if (isCounting) {
     els.roundTitle.textContent = text.roundTitle.count();
     if (state.roundSolved) {
@@ -342,7 +399,8 @@ function updateCopyPattern() {
 
 function updateAnswerPad() {
   const isCounting = state.mode === "count";
-  els.answerPad.hidden = !isCounting;
+  const isBoxing = state.mode === "boxing";
+  els.answerPad.hidden = !(isCounting || isBoxing);
   els.answerButtons.forEach((button) => {
     const answer = Number(button.dataset.answer);
     const isSelected = state.selectedAnswer === answer;
@@ -352,8 +410,9 @@ function updateAnswerPad() {
     button.setAttribute("aria-pressed", String(isSelected));
   });
   els.showButton.hidden = isCounting;
-  els.speakButton.hidden = isCounting;
-  els.nextButton.hidden = isCounting;
+  els.speakButton.hidden = isCounting || isBoxing;
+  els.nextButton.hidden = isCounting || isBoxing;
+  els.showButton.hidden = isCounting || isBoxing;
 }
 
 function setRaisedToTarget() {
@@ -381,6 +440,10 @@ function toggleFinger(finger) {
 }
 
 function chooseAnswer(answer) {
+  if (state.mode === "boxing") {
+    chooseBoxingAnswer(answer);
+    return;
+  }
   if (state.mode !== "count" || state.roundSolved) {
     return;
   }
@@ -405,6 +468,135 @@ function chooseAnswer(answer) {
   playTone("tap");
 }
 
+function resetBoxingGame() {
+  stopBoxingTimer();
+  state.boxing.playerEnergy = 20;
+  state.boxing.opponentEnergy = 20;
+  state.boxing.timeLeft = 5;
+  state.boxing.resolving = false;
+  state.boxing.gameOver = false;
+}
+
+function startBoxingTimer() {
+  stopBoxingTimer();
+  state.boxing.timeLeft = 5;
+  state.boxing.resolving = false;
+  updateBoxingDisplay();
+  state.boxing.timerId = window.setInterval(() => {
+    state.boxing.timeLeft -= 1;
+    updateBoxingDisplay();
+    if (state.boxing.timeLeft <= -5) {
+      resolveBoxingRound(false);
+    }
+  }, 1000);
+}
+
+function stopBoxingTimer() {
+  if (state.boxing.timerId) {
+    window.clearInterval(state.boxing.timerId);
+    state.boxing.timerId = null;
+  }
+}
+
+function chooseBoxingAnswer(answer) {
+  if (state.boxing.resolving || state.boxing.gameOver) {
+    return;
+  }
+  state.selectedAnswer = answer;
+  updateAnswerPad();
+  if (answer !== state.target) {
+    playTone("tap");
+    return;
+  }
+  resolveBoxingRound(true);
+}
+
+function resolveBoxingRound(wasAnswered) {
+  if (state.boxing.resolving || state.boxing.gameOver) {
+    return;
+  }
+  state.boxing.resolving = true;
+  stopBoxingTimer();
+  const text = copy();
+  const time = state.boxing.timeLeft;
+  if (wasAnswered && time >= 0) {
+    const damage = time;
+    state.boxing.opponentEnergy = Math.max(0, state.boxing.opponentEnergy - damage);
+    els.hintText.textContent = text.hints.boxingPunch(damage);
+    animatePunch("player");
+    playPunchSound("player");
+    launchSprinkles();
+  } else {
+    const damage = Math.max(1, Math.abs(Math.min(time, -1)));
+    state.boxing.playerEnergy = Math.max(0, state.boxing.playerEnergy - damage);
+    els.hintText.textContent = text.hints.boxingHit(damage);
+    animatePunch("opponent");
+    playPunchSound("opponent");
+    flashHit();
+  }
+  updateBoxingDisplay();
+
+  if (state.boxing.opponentEnergy <= 0 || state.boxing.playerEnergy <= 0) {
+    state.boxing.gameOver = true;
+    window.setTimeout(() => {
+      updateStatus();
+      window.setTimeout(() => {
+        if (state.mode === "boxing") {
+          resetBoxingGame();
+          nextTarget();
+        }
+      }, 1400);
+    }, 500);
+    return;
+  }
+
+  window.setTimeout(() => {
+    if (state.mode === "boxing") {
+      nextTarget();
+    }
+  }, 900);
+}
+
+function updateBoxingDisplay() {
+  if (!els.boxingStage) {
+    return;
+  }
+  const isBoxing = state.mode === "boxing";
+  els.boxingStage.hidden = !isBoxing;
+  if (!isBoxing) {
+    return;
+  }
+  const playerScale = state.boxing.playerEnergy / 20;
+  const opponentScale = state.boxing.opponentEnergy / 20;
+  els.playerEnergyText.textContent = state.boxing.playerEnergy;
+  els.opponentEnergyText.textContent = state.boxing.opponentEnergy;
+  els.playerEnergyFill.style.transform = `scaleX(${playerScale})`;
+  els.opponentEnergyFill.style.transform = `scaleX(${opponentScale})`;
+  els.boxingTimer.textContent = state.boxing.timeLeft;
+  els.boxingTimer.classList.toggle("danger", state.boxing.timeLeft < 0);
+}
+
+function animatePunch(who) {
+  const attacker = who === "player" ? els.playerFighter : els.opponentFighter;
+  const target = who === "player" ? els.opponentFighter : els.playerFighter;
+  attacker.classList.remove("punching");
+  target.classList.remove("hit");
+  window.requestAnimationFrame(() => {
+    attacker.classList.add("punching");
+    target.classList.add("hit");
+  });
+  window.setTimeout(() => {
+    attacker.classList.remove("punching");
+    target.classList.remove("hit");
+  }, 420);
+}
+
+function flashHit() {
+  els.app.classList.remove("hit-flash");
+  window.requestAnimationFrame(() => els.app.classList.add("hit-flash"));
+  window.setTimeout(() => els.app.classList.remove("hit-flash"), 460);
+}
+
 function celebrate() {
   const starCount = Math.min(els.stars.length, state.solvedRounds + 1);
   els.stars.forEach((star, index) => star.classList.toggle("earned", index < starCount));
@@ -418,7 +610,13 @@ function celebrate() {
 
 function switchMode(mode) {
   const previousMode = state.mode;
+  if (previousMode === "boxing" && mode !== "boxing") {
+    stopBoxingTimer();
+  }
   state.mode = mode;
+  if (mode === "boxing" && previousMode !== "boxing") {
+    resetBoxingGame();
+  }
   els.modeButtons.forEach((button) => {
     const active = button.dataset.mode === mode;
     button.classList.toggle("active", active);
@@ -506,6 +704,35 @@ async function playFestiveSound() {
     oscillator.start(start);
     oscillator.stop(start + 0.2);
   });
+}
+
+async function playPunchSound(kind) {
+  const audioContext = await unlockAudio();
+  if (!audioContext) {
+    return;
+  }
+  const now = audioContext.currentTime;
+  const thump = audioContext.createOscillator();
+  const snap = audioContext.createOscillator();
+  const thumpGain = audioContext.createGain();
+  const snapGain = audioContext.createGain();
+  thump.type = "triangle";
+  snap.type = "square";
+  thump.frequency.setValueAtTime(kind === "player" ? 120 : 82, now);
+  thump.frequency.exponentialRampToValueAtTime(45, now + 0.16);
+  snap.frequency.setValueAtTime(kind === "player" ? 360 : 180, now);
+  thumpGain.gain.setValueAtTime(0.0001, now);
+  thumpGain.gain.exponentialRampToValueAtTime(kind === "player" ? 0.42 : 0.32, now + 0.012);
+  thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+  snapGain.gain.setValueAtTime(0.0001, now);
+  snapGain.gain.exponentialRampToValueAtTime(kind === "player" ? 0.16 : 0.1, now + 0.01);
+  snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+  thump.connect(thumpGain).connect(audioContext.destination);
+  snap.connect(snapGain).connect(audioContext.destination);
+  thump.start(now);
+  snap.start(now);
+  thump.stop(now + 0.22);
+  snap.stop(now + 0.08);
 }
 
 function launchSprinkles() {
