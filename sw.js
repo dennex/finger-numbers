@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v32";
+const CACHE_NAME = "finger-numbers-v33";
 const ASSETS = [
   "./",
   "./index.html",
@@ -20,6 +20,7 @@ const ASSETS = [
   "./audio/10.wav",
   "./audio/count-prompt.wav",
   "./audio/play-prompt.wav",
+  "./audio/boxing-prompt.wav",
   "./audio/win.wav",
   "./audio/lose.wav",
   "./audio/yue-0.wav",
@@ -35,6 +36,7 @@ const ASSETS = [
   "./audio/yue-10.wav",
   "./audio/yue-count-prompt.wav",
   "./audio/yue-play-prompt.wav",
+  "./audio/yue-boxing-prompt.wav",
   "./audio/yue-win.wav",
   "./audio/yue-lose.wav",
   "./audio/zh-0.wav",
@@ -50,6 +52,7 @@ const ASSETS = [
   "./audio/zh-10.wav",
   "./audio/zh-count-prompt.wav",
   "./audio/zh-play-prompt.wav",
+  "./audio/zh-boxing-prompt.wav",
   "./audio/zh-win.wav",
   "./audio/zh-lose.wav",
   "./audio/ko-0.wav",
@@ -65,6 +68,7 @@ const ASSETS = [
   "./audio/ko-10.wav",
   "./audio/ko-count-prompt.wav",
   "./audio/ko-play-prompt.wav",
+  "./audio/ko-boxing-prompt.wav",
   "./audio/ko-win.wav",
   "./audio/ko-lose.wav",
   "./audio/ja-0.wav",
@@ -80,6 +84,7 @@ const ASSETS = [
   "./audio/ja-10.wav",
   "./audio/ja-count-prompt.wav",
   "./audio/ja-play-prompt.wav",
+  "./audio/ja-boxing-prompt.wav",
   "./audio/ja-win.wav",
   "./audio/ja-lose.wav"
 ];

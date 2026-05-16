@@ -111,7 +111,8 @@ const translations = {
     },
     promptAudio: {
       count: "Combien de doigts sont levés ?",
-      play: "Peux-tu faire le chiffre ?"
+      play: "Peux-tu faire le chiffre ?",
+      boxing: "Frappe le bon nombre avant zéro."
     },
     voiceLang: "fr-FR"
   },
@@ -186,7 +187,8 @@ const translations = {
     },
     promptAudio: {
       count: "有幾多隻手指舉起咗？",
-      play: "你可唔可以做呢個數字？"
+      play: "你可唔可以做呢個數字？",
+      boxing: "零之前撳啱嘅數字。"
     },
     voiceLang: "zh-HK"
   },
@@ -261,7 +263,8 @@ const translations = {
     },
     promptAudio: {
       count: "有几根手指举起来？",
-      play: "你能做出这个数字吗？"
+      play: "你能做出这个数字吗？",
+      boxing: "在零之前点正确的数字。"
     },
     voiceLang: "zh-CN"
   },
@@ -336,7 +339,8 @@ const translations = {
     },
     promptAudio: {
       count: "손가락이 몇 개 올라갔을까?",
-      play: "숫자를 만들어 볼까?"
+      play: "숫자를 만들어 볼까?",
+      boxing: "영이 되기 전에 맞는 숫자를 눌러."
     },
     voiceLang: "ko-KR"
   },
@@ -411,7 +415,8 @@ const translations = {
     },
     promptAudio: {
       count: "何本の指が上がっているかな？",
-      play: "数字を作れるかな？"
+      play: "数字を作れるかな？",
+      boxing: "ゼロになる前に正しい数字をタップしてね。"
     },
     voiceLang: "ja-JP"
   }
