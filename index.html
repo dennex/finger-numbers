@@ -1,171 +1,100 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#2f766f">
-    <title>Les nombres avec les doigts</title>
-    <link rel="manifest" href="manifest.webmanifest?v=34">
-    <link rel="stylesheet" href="styles.css?v=34">
+    <meta name="theme-color" content="#157a6e">
+    <title>Treasure Rescue Subtraction</title>
+    <link rel="manifest" href="manifest.webmanifest?v=40">
+    <link rel="stylesheet" href="styles.css?v=40">
   </head>
   <body>
-    <main class="app-shell" aria-live="polite">
-      <section class="top-bar" aria-label="Commandes du jeu">
-        <div>
-          <p class="eyebrow">Les doigts et les nombres</p>
-          <h1><span id="actionVerb">Fais</span> <span id="targetNumber">3</span></h1>
+    <main class="game-shell">
+      <section class="top-bar" aria-label="Game controls">
+        <div class="brand-block">
+          <p class="eyebrow">Subtraction Adventure</p>
+          <h1>Treasure Rescue</h1>
         </div>
-        <div class="top-controls">
-          <div class="mode-switch" role="group" aria-label="Mode">
-            <button class="mode-button active" type="button" data-mode="play">Jouer</button>
-            <button class="mode-button" type="button" data-mode="learn">Apprendre</button>
-            <button class="mode-button" type="button" data-mode="count">Compter</button>
-            <button class="mode-button" type="button" data-mode="boxing">Boxe</button>
+        <div class="score-board" aria-label="Score">
+          <div>
+            <span>Gems</span>
+            <strong id="gemCount">0</strong>
           </div>
-          <div class="language-switch" role="group" aria-label="Langue">
-            <button class="language-button active" type="button" data-lang="fr" aria-pressed="true" aria-label="Français">🇫🇷</button>
-            <button class="language-button" type="button" data-lang="yue" aria-pressed="false" aria-label="Cantonais">🇭🇰</button>
-            <button class="language-button" type="button" data-lang="zh" aria-pressed="false" aria-label="Mandarin">🇨🇳</button>
-            <button class="language-button" type="button" data-lang="ko" aria-pressed="false" aria-label="Korean">🇰🇷</button>
-            <button class="language-button" type="button" data-lang="ja" aria-pressed="false" aria-label="Japanese">🇯🇵</button>
-            <button class="language-button" type="button" data-lang="vi" aria-pressed="false" aria-label="Vietnamese">🇻🇳</button>
+          <div>
+            <span>Rescued</span>
+            <strong id="rescuedCount">0</strong>
           </div>
         </div>
       </section>
 
-      <section class="prompt-panel">
-        <div class="number-card" aria-label="Nombre à faire">
-          <span id="bigNumber">3</span>
+      <section class="map-band" aria-label="Treasure map progress">
+        <div class="explorer" aria-hidden="true">
+          <span class="hat"></span>
+          <span class="face"></span>
+          <span class="body"></span>
         </div>
-        <div class="status-stack">
-          <p id="roundTitle">Peux-tu faire 3 ?</p>
-          <p id="hintText">Touche les doigts pour les lever.</p>
-          <div class="prompt-actions">
-            <div class="counter-row">
-              <span class="counter-label">Tu as fait</span>
-              <strong id="currentCount">0</strong>
+        <div class="path" id="treasurePath" aria-hidden="true"></div>
+        <div class="chest" id="treasureChest" aria-hidden="true">
+          <span></span>
+        </div>
+      </section>
+
+      <section class="controls-panel" aria-label="Practice choices">
+        <div class="level-picker" role="group" aria-label="Number size">
+          <button class="level-button active" type="button" data-digits="2">2 digits</button>
+          <button class="level-button" type="button" data-digits="3">3 digits</button>
+          <button class="level-button" type="button" data-digits="4">4 digits</button>
+          <button class="level-button" type="button" data-digits="5">5 digits</button>
+          <button class="level-button" type="button" data-digits="6">6 digits</button>
+          <button class="level-button" type="button" data-digits="mix">Mix</button>
+        </div>
+        <label class="toggle-row">
+          <input id="regroupToggle" type="checkbox" checked>
+          <span>Include trading</span>
+        </label>
+      </section>
+
+      <section class="play-area">
+        <section class="problem-card" aria-label="Subtraction problem">
+          <div class="problem-head">
+            <div>
+              <p id="roundLabel">Gate 1</p>
+              <h2 id="problemTitle">Unlock the treasure gate</h2>
             </div>
-            <button class="speak-button" type="button" id="speakButton">Écoute 3</button>
+            <button class="icon-button" id="newProblemButton" type="button" aria-label="New problem" title="New problem">New</button>
           </div>
-        </div>
+
+          <div class="subtraction-board" id="subtractionBoard" aria-label="Vertical subtraction"></div>
+
+          <div class="answer-actions">
+            <button class="secondary-button" id="hintButton" type="button">Hint</button>
+            <button class="secondary-button" id="clearButton" type="button">Clear</button>
+            <button class="primary-button" id="checkButton" type="button">Open Gate</button>
+          </div>
+          <p class="feedback" id="feedbackText" aria-live="polite">Type the answer under the line.</p>
+        </section>
+
+        <aside class="helper-panel" aria-label="Subtraction helper">
+          <div class="buddy">
+            <span class="buddy-face" aria-hidden="true"></span>
+            <div>
+              <p class="eyebrow">Helper</p>
+              <h2 id="helperTitle">Start with the ones</h2>
+            </div>
+          </div>
+          <div class="place-lab" id="placeLab" aria-label="Place value trading"></div>
+          <div class="reward-case" aria-label="Unlocked rewards">
+            <span class="reward unlocked">Map</span>
+            <span class="reward">Hat</span>
+            <span class="reward">Key</span>
+            <span class="reward">Boat</span>
+            <span class="reward">Crown</span>
+          </div>
+        </aside>
       </section>
-
-      <section class="answer-pad" id="answerPad" aria-label="Choisis le nombre de doigts" hidden>
-        <button class="answer-button" type="button" data-answer="0">0</button>
-        <button class="answer-button" type="button" data-answer="1">1</button>
-        <button class="answer-button" type="button" data-answer="2">2</button>
-        <button class="answer-button" type="button" data-answer="3">3</button>
-        <button class="answer-button" type="button" data-answer="4">4</button>
-        <button class="answer-button" type="button" data-answer="5">5</button>
-        <button class="answer-button" type="button" data-answer="6">6</button>
-        <button class="answer-button" type="button" data-answer="7">7</button>
-        <button class="answer-button" type="button" data-answer="8">8</button>
-        <button class="answer-button" type="button" data-answer="9">9</button>
-        <button class="answer-button" type="button" data-answer="10">10</button>
-      </section>
-
-      <section class="boxing-stage" id="boxingStage" aria-label="Jeu de boxe" hidden>
-        <div class="fighter-card player-card">
-          <div class="energy-head">
-            <span id="playerLabel">Toi</span>
-            <strong id="playerEnergyText">20</strong>
-          </div>
-          <div class="energy-track">
-            <span id="playerEnergyFill"></span>
-          </div>
-        </div>
-        <div class="boxing-ring" aria-hidden="true">
-          <div class="fighter player-fighter">
-            <span class="glove glove-left"></span>
-            <span class="fighter-head"></span>
-            <span class="fighter-body"></span>
-            <span class="glove glove-right"></span>
-          </div>
-          <div class="timer-badge" id="boxingTimer">5</div>
-          <div class="fighter opponent-fighter">
-            <span class="glove glove-left"></span>
-            <span class="fighter-head"></span>
-            <span class="fighter-body"></span>
-            <span class="glove glove-right"></span>
-          </div>
-        </div>
-        <div class="fighter-card opponent-card">
-          <div class="energy-head">
-            <span id="opponentLabel">Adversaire</span>
-            <strong id="opponentEnergyText">20</strong>
-          </div>
-          <div class="energy-track">
-            <span id="opponentEnergyFill"></span>
-          </div>
-        </div>
-      </section>
-
-      <section class="hands-stage" aria-label="Deux mains avec des doigts à toucher">
-        <div class="hand-wrap" data-hand="left">
-          <p class="hand-label">Gauche</p>
-          <div class="hand left-hand" aria-label="Main gauche">
-            <button class="finger thumb" type="button" data-finger="left-thumb" aria-pressed="false" aria-label="Pouce gauche">
-              <span>Pouce</span>
-            </button>
-            <button class="finger pointer" type="button" data-finger="left-pointer" aria-pressed="false" aria-label="Index gauche">
-              <span>Index</span>
-            </button>
-            <button class="finger middle" type="button" data-finger="left-middle" aria-pressed="false" aria-label="Majeur gauche">
-              <span>Majeur</span>
-            </button>
-            <button class="finger ring" type="button" data-finger="left-ring" aria-pressed="false" aria-label="Annulaire gauche">
-              <span>Annulaire</span>
-            </button>
-            <button class="finger pinky" type="button" data-finger="left-pinky" aria-pressed="false" aria-label="Auriculaire gauche">
-              <span>Auriculaire</span>
-            </button>
-            <div class="palm" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <div class="hand-wrap" data-hand="right">
-          <p class="hand-label">Droite</p>
-          <div class="hand right-hand" aria-label="Main droite">
-            <button class="finger thumb" type="button" data-finger="right-thumb" aria-pressed="false" aria-label="Pouce droit">
-              <span>Pouce</span>
-            </button>
-            <button class="finger pointer" type="button" data-finger="right-pointer" aria-pressed="false" aria-label="Index droit">
-              <span>Index</span>
-            </button>
-            <button class="finger middle" type="button" data-finger="right-middle" aria-pressed="false" aria-label="Majeur droit">
-              <span>Majeur</span>
-            </button>
-            <button class="finger ring" type="button" data-finger="right-ring" aria-pressed="false" aria-label="Annulaire droit">
-              <span>Annulaire</span>
-            </button>
-            <button class="finger pinky" type="button" data-finger="right-pinky" aria-pressed="false" aria-label="Auriculaire droit">
-              <span>Auriculaire</span>
-            </button>
-            <div class="palm" aria-hidden="true"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="action-bar" aria-label="Actions du tour">
-        <button class="icon-button" type="button" id="soundButton" aria-pressed="false" aria-label="Activer le son">
-          <span aria-hidden="true">♪</span>
-        </button>
-        <button class="secondary-button" type="button" id="showButton">Montre-moi</button>
-        <button class="primary-button" type="button" id="nextButton">Suivant</button>
-      </section>
-
-      <div class="reward-tray" aria-label="Étoiles gagnées">
-        <span class="star earned" aria-hidden="true"></span>
-        <span class="star" aria-hidden="true"></span>
-        <span class="star" aria-hidden="true"></span>
-        <span class="star" aria-hidden="true"></span>
-        <span class="star" aria-hidden="true"></span>
-      </div>
     </main>
 
-    <div class="big-cursor" aria-hidden="true"></div>
-    <div class="sprinkle-field" id="sprinkleField" aria-hidden="true"></div>
-    <script src="audio-data.js?v=34"></script>
-    <script src="app.js?v=34" defer></script>
+    <div class="sparkle-field" id="sparkleField" aria-hidden="true"></div>
+    <script src="app.js?v=40" defer></script>
   </body>
 </html>

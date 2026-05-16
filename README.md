@@ -1,6 +1,6 @@
-# Les nombres avec les doigts
+# Treasure Rescue Subtraction
 
-Un jeu tactile pour aider les enfants à associer les nombres aux doigts.
+A playful web game for practicing multi-digit subtraction up to 6 digits.
 
 ## Run
 
@@ -8,17 +8,14 @@ Un jeu tactile pour aider les enfants à associer les nombres aux doigts.
 python3 -m http.server 4173
 ```
 
-Puis ouvre `http://localhost:4173`.
+Then open `http://localhost:4173`.
 
-## Ce qui est inclus
+## Included
 
-- Nombres de 0 à 10
-- Langues français et cantonais
-- Deux mains animées avec des doigts à toucher
-- Modes Jouer, Apprendre, Compter et Boxe
-- Jeu de réponse où l'enfant compte les doigts levés et choisit un nombre de 0 à 10
-- Jeu de boxe avec minuterie, barres d'énergie, sons et effets visuels
-- Conseils doux et étoiles de récompense
-- Effets sonores optionnels
-- Fichiers audio locaux pour les nombres de 0 à 10 et les consignes
-- Manifeste PWA de base et cache hors ligne
+- Subtraction practice from 2 to 6 digits
+- Mixed mode for varied practice
+- Optional regrouping/trading problems
+- Vertical subtraction layout with one input box per digit
+- Gentle hints for place-value trading
+- Treasure map progress, gems, rewards, and celebration effects
+- Static PWA files suitable for GitHub Pages
