@@ -13,7 +13,7 @@ Puis ouvre `http://localhost:4173`.
 ## Ce qui est inclus
 
 - Nombres de 0 à 10
-- Langues français, anglais et cantonais
+- Langues français et cantonais
 - Deux mains animées avec des doigts à toucher
 - Modes Jouer, Apprendre et Compter
 - Jeu de réponse où l'enfant compte les doigts levés et choisit un nombre de 0 à 10

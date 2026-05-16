@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v24";
+const CACHE_NAME = "finger-numbers-v25";
 const ASSETS = [
   "./",
   "./index.html",
@@ -20,19 +20,6 @@ const ASSETS = [
   "./audio/10.wav",
   "./audio/count-prompt.wav",
   "./audio/play-prompt.wav",
-  "./audio/en-0.wav",
-  "./audio/en-1.wav",
-  "./audio/en-2.wav",
-  "./audio/en-3.wav",
-  "./audio/en-4.wav",
-  "./audio/en-5.wav",
-  "./audio/en-6.wav",
-  "./audio/en-7.wav",
-  "./audio/en-8.wav",
-  "./audio/en-9.wav",
-  "./audio/en-10.wav",
-  "./audio/en-count-prompt.wav",
-  "./audio/en-play-prompt.wav",
   "./audio/yue-0.wav",
   "./audio/yue-1.wav",
   "./audio/yue-2.wav",

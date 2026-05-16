@@ -51,10 +51,10 @@ const translations = {
       high: ["Essaie de baisser un doigt.", "Il y en a un peu trop.", "Enlève-en un et regarde encore."],
       zero: ["Zéro, c'est aucun doigt levé.", "Pour zéro, garde tous les doigts baissés."],
       solvedZero: "Oui. Aucun doigt n'est levé.",
-      made: (target) => `Tu as fait ${target} !`,
+      made: (target) => `Tu as fait ${numberLabel(target)} !`,
       learn: "Regarde les doigts qui brillent, puis touche-les.",
       countStart: "Compte les doigts levés, puis touche le bon nombre.",
-      countSolved: (target) => `Oui, c'est ${target} !`,
+      countSolved: (target) => `Oui, c'est ${numberLabel(target)} !`,
       countLow: "Il y en a un peu plus. Essaie encore.",
       countHigh: "Il y en a un peu moins. Essaie encore.",
       bravo: "Bravo !",
@@ -95,71 +95,6 @@ const translations = {
     },
     voiceLang: "fr-FR"
   },
-  en: {
-    htmlLang: "en",
-    title: "Finger Numbers",
-    brand: "Fingers and numbers",
-    langLabel: "Language",
-    modesLabel: "Mode",
-    actionMake: "Make",
-    actionCount: "Count",
-    modes: { play: "Play", learn: "Learn", count: "Count" },
-    numberWords: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
-    roundTitle: {
-      play: (target) => `Can you make ${target}?`,
-      learn: (target) => `Let's learn ${target}`,
-      count: () => "How many fingers are raised?"
-    },
-    hints: {
-      initial: "Tap fingers to raise them.",
-      low: ["One more finger can help.", "Try raising another finger.", "Almost there. Add one more."],
-      high: ["Try lowering one finger.", "That's a little too many.", "Take one away and look again."],
-      zero: ["Zero means no fingers raised.", "For zero, keep every finger down."],
-      solvedZero: "Yes. No fingers are raised.",
-      made: (target) => `You made ${target}!`,
-      learn: "Look for the glowing fingers, then tap them.",
-      countStart: "Count the raised fingers, then tap the right number.",
-      countSolved: (target) => `Yes, that's ${target}!`,
-      countLow: "There are a little more. Try again.",
-      countHigh: "There are a little fewer. Try again.",
-      bravo: "Great job!",
-      loadingSound: (word) => `Loading sound: ${word}`,
-      soundPlaying: (word) => `Playing: ${word}`,
-      heard: (word) => `You heard: ${word}`,
-      soundBlocked: (name) => `Sound blocked: ${name}`,
-      audioError: (code) => `Audio error ${code}. Trying another voice.`,
-      noSound: "Sound is not available in this browser.",
-      cannotSpeak: "I cannot speak here.",
-      cannotPlay: "I cannot play the sound here. Try the localhost version."
-    },
-    counterLabel: "You made",
-    listen: (target) => `Hear ${target}`,
-    listenLabel: (target) => `Hear the number ${target}`,
-    show: "Show me",
-    next: "Next",
-    soundOn: "Turn sound off",
-    soundOff: "Turn sound on",
-    handsLabel: "Two hands with fingers to touch",
-    topBarLabel: "Game controls",
-    actionBarLabel: "Round actions",
-    numberCardLabel: "Number to make",
-    answerPadLabel: "Choose the number of fingers",
-    rewardsLabel: "Stars earned",
-    left: "Left",
-    right: "Right",
-    fingers: {
-      thumb: "Thumb",
-      pointer: "Index",
-      middle: "Middle",
-      ring: "Ring",
-      pinky: "Pinky"
-    },
-    promptAudio: {
-      count: "How many fingers are raised?",
-      play: "Can you make the number?"
-    },
-    voiceLang: "en-US"
-  },
   yue: {
     htmlLang: "zh-HK",
     title: "手指數字",
@@ -171,8 +106,8 @@ const translations = {
     modes: { play: "玩", learn: "學", count: "數" },
     numberWords: ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
     roundTitle: {
-      play: (target) => `你可唔可以做 ${target}？`,
-      learn: (target) => `一齊學 ${target}`,
+      play: (target) => `你可唔可以做 ${numberLabel(target)}？`,
+      learn: (target) => `一齊學 ${numberLabel(target)}`,
       count: () => "有幾多隻手指舉起咗？"
     },
     hints: {
@@ -181,10 +116,10 @@ const translations = {
       high: ["試吓放低一隻手指。", "有少少多咗。", "放低一隻再睇吓。"],
       zero: ["零即係冇手指舉起。", "零就放低晒所有手指。"],
       solvedZero: "啱喇。冇手指舉起。",
-      made: (target) => `你做咗 ${target}！`,
+      made: (target) => `你做咗 ${numberLabel(target)}！`,
       learn: "睇住發光嘅手指，然後撳佢哋。",
       countStart: "數吓舉起咗嘅手指，然後撳啱嘅數字。",
-      countSolved: (target) => `啱喇，係 ${target}！`,
+      countSolved: (target) => `啱喇，係 ${numberLabel(target)}！`,
       countLow: "仲有多少少。再試吓。",
       countHigh: "少啲先啱。再試吓。",
       bravo: "叻叻！",
@@ -229,6 +164,12 @@ const translations = {
 
 function copy() {
   return translations[state.lang] || translations.fr;
+}
+
+function numberLabel(value) {
+  return state.lang === "yue"
+    ? copy().numberWords[value]
+    : String(value);
 }
 
 const els = {
@@ -333,11 +274,11 @@ function updateStatus() {
   const count = state.raised.size;
   const isCounting = state.mode === "count";
   els.actionVerb.textContent = isCounting ? text.actionCount : text.actionMake;
-  els.targetNumber.textContent = isCounting ? "?" : state.target;
-  els.bigNumber.textContent = isCounting ? "?" : state.target;
+  els.targetNumber.textContent = isCounting ? "?" : numberLabel(state.target);
+  els.bigNumber.textContent = isCounting ? "?" : numberLabel(state.target);
   els.currentCount.textContent = count;
-  els.speakButton.textContent = text.listen(state.target);
-  els.speakButton.setAttribute("aria-label", text.listenLabel(state.target));
+  els.speakButton.textContent = text.listen(numberLabel(state.target));
+  els.speakButton.setAttribute("aria-label", text.listenLabel(numberLabel(state.target)));
   if (isCounting) {
     els.roundTitle.textContent = text.roundTitle.count();
     if (state.roundSolved) {
@@ -405,6 +346,7 @@ function updateAnswerPad() {
   els.answerButtons.forEach((button) => {
     const answer = Number(button.dataset.answer);
     const isSelected = state.selectedAnswer === answer;
+    button.textContent = numberLabel(answer);
     button.classList.toggle("selected", isSelected);
     button.classList.toggle("correct", state.roundSolved && answer === state.target);
     button.setAttribute("aria-pressed", String(isSelected));
