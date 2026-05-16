@@ -1,0 +1,17 @@
+{
+  "name": "Les nombres avec les doigts",
+  "short_name": "Doigts",
+  "description": "Un jeu tactile pour apprendre à compter avec les doigts.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7ead6",
+  "theme_color": "#2f766f",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

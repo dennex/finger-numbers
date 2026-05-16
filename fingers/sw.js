@@ -1,9 +1,12 @@
-const CACHE_NAME = "kids-games-menu-v41";
+const CACHE_NAME = "finger-numbers-subapp-v1";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
-  "./icon.svg"
+  "./app.js",
+  "./manifest.webmanifest",
+  "../audio-data.js",
+  "../icon.svg"
 ];
 
 self.addEventListener("install", (event) => {
