@@ -225,9 +225,74 @@ h1 {
 
 .boxing-mode .counter-row,
 .boxing-mode .prompt-actions,
-.boxing-mode .hands-stage,
 .boxing-mode .reward-tray {
   display: none;
+}
+
+.boxing-mode {
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  grid-template-rows: auto auto auto minmax(190px, 1fr) auto;
+}
+
+.boxing-mode .top-bar,
+.boxing-mode .prompt-panel,
+.boxing-mode .boxing-stage,
+.boxing-mode .action-bar {
+  grid-column: 1 / -1;
+}
+
+.boxing-mode .top-bar {
+  grid-row: 1;
+}
+
+.boxing-mode .prompt-panel {
+  grid-row: 2;
+}
+
+.boxing-mode .boxing-stage {
+  grid-row: 3;
+}
+
+.boxing-mode .hands-stage {
+  grid-column: 1;
+  grid-row: 4;
+  min-height: 190px;
+}
+
+.boxing-mode .answer-pad {
+  grid-column: 2;
+  grid-row: 4;
+  align-self: center;
+}
+
+.boxing-mode .action-bar {
+  grid-row: 5;
+}
+
+.boxing-mode .prompt-panel {
+  min-height: 88px;
+  padding-block: 12px;
+}
+
+.boxing-mode .number-card {
+  display: none;
+}
+
+.boxing-mode .hands-stage {
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.boxing-mode .hand-wrap {
+  min-height: 170px;
+}
+
+.boxing-mode .hand {
+  width: min(100%, 230px);
+}
+
+.boxing-mode .finger span {
+  font-size: 0.56rem;
 }
 
 .answer-pad {
@@ -524,8 +589,19 @@ h1 {
   filter: saturate(0.82);
 }
 
-.count-mode .finger.folded span {
+.count-mode .finger.folded span,
+.boxing-mode .finger.folded span {
   opacity: 0;
+}
+
+.boxing-mode .finger {
+  pointer-events: none;
+}
+
+.boxing-mode .finger.folded {
+  z-index: 3;
+  transform: scaleY(0.34);
+  filter: saturate(0.82);
 }
 
 .pointer {
@@ -564,6 +640,10 @@ h1 {
   transform: rotate(-48deg) scale(0.34);
 }
 
+.boxing-mode .thumb.folded {
+  transform: rotate(-48deg) scale(0.34);
+}
+
 .thumb.raised {
   transform: translate(-12%, -16%) rotate(-70deg);
 }
@@ -576,6 +656,10 @@ h1 {
 }
 
 .count-mode .right-hand .thumb.folded {
+  transform: rotate(48deg) scale(0.34);
+}
+
+.boxing-mode .right-hand .thumb.folded {
   transform: rotate(48deg) scale(0.34);
 }
 
@@ -896,6 +980,29 @@ button:focus-visible {
 
   .answer-pad {
     grid-template-columns: repeat(6, minmax(44px, 1fr));
+  }
+
+  .boxing-mode {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .boxing-mode .hands-stage,
+  .boxing-mode .answer-pad {
+    grid-column: 1;
+  }
+
+  .boxing-mode .hands-stage {
+    grid-row: 4;
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .boxing-mode .answer-pad {
+    grid-row: 5;
+  }
+
+  .boxing-mode .action-bar {
+    grid-row: 6;
   }
 
   .boxing-stage {

@@ -27,6 +27,8 @@ const state = {
   numberBuffers: {},
   promptAudio: null,
   promptBuffers: {},
+  resultAudio: null,
+  resultBuffers: {},
   boxing: {
     playerEnergy: 20,
     opponentEnergy: 20,
@@ -53,7 +55,7 @@ const translations = {
       play: (target) => `Peux-tu faire ${target} ?`,
       learn: (target) => `Apprenons ${target}`,
       count: () => "Combien de doigts sont levés ?",
-      boxing: (target) => `Frappe ${numberLabel(target)} !`
+      boxing: () => "Frappe les doigts !"
     },
     hints: {
       initial: "Touche les doigts pour les lever.",
@@ -79,8 +81,8 @@ const translations = {
       boxingStart: "Touche le bon nombre avant zéro.",
       boxingPunch: (damage) => `Bien joué ! L'adversaire perd ${damage}.`,
       boxingHit: (damage) => `Ouille ! Tu perds ${damage}.`,
-      boxingWin: "Victoire !",
-      boxingLose: "Encore une fois !"
+      boxingWin: "Tu as gagné !",
+      boxingLose: "Tu as perdu !"
     },
     counterLabel: "Tu as fait",
     listen: (target) => `Écoute ${target}`,
@@ -128,7 +130,7 @@ const translations = {
       play: (target) => `你可唔可以做 ${numberLabel(target)}？`,
       learn: (target) => `一齊學 ${numberLabel(target)}`,
       count: () => "有幾多隻手指舉起咗？",
-      boxing: (target) => `打 ${numberLabel(target)}！`
+      boxing: () => "打啱手指！"
     },
     hints: {
       initial: "撳手指舉起佢哋。",
@@ -154,8 +156,8 @@ const translations = {
       boxingStart: "零之前撳啱嘅數字。",
       boxingPunch: (damage) => `好嘢！對手扣 ${damage}。`,
       boxingHit: (damage) => `哎呀！你扣 ${damage}。`,
-      boxingWin: "贏咗！",
-      boxingLose: "再嚟一次！"
+      boxingWin: "你贏咗！",
+      boxingLose: "你輸咗！"
     },
     counterLabel: "你做咗",
     listen: (target) => `聽 ${target}`,
@@ -295,7 +297,7 @@ function setTarget(target) {
   els.app.classList.toggle("guided", state.mode === "learn");
   els.app.classList.toggle("count-mode", state.mode === "count");
   els.app.classList.toggle("boxing-mode", state.mode === "boxing");
-  if (state.mode === "count") {
+  if (state.mode === "count" || state.mode === "boxing") {
     state.raised = new Set(fingerOrder.slice(0, state.target));
   }
   updateFingerDisplay();
@@ -322,13 +324,13 @@ function updateStatus() {
   const isCounting = state.mode === "count";
   const isBoxing = state.mode === "boxing";
   els.actionVerb.textContent = isBoxing ? text.actionBoxing : (isCounting ? text.actionCount : text.actionMake);
-  els.targetNumber.textContent = isCounting ? "?" : numberLabel(state.target);
-  els.bigNumber.textContent = isCounting ? "?" : numberLabel(state.target);
+  els.targetNumber.textContent = isCounting || isBoxing ? "?" : numberLabel(state.target);
+  els.bigNumber.textContent = isCounting || isBoxing ? "?" : numberLabel(state.target);
   els.currentCount.textContent = count;
   els.speakButton.textContent = text.listen(numberLabel(state.target));
   els.speakButton.setAttribute("aria-label", text.listenLabel(numberLabel(state.target)));
   if (isBoxing) {
-    els.roundTitle.textContent = text.roundTitle.boxing(state.target);
+    els.roundTitle.textContent = text.roundTitle.boxing();
     if (state.boxing.gameOver) {
       els.hintText.textContent = state.boxing.opponentEnergy <= 0 ? text.hints.boxingWin : text.hints.boxingLose;
     } else {
@@ -383,7 +385,7 @@ function updateFingerDisplay() {
     const id = finger.dataset.finger;
     const isRaised = state.raised.has(id);
     finger.classList.toggle("raised", isRaised);
-    finger.classList.toggle("folded", state.mode === "count" && !isRaised);
+    finger.classList.toggle("folded", (state.mode === "count" || state.mode === "boxing") && !isRaised);
     finger.setAttribute("aria-pressed", String(isRaised));
     finger.disabled = state.mode === "count";
   });
@@ -539,7 +541,13 @@ function resolveBoxingRound(wasAnswered) {
   if (state.boxing.opponentEnergy <= 0 || state.boxing.playerEnergy <= 0) {
     state.boxing.gameOver = true;
     window.setTimeout(() => {
+      const result = state.boxing.opponentEnergy <= 0 ? "win" : "lose";
+      const phrase = result === "win" ? text.hints.boxingWin : text.hints.boxingLose;
       updateStatus();
+      playResultWithWebAudio(result, phrase).catch((error) => {
+        console.warn("Web Audio result playback failed", error.name, error.message);
+        playResultAudio(result, phrase);
+      });
       window.setTimeout(() => {
         if (state.mode === "boxing") {
           resetBoxingGame();
@@ -814,6 +822,10 @@ function getPromptAudioSource(mode) {
     || window.PROMPT_AUDIO?.[mode];
 }
 
+function getResultAudioSource(result) {
+  return window.APP_AUDIO?.[state.lang]?.results?.[result];
+}
+
 function getNumberAudioPath() {
   return state.lang === "fr"
     ? `audio/${state.target}.wav`
@@ -824,6 +836,12 @@ function getPromptAudioPath(mode) {
   return state.lang === "fr"
     ? `audio/${mode}-prompt.wav`
     : `audio/${state.lang}-${mode}-prompt.wav`;
+}
+
+function getResultAudioPath(result) {
+  return state.lang === "fr"
+    ? `audio/${result}.wav`
+    : `audio/${state.lang}-${result}.wav`;
 }
 
 function speakNumber() {
@@ -994,6 +1012,68 @@ function playPromptAudio(mode, prompt) {
     playPromise.catch((error) => {
       console.warn("Prompt audio play rejected", error.name, error.message);
       speakPhrase(prompt);
+    });
+  }
+}
+
+async function playResultWithWebAudio(result, phrase) {
+  const audioContext = await unlockAudio();
+  const embeddedSource = getResultAudioSource(result);
+  if (!audioContext || !embeddedSource) {
+    throw new Error("Result audio source unavailable");
+  }
+
+  const bufferKey = `${state.lang}-${result}`;
+  if (!state.resultBuffers[bufferKey]) {
+    const base64 = embeddedSource.split(",")[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    state.resultBuffers[bufferKey] = await audioContext.decodeAudioData(bytes.buffer);
+  }
+
+  const source = audioContext.createBufferSource();
+  const gain = audioContext.createGain();
+  source.buffer = state.resultBuffers[bufferKey];
+  gain.gain.value = 2.2;
+  source.connect(gain).connect(audioContext.destination);
+  source.onended = () => {
+    console.info("Web Audio result finished", result, phrase);
+  };
+  console.info("Web Audio result playing", result, phrase, audioContext.state);
+  source.start();
+}
+
+function playResultAudio(result, phrase) {
+  const embeddedSource = getResultAudioSource(result);
+  const source = embeddedSource || new URL(getResultAudioPath(result), window.location.href).href;
+  if (!state.resultAudio) {
+    state.resultAudio = new Audio();
+    state.resultAudio.preload = "auto";
+    state.resultAudio.addEventListener("playing", () => {
+      console.info("Result audio playing", state.resultAudio.currentSrc);
+    });
+    state.resultAudio.addEventListener("ended", () => {
+      console.info("Result audio finished", result);
+    });
+    state.resultAudio.addEventListener("error", () => {
+      const errorCode = state.resultAudio.error ? state.resultAudio.error.code : "unknown";
+      console.warn("Result audio failed", errorCode, state.resultAudio.currentSrc);
+      speakPhrase(phrase);
+    });
+  }
+  state.resultAudio.pause();
+  state.resultAudio.src = source;
+  state.resultAudio.load();
+  state.resultAudio.currentTime = 0;
+  state.resultAudio.volume = 1;
+  const playPromise = state.resultAudio.play();
+  if (playPromise) {
+    playPromise.catch((error) => {
+      console.warn("Result audio play rejected", error.name, error.message);
+      speakPhrase(phrase);
     });
   }
 }
