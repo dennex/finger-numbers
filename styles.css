@@ -108,7 +108,9 @@ h1 {
 
 .language-switch {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+  justify-content: flex-end;
   padding: 5px;
   background: rgba(255, 255, 255, 0.72);
   border: 2px solid rgba(23, 50, 51, 0.12);
@@ -136,7 +138,7 @@ h1 {
 }
 
 .language-button {
-  width: 48px;
+  width: 44px;
   min-height: 44px;
   padding: 0;
   background: transparent;

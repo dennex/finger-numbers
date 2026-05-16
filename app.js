@@ -419,6 +419,82 @@ const translations = {
       boxing: "ゼロになる前に正しい数字をタップしてね。"
     },
     voiceLang: "ja-JP"
+  },
+  vi: {
+    htmlLang: "vi",
+    title: "Số với ngón tay",
+    brand: "Ngón tay và con số",
+    langLabel: "Ngôn ngữ",
+    modesLabel: "Chế độ",
+    actionMake: "Làm",
+    actionCount: "Đếm",
+    actionBoxing: "Đấm",
+    modes: { play: "Chơi", learn: "Học", count: "Đếm", boxing: "Đấm bốc" },
+    numberWords: ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười"],
+    roundTitle: {
+      play: (target) => `Con làm được ${numberLabel(target)} không?`,
+      learn: (target) => `Mình học ${numberLabel(target)} nhé`,
+      count: () => "Có mấy ngón tay đang giơ lên?",
+      boxing: () => "Đấm đúng ngón tay!"
+    },
+    hints: {
+      initial: "Chạm vào ngón tay để giơ lên.",
+      low: ["Thêm một ngón tay nữa nhé.", "Thử giơ thêm một ngón tay.", "Gần đúng rồi. Thêm một ngón nữa."],
+      high: ["Thử hạ một ngón tay xuống.", "Hơi nhiều rồi.", "Hạ một ngón rồi nhìn lại nhé."],
+      zero: ["Không là không có ngón tay nào giơ lên.", "Với số không, hạ hết các ngón tay xuống."],
+      solvedZero: "Đúng rồi. Không có ngón tay nào giơ lên.",
+      made: (target) => `Con đã làm số ${numberLabel(target)}!`,
+      learn: "Nhìn các ngón tay sáng lên, rồi chạm vào chúng.",
+      countStart: "Đếm các ngón tay đang giơ lên, rồi chạm vào số đúng.",
+      countSolved: (target) => `Đúng rồi, là ${numberLabel(target)}!`,
+      countLow: "Còn nhiều hơn một chút. Thử lại nhé.",
+      countHigh: "Ít hơn một chút mới đúng. Thử lại nhé.",
+      bravo: "Giỏi lắm!",
+      loadingSound: (word) => `Đang tải âm thanh: ${word}`,
+      soundPlaying: (word) => `Đang phát: ${word}`,
+      heard: (word) => `Con đã nghe: ${word}`,
+      soundBlocked: (name) => `Âm thanh bị chặn: ${name}`,
+      audioError: (code) => `Lỗi âm thanh ${code}. Mình thử giọng khác nhé.`,
+      noSound: "Trình duyệt này không có âm thanh.",
+      cannotSpeak: "Ở đây mình chưa nói được.",
+      cannotPlay: "Ở đây chưa phát được âm thanh. Thử bản localhost nhé.",
+      boxingStart: "Chạm vào số đúng trước khi về không.",
+      boxingPunch: (damage) => `Hay lắm! Đối thủ mất ${damage}.`,
+      boxingHit: (damage) => `Ui da! Con mất ${damage}.`,
+      boxingWin: "Con thắng rồi!",
+      boxingLose: "Con thua rồi!"
+    },
+    counterLabel: "Con đã làm",
+    listen: (target) => `Nghe ${target}`,
+    listenLabel: (target) => `Nghe số ${target}`,
+    show: "Cho con xem",
+    next: "Tiếp",
+    soundOn: "Tắt âm thanh",
+    soundOff: "Bật âm thanh",
+    handsLabel: "Hai bàn tay có ngón để chạm",
+    topBarLabel: "Điều khiển trò chơi",
+    actionBarLabel: "Hành động của lượt này",
+    numberCardLabel: "Số cần làm",
+    answerPadLabel: "Chọn số ngón tay",
+    rewardsLabel: "Sao đã nhận",
+    boxingLabel: "Trò chơi đấm bốc",
+    playerLabel: "Con",
+    opponentLabel: "Đối thủ",
+    left: "Trái",
+    right: "Phải",
+    fingers: {
+      thumb: "Ngón cái",
+      pointer: "Ngón trỏ",
+      middle: "Ngón giữa",
+      ring: "Ngón áp út",
+      pinky: "Ngón út"
+    },
+    promptAudio: {
+      count: "Có mấy ngón tay đang giơ lên?",
+      play: "Con làm được con số này không?",
+      boxing: "Chạm vào số đúng trước khi về không."
+    },
+    voiceLang: "vi-VN"
   }
 };
 
@@ -427,7 +503,7 @@ function copy() {
 }
 
 function numberLabel(value) {
-  return state.lang === "yue" || state.lang === "zh" || state.lang === "ko" || state.lang === "ja"
+  return state.lang === "yue" || state.lang === "zh" || state.lang === "ko" || state.lang === "ja" || state.lang === "vi"
     ? copy().numberWords[value]
     : String(value);
 }

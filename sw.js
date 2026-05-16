@@ -1,4 +1,4 @@
-const CACHE_NAME = "finger-numbers-v33";
+const CACHE_NAME = "finger-numbers-v34";
 const ASSETS = [
   "./",
   "./index.html",
@@ -86,7 +86,23 @@ const ASSETS = [
   "./audio/ja-play-prompt.wav",
   "./audio/ja-boxing-prompt.wav",
   "./audio/ja-win.wav",
-  "./audio/ja-lose.wav"
+  "./audio/ja-lose.wav",
+  "./audio/vi-0.wav",
+  "./audio/vi-1.wav",
+  "./audio/vi-2.wav",
+  "./audio/vi-3.wav",
+  "./audio/vi-4.wav",
+  "./audio/vi-5.wav",
+  "./audio/vi-6.wav",
+  "./audio/vi-7.wav",
+  "./audio/vi-8.wav",
+  "./audio/vi-9.wav",
+  "./audio/vi-10.wav",
+  "./audio/vi-count-prompt.wav",
+  "./audio/vi-play-prompt.wav",
+  "./audio/vi-boxing-prompt.wav",
+  "./audio/vi-win.wav",
+  "./audio/vi-lose.wav"
 ];
 
 self.addEventListener("install", (event) => {
