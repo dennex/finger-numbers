@@ -1,6 +1,8 @@
 const placeNames = ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"];
 const shortPlaceNames = ["1s", "10s", "100s", "1,000s", "10,000s", "100,000s"];
 const rewards = ["Map", "Hat", "Key", "Boat", "Crown"];
+const fruitTreasure = ["🍒", "🍎", "🍉", "🍓"];
+const treasureGoal = 5;
 
 const state = {
   digits: 2,
@@ -26,6 +28,9 @@ const els = {
   rescuedCount: document.querySelector("#rescuedCount"),
   path: document.querySelector("#treasurePath"),
   chest: document.querySelector("#treasureChest"),
+  treasureParty: document.querySelector("#treasureParty"),
+  partyChest: document.querySelector("#partyChest"),
+  fruitField: document.querySelector("#fruitField"),
   sparkleField: document.querySelector("#sparkleField"),
   regroupToggle: document.querySelector("#regroupToggle"),
   levelButtons: [...document.querySelectorAll(".level-button")],
@@ -363,6 +368,10 @@ function rescueTreasure() {
   updateScore();
   sparkle();
   playTone("win");
+  if (state.solved >= treasureGoal) {
+    window.setTimeout(showTreasureParty, 700);
+    return;
+  }
   window.setTimeout(() => {
     makeProblem();
     renderGame();
@@ -391,8 +400,8 @@ function clearAnswer() {
 function updateScore() {
   els.gemCount.textContent = String(state.gems);
   els.rescuedCount.textContent = String(state.solved);
-  els.roundLabel.textContent = `Gate ${state.solved + 1}`;
-  els.path.style.setProperty("--progress", `${Math.min(100, state.solved * 20)}%`);
+  els.roundLabel.textContent = `Gate ${Math.min(state.solved + 1, treasureGoal)}`;
+  els.path.style.setProperty("--progress", `${Math.min(100, (state.solved / treasureGoal) * 100)}%`);
   els.rewardBadges.forEach((badge, index) => {
     badge.classList.toggle("unlocked", index <= Math.floor(state.solved / 2));
     badge.textContent = rewards[index];
@@ -432,6 +441,52 @@ function sparkleAt(element, count = 8) {
   }, 760);
 }
 
+function showTreasureParty() {
+  els.treasureParty.hidden = false;
+  els.treasureParty.classList.remove("revealed");
+  els.fruitField.innerHTML = "";
+  playTone("treasure");
+
+  window.setTimeout(() => {
+    els.treasureParty.classList.add("revealed");
+    explodeFruit();
+    playTone("fruit");
+  }, 1000);
+
+  window.setTimeout(() => {
+    els.treasureParty.hidden = true;
+    els.treasureParty.classList.remove("revealed");
+    els.fruitField.innerHTML = "";
+    restartTreasureRun();
+  }, 5000);
+}
+
+function explodeFruit() {
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2 + 70;
+  for (let index = 0; index < 80; index += 1) {
+    const fruit = document.createElement("span");
+    const angle = (Math.PI * 2 * index) / 80 + Math.random() * 0.5;
+    const distance = randomInt(120, Math.max(220, Math.min(window.innerWidth, window.innerHeight)));
+    fruit.textContent = fruitTreasure[index % fruitTreasure.length];
+    fruit.style.left = `${centerX}px`;
+    fruit.style.top = `${centerY}px`;
+    fruit.style.setProperty("--tx", `${Math.cos(angle) * distance}px`);
+    fruit.style.setProperty("--ty", `${Math.sin(angle) * distance - randomInt(30, 190)}px`);
+    fruit.style.setProperty("--spin", `${randomInt(-720, 720)}deg`);
+    fruit.style.animationDelay = `${randomInt(0, 420)}ms`;
+    els.fruitField.append(fruit);
+  }
+}
+
+function restartTreasureRun() {
+  state.solved = 0;
+  state.gems = 0;
+  els.chest.classList.remove("open");
+  makeProblem();
+  renderGame();
+}
+
 function getAudioContext() {
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!AudioContextClass) {
@@ -456,7 +511,9 @@ function playTone(type) {
   const notes = {
     borrow: [330, 440],
     digit: [660, 880],
-    win: [523, 659, 784, 1046]
+    win: [523, 659, 784, 1046],
+    treasure: [392, 523, 659],
+    fruit: [784, 988, 1175, 1568]
   }[type];
 
   notes.forEach((frequency, index) => {
