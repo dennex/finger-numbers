@@ -10,7 +10,10 @@ const state = {
   answer: 34,
   solved: 0,
   gems: 0,
-  attempts: 0
+  attempts: 0,
+  borrowMarks: new Set(),
+  completing: false,
+  audioContext: null
 };
 
 const els = {
@@ -81,6 +84,8 @@ function makeProblem() {
   state.subtrahend = bottom;
   state.answer = top - bottom;
   state.attempts = 0;
+  state.borrowMarks.clear();
+  state.completing = false;
 }
 
 function digitsOf(number, width) {
@@ -136,8 +141,8 @@ function renderBoard() {
   });
   els.board.append(labelRow);
 
-  const topRow = makeNumberRow("", top, "top number");
-  const bottomRow = makeNumberRow("-", bottom, "take away");
+  const topRow = makeNumberRow("", top, "top number", "top");
+  const bottomRow = makeNumberRow("-", bottom, "take away", "bottom");
   bottomRow.classList.add("bottom-row");
   const inputRow = document.createElement("div");
   inputRow.className = "number-row answer-row";
@@ -175,14 +180,50 @@ function makeNumberRow(operator, digits, label) {
   op.textContent = operator;
   row.append(op);
 
-  digits.forEach((digit) => {
-    const cell = document.createElement("span");
+  digits.forEach((digit, index) => {
+    const cell = document.createElement(label === "top number" ? "button" : "span");
     cell.className = "digit-cell";
+    cell.dataset.index = String(index);
     cell.textContent = digit;
+
+    if (label === "top number") {
+      cell.type = "button";
+      cell.ariaLabel = `Borrow into the ${placeNames[digits.length - index - 1]} column`;
+      cell.disabled = index === 0;
+      cell.addEventListener("click", () => toggleBorrow(index));
+      if (state.borrowMarks.has(index)) {
+        cell.classList.add("borrow-in");
+      }
+    }
+
+    if (label === "take away" && state.borrowMarks.has(index + 1)) {
+      cell.classList.add("borrow-from");
+    }
+
     row.append(cell);
   });
 
   return row;
+}
+
+function toggleBorrow(index) {
+  if (index === 0) {
+    return;
+  }
+  const typedDigits = [...document.querySelectorAll(".digit-input")].map((input) => input.value);
+  if (state.borrowMarks.has(index)) {
+    state.borrowMarks.delete(index);
+  } else {
+    state.borrowMarks.add(index);
+  }
+  renderBoard();
+  document.querySelectorAll(".digit-input").forEach((input, inputIndex) => {
+    input.value = typedDigits[inputIndex] || "";
+    checkDigitInput(input);
+  });
+  renderPlaceLab(String(state.minuend).length - index - 1);
+  els.feedback.textContent = "Nice trade. That little 1 means this place got ten more.";
+  playTone("borrow");
 }
 
 function renderPlaceLab(stepIndex = -1) {
@@ -216,6 +257,7 @@ function handleDigitInput(event) {
   const input = event.currentTarget;
   input.value = input.value.replace(/\D/g, "").slice(-1);
   input.classList.remove("wrong");
+  checkDigitInput(input);
 
   if (input.value) {
     const next = input.nextElementSibling;
@@ -233,6 +275,8 @@ function handleDigitKeys(event) {
     if (previous?.classList.contains("digit-input")) {
       previous.focus();
       previous.value = "";
+      previous.classList.remove("wrong", "correct");
+      previous.dataset.celebrated = "";
     }
   }
   if (event.key === "Enter") {
@@ -240,7 +284,46 @@ function handleDigitKeys(event) {
   }
 }
 
+function checkDigitInput(input) {
+  const expected = String(state.answer).padStart(String(state.minuend).length, "0");
+  const index = Number(input.dataset.index);
+  if (!input.value) {
+    input.classList.remove("correct");
+    input.dataset.celebrated = "";
+    return;
+  }
+
+  if (input.value === expected[index]) {
+    input.classList.add("correct");
+    if (input.dataset.celebrated !== "true") {
+      input.dataset.celebrated = "true";
+      sparkleAt(input, 8);
+      playTone("digit");
+    }
+  } else {
+    input.classList.remove("correct");
+    input.dataset.celebrated = "";
+  }
+
+  maybeCompleteAnswer();
+}
+
+function maybeCompleteAnswer() {
+  if (state.completing) {
+    return;
+  }
+  const inputs = [...document.querySelectorAll(".digit-input")];
+  const expected = String(state.answer).padStart(String(state.minuend).length, "0");
+  const typed = inputs.map((input) => input.value).join("");
+  if (typed.length === expected.length && typed === expected) {
+    rescueTreasure();
+  }
+}
+
 function checkAnswer() {
+  if (state.completing) {
+    return;
+  }
   const expected = String(state.answer).padStart(String(state.minuend).length, "0");
   const typed = getTypedAnswer();
   const inputs = [...document.querySelectorAll(".digit-input")];
@@ -264,6 +347,10 @@ function checkAnswer() {
 }
 
 function rescueTreasure() {
+  if (state.completing) {
+    return;
+  }
+  state.completing = true;
   state.solved += 1;
   state.gems += Math.max(1, 4 - state.attempts);
   els.feedback.textContent = "Gate open! Treasure rescued!";
@@ -275,10 +362,11 @@ function rescueTreasure() {
   els.chest.classList.add("open");
   updateScore();
   sparkle();
+  playTone("win");
   window.setTimeout(() => {
     makeProblem();
     renderGame();
-  }, 1300);
+  }, 1000);
 }
 
 function showHint() {
@@ -294,6 +382,7 @@ function clearAnswer() {
   document.querySelectorAll(".digit-input").forEach((input) => {
     input.value = "";
     input.classList.remove("wrong", "correct");
+    input.dataset.celebrated = "";
   });
   document.querySelector(".digit-input")?.focus();
   els.feedback.textContent = "Fresh boxes. Try from the ones place.";
@@ -322,6 +411,66 @@ function sparkle() {
   window.setTimeout(() => {
     els.sparkleField.innerHTML = "";
   }, 900);
+}
+
+function sparkleAt(element, count = 8) {
+  const box = element.getBoundingClientRect();
+  const centerX = box.left + box.width / 2;
+  const centerY = box.top + box.height / 2;
+
+  for (let index = 0; index < count; index += 1) {
+    const dot = document.createElement("span");
+    dot.className = "mini-sparkle";
+    dot.style.left = `${centerX + randomInt(-24, 24)}px`;
+    dot.style.top = `${centerY + randomInt(-18, 18)}px`;
+    dot.style.animationDelay = `${index * 14}ms`;
+    els.sparkleField.append(dot);
+  }
+
+  window.setTimeout(() => {
+    els.sparkleField.querySelectorAll(".mini-sparkle").forEach((dot) => dot.remove());
+  }, 760);
+}
+
+function getAudioContext() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    return null;
+  }
+  if (!state.audioContext) {
+    state.audioContext = new AudioContextClass();
+  }
+  if (state.audioContext.state === "suspended") {
+    state.audioContext.resume().catch(() => {});
+  }
+  return state.audioContext;
+}
+
+function playTone(type) {
+  const audioContext = getAudioContext();
+  if (!audioContext) {
+    return;
+  }
+
+  const now = audioContext.currentTime;
+  const notes = {
+    borrow: [330, 440],
+    digit: [660, 880],
+    win: [523, 659, 784, 1046]
+  }[type];
+
+  notes.forEach((frequency, index) => {
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.type = type === "borrow" ? "triangle" : "sine";
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.0001, now + index * 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + index * 0.08 + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.08 + 0.16);
+    oscillator.connect(gain).connect(audioContext.destination);
+    oscillator.start(now + index * 0.08);
+    oscillator.stop(now + index * 0.08 + 0.17);
+  });
 }
 
 function renderGame() {

@@ -449,8 +449,54 @@ input:focus-visible {
 }
 
 .digit-cell {
+  position: relative;
   background: #edf8f2;
   border: 2px solid rgba(21, 122, 110, 0.18);
+}
+
+button.digit-cell {
+  border: 2px solid rgba(21, 122, 110, 0.18);
+  color: var(--ink);
+}
+
+button.digit-cell:disabled {
+  cursor: default;
+}
+
+.digit-cell.borrow-in,
+.digit-cell.borrow-from {
+  background: #fff0d4;
+  border-color: var(--coral);
+}
+
+.digit-cell.borrow-in::before,
+.digit-cell.borrow-from::after {
+  content: "1";
+  width: clamp(18px, 3vw, 26px);
+  height: clamp(18px, 3vw, 26px);
+  display: grid;
+  place-items: center;
+  position: absolute;
+  color: var(--white);
+  background: var(--coral);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: clamp(0.8rem, 2vw, 1.05rem);
+  font-weight: 1000;
+  line-height: 1;
+  animation: marker-pop 240ms ease;
+  z-index: 2;
+}
+
+.digit-cell.borrow-in::before {
+  left: clamp(4px, 1vw, 9px);
+  top: clamp(4px, 1vw, 9px);
+}
+
+.digit-cell.borrow-from::after {
+  left: 50%;
+  bottom: clamp(-18px, -2.3vw, -10px);
+  transform: translateX(-50%);
 }
 
 .digit-input {
@@ -610,6 +656,13 @@ input:focus-visible {
   animation: pop 760ms ease forwards;
 }
 
+.sparkle-field .mini-sparkle {
+  width: 10px;
+  height: 10px;
+  background: var(--coral);
+  animation-duration: 620ms;
+}
+
 @keyframes pop {
   0% {
     opacity: 0;
@@ -622,6 +675,18 @@ input:focus-visible {
   100% {
     opacity: 0;
     transform: rotate(45deg) scale(0.4) translateY(-40px);
+  }
+}
+
+@keyframes marker-pop {
+  0% {
+    transform: scale(0.35);
+  }
+  70% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
