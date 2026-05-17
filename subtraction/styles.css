@@ -67,6 +67,23 @@ button {
   gap: 16px;
 }
 
+.top-actions {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.language-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--line);
+  border-radius: 8px;
+}
+
 .brand-block {
   min-width: 0;
 }
@@ -298,6 +315,7 @@ h2 {
 }
 
 .level-button,
+.language-button,
 .primary-button,
 .secondary-button,
 .icon-button {
@@ -310,6 +328,7 @@ h2 {
 }
 
 .level-button,
+.language-button,
 .secondary-button,
 .icon-button {
   background: var(--white);
@@ -320,7 +339,15 @@ h2 {
   padding: 0 13px;
 }
 
+.language-button {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  font-size: 1.28rem;
+}
+
 .level-button.active,
+.language-button.active,
 .primary-button {
   color: var(--white);
   background: var(--teal);
@@ -839,8 +866,18 @@ button.digit-cell:disabled {
   }
 
   .top-bar,
+  .top-actions,
   .score-board {
     align-items: stretch;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-items: stretch;
+  }
+
+  .language-switch {
+    justify-content: flex-start;
   }
 
   .score-board {

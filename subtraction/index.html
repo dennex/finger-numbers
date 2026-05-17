@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#157a6e">
     <title>Treasure Rescue Subtraction</title>
-    <link rel="manifest" href="manifest.webmanifest?v=42">
-    <link rel="stylesheet" href="styles.css?v=42">
+    <link rel="manifest" href="manifest.webmanifest?v=44">
+    <link rel="stylesheet" href="styles.css?v=44">
   </head>
   <body>
     <main class="game-shell">
@@ -15,7 +15,17 @@
           <p class="eyebrow">Subtraction Adventure</p>
           <h1>Treasure Rescue</h1>
         </div>
-        <div class="score-board" aria-label="Score">
+        <div class="top-actions">
+          <div class="language-switch" role="group" aria-label="Language">
+            <button class="language-button active" type="button" data-lang="en" aria-pressed="true" aria-label="English">🇺🇸</button>
+            <button class="language-button" type="button" data-lang="fr" aria-pressed="false" aria-label="Français">🇫🇷</button>
+            <button class="language-button" type="button" data-lang="yue" aria-pressed="false" aria-label="Cantonais">🇭🇰</button>
+            <button class="language-button" type="button" data-lang="zh" aria-pressed="false" aria-label="Mandarin">🇨🇳</button>
+            <button class="language-button" type="button" data-lang="ko" aria-pressed="false" aria-label="Korean">🇰🇷</button>
+            <button class="language-button" type="button" data-lang="ja" aria-pressed="false" aria-label="Japanese">🇯🇵</button>
+            <button class="language-button" type="button" data-lang="vi" aria-pressed="false" aria-label="Vietnamese">🇻🇳</button>
+          </div>
+          <div class="score-board" aria-label="Score">
           <div>
             <span>Gems</span>
             <strong id="gemCount">0</strong>
@@ -23,6 +33,7 @@
           <div>
             <span>Rescued</span>
             <strong id="rescuedCount">0</strong>
+          </div>
           </div>
         </div>
       </section>
@@ -105,6 +116,6 @@
       </div>
       <div class="fruit-field" id="fruitField" aria-hidden="true"></div>
     </div>
-    <script src="app.js?v=42" defer></script>
+    <script src="app.js?v=44" defer></script>
   </body>
 </html>
