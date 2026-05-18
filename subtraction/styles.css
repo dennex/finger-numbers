@@ -318,12 +318,20 @@ h2 {
   border-radius: 8px;
 }
 
+.operation-tabs {
+  flex: 1 1 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
 .level-picker {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
+.operation-tab,
 .level-button,
 .language-button,
 .primary-button,
@@ -337,12 +345,17 @@ h2 {
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
+.operation-tab,
 .level-button,
 .language-button,
 .secondary-button,
 .icon-button {
   background: var(--white);
   box-shadow: 0 4px 0 var(--shadow);
+}
+
+.operation-tab {
+  padding: 0 10px;
 }
 
 .level-button {
@@ -356,6 +369,7 @@ h2 {
   font-size: 1.28rem;
 }
 
+.operation-tab.active,
 .level-button.active,
 .language-button.active,
 .primary-button {
@@ -458,6 +472,43 @@ input:focus-visible {
   margin-top: 4px;
 }
 
+.carry-row,
+.multiply-carry-row {
+  margin-top: 0;
+}
+
+.carry-marker,
+.carry-input {
+  height: clamp(26px, 4.6vh, 36px);
+  display: grid;
+  place-items: center;
+  border: 3px solid rgba(23, 50, 51, 0.2);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fffdf6;
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
+  font-weight: 1000;
+  text-align: center;
+}
+
+.carry-marker.active,
+.carry-input.correct {
+  color: var(--white);
+  background: var(--leaf);
+  border-color: var(--ink);
+}
+
+.carry-marker:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.carry-input.wrong {
+  background: #ffe7df;
+  border-color: var(--coral);
+  animation: wiggle 230ms ease;
+}
+
 .bottom-row {
   padding-bottom: 6px;
   border-bottom: 5px solid var(--ink);
@@ -547,6 +598,45 @@ button.digit-cell:disabled {
 .digit-input.correct {
   border-color: var(--leaf);
   background: #ecf8e9;
+}
+
+.division-board {
+  padding: clamp(10px, 1.8vw, 18px);
+}
+
+.division-shell {
+  display: grid;
+  grid-template-columns: minmax(42px, 0.22fr) 1fr;
+  align-items: end;
+  gap: 8px;
+}
+
+.division-divisor {
+  min-height: clamp(38px, 7vh, 56px);
+  display: grid;
+  place-items: center;
+  color: var(--coral);
+  font-size: clamp(1.55rem, 4vw, 3rem);
+  font-weight: 1000;
+}
+
+.division-work {
+  display: grid;
+  gap: 8px;
+  padding-left: 8px;
+  border-left: 5px solid var(--ink);
+}
+
+.division-quotient-row,
+.division-dividend-row {
+  display: grid;
+  grid-template-columns: repeat(var(--places, 6), minmax(42px, 1fr));
+  gap: clamp(4px, 0.8vw, 8px);
+}
+
+.division-dividend-row {
+  padding-top: 8px;
+  border-top: 5px solid var(--ink);
 }
 
 .answer-actions {
@@ -1097,6 +1187,16 @@ button.digit-cell:disabled {
     gap: 5px;
   }
 
+  .operation-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .operation-tab {
+    padding-inline: 5px;
+  }
+
+  .operation-tab,
   .level-button,
   .primary-button,
   .secondary-button,
@@ -1124,6 +1224,24 @@ button.digit-cell:disabled {
     font-size: clamp(1.35rem, 7vw, 1.9rem);
   }
 
+  .carry-marker,
+  .carry-input {
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .division-shell {
+    grid-template-columns: minmax(28px, 0.18fr) 1fr;
+    gap: 5px;
+  }
+
+  .division-quotient-row,
+  .division-dividend-row {
+    grid-template-columns: repeat(var(--places, 6), minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .operation-tab,
   .level-button,
   .primary-button,
   .secondary-button {

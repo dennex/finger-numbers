@@ -1,5 +1,3 @@
-const placeNames = ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"];
-const shortPlaceNames = ["1s", "10s", "100s", "1,000s", "10,000s", "100,000s"];
 const rewards = ["Map", "Hat", "Key", "Boat", "Crown"];
 const treasureContents = [
   { kind: "emoji", value: "🍒", label: "cherries" },
@@ -19,6 +17,7 @@ const translations = {
     voiceLang: "en-US",
     title: "Treasure Rescue Subtraction",
     eyebrow: "Subtraction Adventure",
+    mathEyebrow: "Math Adventure",
     brand: "Treasure Rescue",
     languageLabel: "Language",
     scoreLabel: "Score",
@@ -27,6 +26,13 @@ const translations = {
     mapLabel: "Treasure map progress",
     controlsLabel: "Practice choices",
     numberSize: "Number size",
+    operationLabel: "Math operation",
+    operations: {
+      subtraction: "Subtract",
+      addition: "Add",
+      multiplication: "Multiply",
+      division: "Divide"
+    },
     digits: (count) => `${count} digits`,
     mix: "Mix",
     includeTrading: "Include trading",
@@ -34,6 +40,12 @@ const translations = {
     verticalSubtraction: "Vertical subtraction",
     gate: (count) => `Gate ${count}`,
     problemTitle: "Unlock the treasure gate",
+    problemTitles: {
+      subtraction: "Unlock the treasure gate",
+      addition: "Add gems to open the gate",
+      multiplication: "Build a treasure stack",
+      division: "Share the treasure fairly"
+    },
     newProblem: "New",
     hint: "Hint",
     clear: "Clear",
@@ -54,6 +66,11 @@ const translations = {
     takeAway: "take away",
     answer: "Answer",
     borrowMessage: "Nice trade. That little 1 means this place got ten more.",
+    carryMessage: "Nice carry. That little number helps the next column.",
+    carryInto: (place) => `Carry into the ${place} column`,
+    carryDigit: (place) => `${place} carry`,
+    optionalCarry: "Carry boxes are optional.",
+    divisionGuide: "Try each quotient box above the house. Multiply, subtract, then bring down.",
     wrongFirst: "Good try. Start on the right side and check each place.",
     wrongAgain: "Almost. Check the glowing box, then try again.",
     gateOpen: "Gate open! Treasure rescued!",
@@ -75,6 +92,7 @@ const translations = {
     voiceLang: "fr-FR",
     title: "Sauvetage du trésor",
     eyebrow: "Aventure de soustraction",
+    mathEyebrow: "Aventure de maths",
     brand: "Sauvetage du trésor",
     languageLabel: "Langue",
     scoreLabel: "Score",
@@ -83,6 +101,13 @@ const translations = {
     mapLabel: "Progression vers le trésor",
     controlsLabel: "Choix d'entraînement",
     numberSize: "Taille du nombre",
+    operationLabel: "Opération",
+    operations: {
+      subtraction: "Soustraire",
+      addition: "Additionner",
+      multiplication: "Multiplier",
+      division: "Diviser"
+    },
     digits: (count) => `${count} chiffres`,
     mix: "Mélange",
     includeTrading: "Avec échange",
@@ -90,6 +115,12 @@ const translations = {
     verticalSubtraction: "Soustraction posée",
     gate: (count) => `Porte ${count}`,
     problemTitle: "Ouvre la porte du trésor",
+    problemTitles: {
+      subtraction: "Ouvre la porte du trésor",
+      addition: "Ajoute des gemmes pour ouvrir",
+      multiplication: "Construis une pile de trésors",
+      division: "Partage le trésor équitablement"
+    },
     newProblem: "Nouveau",
     hint: "Indice",
     clear: "Effacer",
@@ -110,6 +141,11 @@ const translations = {
     takeAway: "à enlever",
     answer: "Réponse",
     borrowMessage: "Bel échange. Le petit 1 veut dire que cette colonne a dix de plus.",
+    carryMessage: "Beau report. Ce petit nombre aide la colonne suivante.",
+    carryInto: (place) => `Reporter dans la colonne ${place}`,
+    carryDigit: (place) => `Report des ${place}`,
+    optionalCarry: "Les cases de report sont facultatives.",
+    divisionGuide: "Essaie les cases du quotient en haut. Multiplie, soustrais, puis descends.",
     wrongFirst: "Bien essayé. Commence à droite et vérifie chaque colonne.",
     wrongAgain: "Presque. Regarde la case qui brille, puis réessaie.",
     gateOpen: "Porte ouverte ! Trésor sauvé !",
@@ -131,6 +167,7 @@ const translations = {
     voiceLang: "zh-HK",
     title: "寶藏減數大冒險",
     eyebrow: "減數大冒險",
+    mathEyebrow: "數學大冒險",
     brand: "救寶藏",
     languageLabel: "語言",
     scoreLabel: "分數",
@@ -139,6 +176,13 @@ const translations = {
     mapLabel: "寶藏地圖進度",
     controlsLabel: "練習選擇",
     numberSize: "位數",
+    operationLabel: "運算",
+    operations: {
+      subtraction: "減",
+      addition: "加",
+      multiplication: "乘",
+      division: "除"
+    },
     digits: (count) => `${count} 位數`,
     mix: "混合",
     includeTrading: "包括借位",
@@ -146,6 +190,12 @@ const translations = {
     verticalSubtraction: "直式減數",
     gate: (count) => `第 ${count} 道門`,
     problemTitle: "打開寶藏門",
+    problemTitles: {
+      subtraction: "打開寶藏門",
+      addition: "加寶石開門",
+      multiplication: "砌起寶藏堆",
+      division: "公平分享寶藏"
+    },
     newProblem: "新題",
     hint: "提示",
     clear: "清除",
@@ -166,6 +216,11 @@ const translations = {
     takeAway: "減去",
     answer: "答案",
     borrowMessage: "借得好。細細個 1 代表呢一位多咗十個。",
+    carryMessage: "進位好叻。細細個數會幫下一欄。",
+    carryInto: (place) => `進位去${place}`,
+    carryDigit: (place) => `${place}進位`,
+    optionalCarry: "進位格可以填，唔填都得。",
+    divisionGuide: "喺屋頂試商。乘、減，再拉落下一位。",
     wrongFirst: "好嘗試。由右邊開始，再睇每一位。",
     wrongAgain: "差少少。睇吓發光嗰格，再試。",
     gateOpen: "門開咗！救到寶藏！",
@@ -187,6 +242,7 @@ const translations = {
     voiceLang: "zh-CN",
     title: "宝藏减法大冒险",
     eyebrow: "减法大冒险",
+    mathEyebrow: "数学大冒险",
     brand: "拯救宝藏",
     languageLabel: "语言",
     scoreLabel: "分数",
@@ -195,6 +251,13 @@ const translations = {
     mapLabel: "宝藏地图进度",
     controlsLabel: "练习选择",
     numberSize: "位数",
+    operationLabel: "运算",
+    operations: {
+      subtraction: "减",
+      addition: "加",
+      multiplication: "乘",
+      division: "除"
+    },
     digits: (count) => `${count} 位数`,
     mix: "混合",
     includeTrading: "包含借位",
@@ -202,6 +265,12 @@ const translations = {
     verticalSubtraction: "竖式减法",
     gate: (count) => `第 ${count} 道门`,
     problemTitle: "打开宝藏门",
+    problemTitles: {
+      subtraction: "打开宝藏门",
+      addition: "加宝石开门",
+      multiplication: "搭起宝藏堆",
+      division: "公平分享宝藏"
+    },
     newProblem: "新题",
     hint: "提示",
     clear: "清除",
@@ -222,6 +291,11 @@ const translations = {
     takeAway: "减去",
     answer: "答案",
     borrowMessage: "借位很好。小小的 1 表示这一位多了十个。",
+    carryMessage: "进位很好。这个小数字会帮助下一列。",
+    carryInto: (place) => `进位到${place}`,
+    carryDigit: (place) => `${place}进位`,
+    optionalCarry: "进位格可以填，也可以不填。",
+    divisionGuide: "试着填上面的商。乘、减，再把下一位带下来。",
     wrongFirst: "试得很好。从右边开始，检查每一位。",
     wrongAgain: "快对了。看看发光的格子，再试一次。",
     gateOpen: "门打开了！救到宝藏！",
@@ -243,6 +317,7 @@ const translations = {
     voiceLang: "ko-KR",
     title: "보물 빼기 모험",
     eyebrow: "빼기 모험",
+    mathEyebrow: "수학 모험",
     brand: "보물 구출",
     languageLabel: "언어",
     scoreLabel: "점수",
@@ -251,6 +326,13 @@ const translations = {
     mapLabel: "보물 지도 진행",
     controlsLabel: "연습 선택",
     numberSize: "자릿수",
+    operationLabel: "연산",
+    operations: {
+      subtraction: "빼기",
+      addition: "더하기",
+      multiplication: "곱하기",
+      division: "나누기"
+    },
     digits: (count) => `${count}자리`,
     mix: "섞기",
     includeTrading: "받아내림 포함",
@@ -258,6 +340,12 @@ const translations = {
     verticalSubtraction: "세로 빼기",
     gate: (count) => `문 ${count}`,
     problemTitle: "보물 문을 열자",
+    problemTitles: {
+      subtraction: "보물 문을 열자",
+      addition: "보석을 더해 문을 열자",
+      multiplication: "보물 더미를 만들자",
+      division: "보물을 똑같이 나누자"
+    },
     newProblem: "새 문제",
     hint: "힌트",
     clear: "지우기",
@@ -278,6 +366,11 @@ const translations = {
     takeAway: "빼기",
     answer: "답",
     borrowMessage: "좋은 받아내림이야. 작은 1은 이 자리에 10이 더 생겼다는 뜻이야.",
+    carryMessage: "좋은 올림이야. 작은 숫자가 다음 자리를 도와줘.",
+    carryInto: (place) => `${place}에 올림`,
+    carryDigit: (place) => `${place} 올림`,
+    optionalCarry: "올림 칸은 안 써도 괜찮아.",
+    divisionGuide: "위 칸에 몫을 써 봐. 곱하고, 빼고, 다음 숫자를 내려.",
     wrongFirst: "잘했어. 오른쪽부터 시작해서 각 자리를 확인해 봐.",
     wrongAgain: "거의 맞았어. 빛나는 칸을 보고 다시 해 봐.",
     gateOpen: "문이 열렸어! 보물을 구했어!",
@@ -299,6 +392,7 @@ const translations = {
     voiceLang: "ja-JP",
     title: "宝物ひき算アドベンチャー",
     eyebrow: "ひき算アドベンチャー",
+    mathEyebrow: "算数アドベンチャー",
     brand: "宝物レスキュー",
     languageLabel: "言語",
     scoreLabel: "スコア",
@@ -307,6 +401,13 @@ const translations = {
     mapLabel: "宝物マップの進み具合",
     controlsLabel: "れんしゅうの選択",
     numberSize: "けた数",
+    operationLabel: "計算",
+    operations: {
+      subtraction: "ひく",
+      addition: "たす",
+      multiplication: "かける",
+      division: "わる"
+    },
     digits: (count) => `${count}けた`,
     mix: "ミックス",
     includeTrading: "くり下がりあり",
@@ -314,6 +415,12 @@ const translations = {
     verticalSubtraction: "筆算のひき算",
     gate: (count) => `ゲート ${count}`,
     problemTitle: "宝物のゲートを開けよう",
+    problemTitles: {
+      subtraction: "宝物のゲートを開けよう",
+      addition: "宝石をたしてゲートを開けよう",
+      multiplication: "宝物の山を作ろう",
+      division: "宝物を同じ数に分けよう"
+    },
     newProblem: "新しい",
     hint: "ヒント",
     clear: "消す",
@@ -334,6 +441,11 @@ const translations = {
     takeAway: "ひく数",
     answer: "答え",
     borrowMessage: "いいくり下がり。小さい 1 は、この位が 10 ふえたしるしだよ。",
+    carryMessage: "いいくり上がり。小さい数が次の位を助けるよ。",
+    carryInto: (place) => `${place}にくり上がる`,
+    carryDigit: (place) => `${place}のくり上がり`,
+    optionalCarry: "くり上がりの箱は使っても使わなくてもいいよ。",
+    divisionGuide: "上の商の箱に入れてみよう。かけて、ひいて、次を下ろすよ。",
     wrongFirst: "いいね。右から始めて、位を一つずつ見よう。",
     wrongAgain: "もう少し。光っている箱を見て、もう一度。",
     gateOpen: "ゲートが開いた！宝物を助けたよ！",
@@ -355,6 +467,7 @@ const translations = {
     voiceLang: "vi-VN",
     title: "Giải cứu kho báu trừ",
     eyebrow: "Phiêu lưu phép trừ",
+    mathEyebrow: "Phiêu lưu toán học",
     brand: "Giải cứu kho báu",
     languageLabel: "Ngôn ngữ",
     scoreLabel: "Điểm",
@@ -363,6 +476,13 @@ const translations = {
     mapLabel: "Tiến trình bản đồ kho báu",
     controlsLabel: "Chọn bài tập",
     numberSize: "Số chữ số",
+    operationLabel: "Phép tính",
+    operations: {
+      subtraction: "Trừ",
+      addition: "Cộng",
+      multiplication: "Nhân",
+      division: "Chia"
+    },
     digits: (count) => `${count} chữ số`,
     mix: "Trộn",
     includeTrading: "Có mượn",
@@ -370,6 +490,12 @@ const translations = {
     verticalSubtraction: "Phép trừ đặt dọc",
     gate: (count) => `Cổng ${count}`,
     problemTitle: "Mở cổng kho báu",
+    problemTitles: {
+      subtraction: "Mở cổng kho báu",
+      addition: "Cộng đá quý để mở cổng",
+      multiplication: "Xếp chồng kho báu",
+      division: "Chia kho báu đều nhau"
+    },
     newProblem: "Bài mới",
     hint: "Gợi ý",
     clear: "Xóa",
@@ -390,6 +516,11 @@ const translations = {
     takeAway: "trừ đi",
     answer: "Đáp án",
     borrowMessage: "Mượn giỏi lắm. Số 1 nhỏ nghĩa là hàng này có thêm mười.",
+    carryMessage: "Nhớ giỏi lắm. Số nhỏ này giúp hàng tiếp theo.",
+    carryInto: (place) => `Nhớ vào ${place}`,
+    carryDigit: (place) => `Số nhớ ${place}`,
+    optionalCarry: "Ô nhớ có thể điền hoặc bỏ qua.",
+    divisionGuide: "Thử từng ô thương ở trên. Nhân, trừ, rồi hạ xuống.",
     wrongFirst: "Cố gắng tốt. Bắt đầu bên phải và kiểm tra từng hàng.",
     wrongAgain: "Gần đúng rồi. Nhìn ô sáng lên rồi thử lại.",
     gateOpen: "Cổng mở rồi! Cứu được kho báu!",
@@ -410,15 +541,24 @@ const translations = {
 
 const state = {
   lang: "en",
+  operation: "subtraction",
   digits: 2,
   includeRegrouping: true,
   minuend: 52,
   subtrahend: 18,
+  addendA: 34,
+  addendB: 18,
+  factorTop: 24,
+  factorBottom: 3,
+  dividend: 48,
+  divisor: 4,
+  quotient: 12,
   answer: 34,
   solved: 0,
   gems: 0,
   attempts: 0,
   borrowMarks: new Set(),
+  carryMarks: new Set(),
   completing: false,
   audioContext: null,
   preferredVoice: null,
@@ -437,6 +577,7 @@ const els = {
   scoreLabels: [...document.querySelectorAll(".score-board span")],
   mapBand: document.querySelector(".map-band"),
   controlsPanel: document.querySelector(".controls-panel"),
+  operationTabs: [...document.querySelectorAll(".operation-tab")],
   levelPicker: document.querySelector(".level-picker"),
   toggleLabel: document.querySelector(".toggle-row span"),
   problemCard: document.querySelector(".problem-card"),
@@ -515,7 +656,36 @@ function needsRegrouping(top, bottom) {
   return false;
 }
 
+function needsAdditionCarry(top, bottom) {
+  const width = Math.max(String(top).length, String(bottom).length);
+  const topDigits = digitsOf(top, width).map(Number).reverse();
+  const bottomDigits = digitsOf(bottom, width).map(Number).reverse();
+  let carry = 0;
+
+  for (let index = 0; index < width; index += 1) {
+    const total = topDigits[index] + bottomDigits[index] + carry;
+    if (total >= 10) {
+      return true;
+    }
+    carry = total >= 10 ? 1 : 0;
+  }
+  return false;
+}
+
 function makeProblem() {
+  if (state.operation === "addition") {
+    makeAdditionProblem();
+    return;
+  }
+  if (state.operation === "multiplication") {
+    makeMultiplicationProblem();
+    return;
+  }
+  if (state.operation === "division") {
+    makeDivisionProblem();
+    return;
+  }
+
   const digits = getDigitCount();
   const { min, max } = rangeForDigits(digits);
   let top = 0;
@@ -534,11 +704,65 @@ function makeProblem() {
   state.answer = top - bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
+  state.carryMarks.clear();
+  state.completing = false;
+}
+
+function makeAdditionProblem() {
+  const digits = getDigitCount();
+  const { min, max } = rangeForDigits(digits);
+  let top = 0;
+  let bottom = 0;
+  let tries = 0;
+  const wantsCarry = state.includeRegrouping;
+
+  do {
+    top = randomInt(min, max);
+    bottom = randomInt(min, max);
+    tries += 1;
+  } while (tries < 900 && needsAdditionCarry(top, bottom) !== wantsCarry);
+
+  state.addendA = top;
+  state.addendB = bottom;
+  state.answer = top + bottom;
+  state.attempts = 0;
+  state.borrowMarks.clear();
+  state.carryMarks.clear();
+  state.completing = false;
+}
+
+function makeMultiplicationProblem() {
+  const digits = getDigitCount();
+  const { min, max } = rangeForDigits(digits);
+  state.factorTop = randomInt(min, max);
+  state.factorBottom = randomInt(2, 9);
+  state.answer = state.factorTop * state.factorBottom;
+  state.attempts = 0;
+  state.borrowMarks.clear();
+  state.carryMarks.clear();
+  state.completing = false;
+}
+
+function makeDivisionProblem() {
+  const digits = getDigitCount();
+  const quotientRange = rangeForDigits(Math.max(1, digits - 1));
+  state.divisor = randomInt(2, 9);
+  state.quotient = randomInt(quotientRange.min, quotientRange.max);
+  state.dividend = state.divisor * state.quotient;
+  state.answer = state.quotient;
+  state.attempts = 0;
+  state.borrowMarks.clear();
+  state.carryMarks.clear();
   state.completing = false;
 }
 
 function digitsOf(number, width) {
   return String(number).padStart(width, "0").split("");
+}
+
+function displayDigitsOf(number, width) {
+  const raw = String(number);
+  return raw.padStart(width, " ").split("");
 }
 
 function regroupSteps(top, bottom) {
@@ -570,13 +794,38 @@ function regroupSteps(top, bottom) {
   return steps;
 }
 
+function answerText() {
+  return String(state.answer);
+}
+
+function answerWidth() {
+  if (state.operation === "subtraction") {
+    return String(state.minuend).length;
+  }
+  return answerText().length;
+}
+
 function renderBoard() {
+  if (state.operation === "addition") {
+    renderAdditionBoard();
+    return;
+  }
+  if (state.operation === "multiplication") {
+    renderMultiplicationBoard();
+    return;
+  }
+  if (state.operation === "division") {
+    renderDivisionBoard();
+    return;
+  }
+
   const width = String(state.minuend).length;
   const top = digitsOf(state.minuend, width);
   const bottom = digitsOf(state.subtrahend, width);
   const answer = digitsOf(state.answer, width);
 
   els.board.innerHTML = "";
+  els.board.classList.remove("division-board");
   els.board.style.setProperty("--places", String(width));
 
   const topRow = makeNumberRow("", top, "top number", "top");
@@ -608,6 +857,151 @@ function renderBoard() {
   els.board.append(topRow, bottomRow, inputRow);
 }
 
+function makeAnswerRow(width) {
+  const answer = digitsOf(state.answer, width);
+  const inputRow = document.createElement("div");
+  inputRow.className = "number-row answer-row";
+  inputRow.setAttribute("aria-label", copy().answer);
+
+  const equals = document.createElement("span");
+  equals.className = "operator";
+  equals.textContent = "=";
+  inputRow.append(equals);
+
+  answer.forEach((_, index) => {
+    const input = document.createElement("input");
+    input.className = "digit-input";
+    input.inputMode = "numeric";
+    input.maxLength = 1;
+    input.autocomplete = "off";
+    input.pattern = "[0-9]";
+    input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
+    input.dataset.index = String(index);
+    input.addEventListener("input", handleDigitInput);
+    input.addEventListener("keydown", handleDigitKeys);
+    inputRow.append(input);
+  });
+
+  return inputRow;
+}
+
+function renderAdditionBoard() {
+  const width = Math.max(String(state.addendA).length, String(state.addendB).length, answerWidth());
+  const top = displayDigitsOf(state.addendA, width);
+  const bottom = displayDigitsOf(state.addendB, width);
+
+  els.board.innerHTML = "";
+  els.board.classList.remove("division-board");
+  els.board.style.setProperty("--places", String(width));
+
+  const carryRow = document.createElement("div");
+  carryRow.className = "number-row carry-row";
+  carryRow.append(document.createElement("span"));
+  top.forEach((_, index) => {
+    const marker = document.createElement("button");
+    marker.className = "carry-marker";
+    marker.type = "button";
+    marker.textContent = state.carryMarks.has(index) ? "1" : "";
+    marker.ariaLabel = (copy().carryInto || translations.en.carryInto)(placeName(width - index - 1));
+    marker.disabled = index === width - 1;
+    marker.addEventListener("click", () => toggleCarry(index));
+    if (state.carryMarks.has(index)) {
+      marker.classList.add("active");
+    }
+    carryRow.append(marker);
+  });
+
+  const topRow = makeNumberRow("", top, "top number", "top");
+  const bottomRow = makeNumberRow("+", bottom, "add", "bottom");
+  bottomRow.classList.add("bottom-row");
+  els.board.append(carryRow, topRow, bottomRow, makeAnswerRow(width));
+}
+
+function renderMultiplicationBoard() {
+  const answer = answerText();
+  const topWidth = String(state.factorTop).length;
+  const width = Math.max(topWidth, answer.length);
+  const top = displayDigitsOf(state.factorTop, width);
+  const bottom = displayDigitsOf(state.factorBottom, width);
+
+  els.board.innerHTML = "";
+  els.board.classList.remove("division-board");
+  els.board.style.setProperty("--places", String(width));
+
+  const carryRow = document.createElement("div");
+  carryRow.className = "number-row multiply-carry-row";
+  carryRow.append(document.createElement("span"));
+  top.forEach((_, index) => {
+    const input = document.createElement("input");
+    input.className = "carry-input";
+    input.inputMode = "numeric";
+    input.maxLength = 2;
+    input.autocomplete = "off";
+    input.pattern = "[0-9]*";
+    input.ariaLabel = (copy().carryDigit || translations.en.carryDigit)(placeName(width - index - 1));
+    input.dataset.index = String(index);
+    input.addEventListener("input", handleCarryInput);
+    carryRow.append(input);
+  });
+
+  const topRow = makeNumberRow("", top, "top number", "top");
+  const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
+  bottomRow.classList.add("bottom-row");
+  els.board.append(carryRow, topRow, bottomRow, makeAnswerRow(width));
+}
+
+function renderDivisionBoard() {
+  const quotient = answerText();
+  const dividend = String(state.dividend);
+  const quotientWidth = quotient.length;
+  const dividendWidth = dividend.length;
+
+  els.board.innerHTML = "";
+  els.board.classList.add("division-board");
+  els.board.style.setProperty("--places", String(Math.max(quotientWidth, dividendWidth)));
+
+  const shell = document.createElement("div");
+  shell.className = "division-shell";
+
+  const divisor = document.createElement("div");
+  divisor.className = "division-divisor";
+  divisor.textContent = state.divisor;
+
+  const work = document.createElement("div");
+  work.className = "division-work";
+
+  const quotientRow = document.createElement("div");
+  quotientRow.className = "division-quotient-row";
+  quotientRow.style.gridTemplateColumns = `repeat(${quotientWidth}, minmax(42px, 1fr))`;
+  digitsOf(state.answer, quotientWidth).forEach((_, index) => {
+    const input = document.createElement("input");
+    input.className = "digit-input";
+    input.inputMode = "numeric";
+    input.maxLength = 1;
+    input.autocomplete = "off";
+    input.pattern = "[0-9]";
+    input.ariaLabel = copy().answerDigit(placeName(quotientWidth - index - 1));
+    input.dataset.index = String(index);
+    input.addEventListener("input", handleDigitInput);
+    input.addEventListener("keydown", handleDigitKeys);
+    quotientRow.append(input);
+  });
+
+  const dividendRow = document.createElement("div");
+  dividendRow.className = "division-dividend-row";
+  dividendRow.style.gridTemplateColumns = `repeat(${dividendWidth}, minmax(42px, 1fr))`;
+  digitsOf(state.dividend, dividendWidth).forEach((digit) => {
+    const cell = document.createElement("span");
+    cell.className = "digit-cell";
+    cell.textContent = digit;
+    dividendRow.append(cell);
+  });
+
+  work.append(quotientRow, dividendRow);
+  shell.append(divisor, work);
+  els.board.append(shell);
+}
+
 function makeNumberRow(operator, digits, label) {
   const row = document.createElement("div");
   row.className = "number-row";
@@ -619,12 +1013,13 @@ function makeNumberRow(operator, digits, label) {
   row.append(op);
 
   digits.forEach((digit, index) => {
-    const cell = document.createElement(label === "top number" ? "button" : "span");
+    const isBorrowButton = state.operation === "subtraction" && label === "top number";
+    const cell = document.createElement(isBorrowButton ? "button" : "span");
     cell.className = "digit-cell";
     cell.dataset.index = String(index);
     cell.textContent = digit;
 
-    if (label === "top number") {
+    if (isBorrowButton) {
       cell.type = "button";
       cell.ariaLabel = copy().borrowInto(placeName(digits.length - index - 1));
       cell.disabled = index === 0;
@@ -664,7 +1059,72 @@ function toggleBorrow(index) {
   playTone("borrow");
 }
 
+function toggleCarry(index) {
+  const typedDigits = [...document.querySelectorAll(".digit-input")].map((input) => input.value);
+  if (state.carryMarks.has(index)) {
+    state.carryMarks.delete(index);
+  } else {
+    state.carryMarks.add(index);
+  }
+  renderBoard();
+  document.querySelectorAll(".digit-input").forEach((input, inputIndex) => {
+    input.value = typedDigits[inputIndex] || "";
+    checkDigitInput(input);
+  });
+  renderPlaceLab();
+  els.feedback.textContent = (copy().carryMessage || translations.en.carryMessage);
+  playTone("borrow");
+}
+
+function multiplicationCarries() {
+  const digits = String(state.factorTop).split("").map(Number).reverse();
+  const carries = new Map();
+  let carry = 0;
+
+  digits.forEach((digit, reverseIndex) => {
+    const product = digit * state.factorBottom + carry;
+    carry = Math.floor(product / 10);
+    const displayIndex = String(state.answer).length - reverseIndex - 2;
+    if (carry > 0 && displayIndex >= 0) {
+      carries.set(displayIndex, String(carry));
+    }
+  });
+
+  return carries;
+}
+
+function handleCarryInput(event) {
+  const input = event.currentTarget;
+  input.value = input.value.replace(/\D/g, "").slice(0, 2);
+  input.classList.remove("wrong", "correct");
+
+  if (!input.value) {
+    return;
+  }
+
+  const expected = multiplicationCarries().get(Number(input.dataset.index));
+  input.classList.toggle("correct", input.value === expected);
+  input.classList.toggle("wrong", input.value !== expected);
+  if (input.value === expected) {
+    sparkleAt(input, 5);
+    playTone("digit");
+  }
+}
+
 function renderPlaceLab(stepIndex = -1) {
+  if (state.operation === "addition") {
+    renderAdditionLab();
+    return;
+  }
+  if (state.operation === "multiplication") {
+    renderMultiplicationLab();
+    return;
+  }
+  if (state.operation === "division") {
+    renderDivisionLab();
+    return;
+  }
+
   const width = String(state.minuend).length;
   const top = digitsOf(state.minuend, width).map(Number);
   const bottom = digitsOf(state.subtrahend, width).map(Number);
@@ -685,6 +1145,53 @@ function renderPlaceLab(stepIndex = -1) {
     `;
     els.placeLab.append(card);
   });
+}
+
+function renderAdditionLab() {
+  const width = Math.max(String(state.addendA).length, String(state.addendB).length, answerWidth());
+  const top = digitsOf(state.addendA, width).map(Number);
+  const bottom = digitsOf(state.addendB, width).map(Number);
+  els.placeLab.innerHTML = "";
+
+  top.forEach((digit, index) => {
+    const reverseIndex = width - index - 1;
+    const total = digit + bottom[index];
+    const card = document.createElement("div");
+    card.className = "place-card";
+    if (total >= 10 || state.carryMarks.has(index)) {
+      card.classList.add("active");
+    }
+    card.innerHTML = `
+      <span>${placeName(reverseIndex)}</span>
+      <strong>${digit + bottom[index]}</strong>
+      <small>${digit} + ${bottom[index]}</small>
+    `;
+    els.placeLab.append(card);
+  });
+}
+
+function renderMultiplicationLab() {
+  els.placeLab.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "place-card active";
+  card.innerHTML = `
+    <span>${copy().operations?.multiplication || translations.en.operations.multiplication}</span>
+    <strong>× ${state.factorBottom}</strong>
+    <small>${copy().optionalCarry || translations.en.optionalCarry}</small>
+  `;
+  els.placeLab.append(card);
+}
+
+function renderDivisionLab() {
+  els.placeLab.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "place-card active division-help";
+  card.innerHTML = `
+    <span>${copy().operations?.division || translations.en.operations.division}</span>
+    <strong>÷ ${state.divisor}</strong>
+    <small>${copy().divisionGuide || translations.en.divisionGuide}</small>
+  `;
+  els.placeLab.append(card);
 }
 
 function getTypedAnswer() {
@@ -723,7 +1230,7 @@ function handleDigitKeys(event) {
 }
 
 function checkDigitInput(input) {
-  const expected = String(state.answer).padStart(String(state.minuend).length, "0");
+  const expected = answerText().padStart(answerWidth(), "0");
   const index = Number(input.dataset.index);
   if (!input.value) {
     input.classList.remove("correct");
@@ -751,7 +1258,7 @@ function maybeCompleteAnswer() {
     return;
   }
   const inputs = [...document.querySelectorAll(".digit-input")];
-  const expected = String(state.answer).padStart(String(state.minuend).length, "0");
+  const expected = answerText().padStart(answerWidth(), "0");
   const typed = inputs.map((input) => input.value).join("");
   if (typed.length === expected.length && typed === expected) {
     rescueTreasure();
@@ -762,7 +1269,7 @@ function checkAnswer() {
   if (state.completing) {
     return;
   }
-  const expected = String(state.answer).padStart(String(state.minuend).length, "0");
+  const expected = answerText().padStart(answerWidth(), "0");
   const typed = getTypedAnswer();
   const inputs = [...document.querySelectorAll(".digit-input")];
   state.attempts += 1;
@@ -814,6 +1321,24 @@ function rescueTreasure() {
 }
 
 function showHint() {
+  if (state.operation === "addition") {
+    els.feedback.textContent = copy().carryMessage || translations.en.carryMessage;
+    els.helperTitle.textContent = copy().helperTradeTitle;
+    renderPlaceLab();
+    return;
+  }
+  if (state.operation === "multiplication") {
+    els.feedback.textContent = copy().optionalCarry || translations.en.optionalCarry;
+    els.helperTitle.textContent = copy().helperTry;
+    renderPlaceLab();
+    return;
+  }
+  if (state.operation === "division") {
+    els.feedback.textContent = copy().divisionGuide || translations.en.divisionGuide;
+    els.helperTitle.textContent = copy().helperTry;
+    renderPlaceLab();
+    return;
+  }
   const steps = regroupSteps(state.minuend, state.subtrahend);
   const hintIndex = Math.min(state.attempts, steps.length - 1);
   const placeIndex = hintIndex % String(state.minuend).length;
@@ -1032,15 +1557,26 @@ function renderGame() {
   renderPlaceLab();
   updateScore();
   els.feedback.textContent = copy().typeAnswer;
-  els.helperTitle.textContent = state.includeRegrouping ? copy().helperTrade : copy().helperStart;
+  if (state.operation === "division") {
+    els.helperTitle.textContent = copy().divisionGuide || translations.en.divisionGuide;
+  } else if (state.operation === "multiplication") {
+    els.helperTitle.textContent = copy().optionalCarry || translations.en.optionalCarry;
+  } else if (state.operation === "addition") {
+    els.helperTitle.textContent = copy().carryMessage || translations.en.carryMessage;
+  } else {
+    els.helperTitle.textContent = state.includeRegrouping ? copy().helperTrade : copy().helperStart;
+  }
 }
 
 function applyTranslations() {
   const text = copy();
+  const english = translations.en;
   document.documentElement.lang = text.htmlLang;
-  document.title = text.title;
+  document.title = state.operation === "subtraction" ? text.title : "Treasure Rescue Math";
   els.topBar.setAttribute("aria-label", text.controlsLabel);
-  els.brandEyebrow.textContent = text.eyebrow;
+  els.brandEyebrow.textContent = state.operation === "subtraction"
+    ? text.eyebrow
+    : text.mathEyebrow || english.mathEyebrow;
   els.brandTitle.textContent = text.brand;
   els.languageSwitch.setAttribute("aria-label", text.languageLabel);
   els.scoreBoard.setAttribute("aria-label", text.scoreLabel);
@@ -1048,13 +1584,20 @@ function applyTranslations() {
   els.scoreLabels[1].textContent = text.rescued;
   els.mapBand.setAttribute("aria-label", text.mapLabel);
   els.controlsPanel.setAttribute("aria-label", text.controlsLabel);
+  els.operationTabs[0]?.parentElement?.setAttribute("aria-label", text.operationLabel || english.operationLabel);
+  els.operationTabs.forEach((button) => {
+    const active = button.dataset.operation === state.operation;
+    button.textContent = text.operations?.[button.dataset.operation] || english.operations[button.dataset.operation];
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
   els.levelPicker.setAttribute("aria-label", text.numberSize);
   els.levelButtons.forEach((button) => {
     button.textContent = button.dataset.digits === "mix" ? text.mix : text.digits(button.dataset.digits);
   });
   els.toggleLabel.textContent = text.includeTrading;
   els.problemCard.setAttribute("aria-label", text.subtractionProblem);
-  els.problemTitle.textContent = text.problemTitle;
+  els.problemTitle.textContent = text.problemTitles?.[state.operation] || english.problemTitles[state.operation];
   els.newProblemButton.textContent = text.newProblem;
   els.newProblemButton.setAttribute("aria-label", text.newProblem);
   els.newProblemButton.title = text.newProblem;
@@ -1082,6 +1625,14 @@ els.levelButtons.forEach((button) => {
     els.levelButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
     state.digits = button.dataset.digits === "mix" ? "mix" : Number(button.dataset.digits);
+    makeProblem();
+    renderGame();
+  });
+});
+
+els.operationTabs.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.operation = button.dataset.operation;
     makeProblem();
     renderGame();
   });
