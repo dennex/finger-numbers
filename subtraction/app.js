@@ -82,7 +82,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
       addition: "Let's practice addition. Start with the ones. Type each answer digit under the line. If you carry, tap the little carry box above the next column.",
-      multiplication: "Let's practice multiplication. Multiply by the bottom number, starting on the right. Type the answer under the line. Carry boxes are there if you want to use them.",
+      multiplication: "Let's practice multiplication. Use one bottom digit at a time. Fill each partial answer row, then add the rows for the final answer. Carry boxes are there if you want them.",
       division: "Let's practice division. Put the answer boxes on top of the division house. Think: divide, multiply, subtract, and bring down."
     },
     treasureSpeech: "Awesome job, you got to the treasure. What's inside?",
@@ -163,7 +163,7 @@ const translations = {
     introSpeeches: {
       subtraction: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
       addition: "On s'entraîne à additionner. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu reportes, touche la petite case de report au-dessus de la colonne suivante.",
-      multiplication: "On s'entraîne à multiplier. Multiplie par le nombre du bas, en commençant à droite. Écris la réponse sous la ligne. Les cases de report sont là si tu veux les utiliser.",
+      multiplication: "On s'entraîne à multiplier. Utilise un chiffre du bas à la fois. Remplis chaque ligne de réponse, puis additionne les lignes pour la réponse finale. Les cases de report sont là si tu veux.",
       division: "On s'entraîne à diviser. Mets les chiffres de la réponse au-dessus de la maison de division. Pense : diviser, multiplier, soustraire, puis descendre."
     },
     treasureSpeech: "Bravo, tu es arrivé au trésor. Qu'est-ce qu'il y a dedans ?",
@@ -244,7 +244,7 @@ const translations = {
     introSpeeches: {
       subtraction: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
       addition: "一齊練習加數。由個位開始。喺線下面輸入答案數字。如果要進位，就撳下一欄上面嘅細格。",
-      multiplication: "一齊練習乘數。用下面個數去乘，由右邊開始。喺線下面輸入答案。進位格想用就用。",
+      multiplication: "一齊練習乘數。下面嘅數字逐個用，由右邊開始。填好每一行中間答案，最後將幾行加埋。進位格想用就用。",
       division: "一齊練習除數。將答案寫喺除數屋頂上面。記住：除、乘、減，再拉下一位落嚟。"
     },
     treasureSpeech: "好叻呀，你去到寶藏喇。入面有咩呢？",
@@ -325,7 +325,7 @@ const translations = {
     introSpeeches: {
       subtraction: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
       addition: "我们来练习加法。从个位开始。把每个答案数字写在线下面。如果要进位，就点下一列上方的小进位格。",
-      multiplication: "我们来练习乘法。用下面的数去乘，从右边开始。把答案写在线下面。进位格想用就用。",
+      multiplication: "我们来练习乘法。下面的数字一个一个用，从右边开始。先填每一行中间答案，最后把这些行加起来。进位格想用就用。",
       division: "我们来练习除法。把答案写在除法屋顶上。记住：除、乘、减，再把下一位带下来。"
     },
     treasureSpeech: "太棒了，你到达宝藏了。里面有什么？",
@@ -406,7 +406,7 @@ const translations = {
     introSpeeches: {
       subtraction: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
       addition: "더하기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 써. 올림이 있으면 다음 자리 위의 작은 올림 칸을 눌러.",
-      multiplication: "곱하기를 연습하자. 아래 숫자로 오른쪽부터 곱해. 선 아래에 답을 써. 올림 칸은 쓰고 싶을 때 쓰면 돼.",
+      multiplication: "곱하기를 연습하자. 아래 숫자를 하나씩 오른쪽부터 사용해. 각 중간 답 줄을 채우고, 마지막에 줄들을 더해 최종 답을 써. 올림 칸은 쓰고 싶을 때 쓰면 돼.",
       division: "나누기를 연습하자. 나눗셈 집 위에 답을 써. 나누고, 곱하고, 빼고, 다음 숫자를 내려."
     },
     treasureSpeech: "정말 잘했어, 보물에 도착했어. 안에 뭐가 있을까?",
@@ -487,7 +487,7 @@ const translations = {
     introSpeeches: {
       subtraction: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
       addition: "たし算を練習しよう。一の位から始めてね。線の下に答えを書こう。くり上がりがある時は、次の位の上の小さい箱をタップしてね。",
-      multiplication: "かけ算を練習しよう。下の数を使って、右からかけてね。線の下に答えを書こう。くり上がりの箱は使いたい時に使えるよ。",
+      multiplication: "かけ算を練習しよう。下の数字を右から一つずつ使ってね。途中の答えの行をそれぞれ書いて、最後にその行をたして答えを書こう。くり上がりの箱は使いたい時に使えるよ。",
       division: "わり算を練習しよう。わり算の家の上に答えを書いてね。わって、かけて、ひいて、次を下ろそう。"
     },
     treasureSpeech: "すごい、宝物まで来たよ。中には何があるかな？",
@@ -568,7 +568,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
       addition: "Mình cùng luyện phép cộng nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu có nhớ, hãy chạm vào ô nhớ nhỏ phía trên hàng tiếp theo.",
-      multiplication: "Mình cùng luyện phép nhân nhé. Nhân với số ở dưới, bắt đầu từ bên phải. Nhập đáp án dưới đường kẻ. Ô nhớ có thể dùng nếu con muốn.",
+      multiplication: "Mình cùng luyện phép nhân nhé. Dùng từng chữ số ở dưới, bắt đầu từ bên phải. Điền từng hàng kết quả tạm, rồi cộng các hàng để ra đáp án cuối. Ô nhớ có thể dùng nếu con muốn.",
       division: "Mình cùng luyện phép chia nhé. Nhập đáp án phía trên ngôi nhà chia. Hãy nghĩ: chia, nhân, trừ, rồi hạ xuống."
     },
     treasureSpeech: "Tuyệt vời, con đã đến kho báu. Bên trong có gì nhỉ?",
@@ -776,8 +776,9 @@ function makeAdditionProblem() {
 function makeMultiplicationProblem() {
   const digits = getDigitCount();
   const { min, max } = rangeForDigits(digits);
+  const bottomRange = rangeForDigits(2);
   state.factorTop = randomInt(min, max);
-  state.factorBottom = randomInt(2, 9);
+  state.factorBottom = randomInt(bottomRange.min, bottomRange.max);
   state.answer = state.factorTop * state.factorBottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -847,6 +848,18 @@ function answerWidth() {
   return answerText().length;
 }
 
+function multiplicationPartialProducts() {
+  return String(state.factorBottom)
+    .split("")
+    .map(Number)
+    .reverse()
+    .map((digit, shift) => ({
+      digit,
+      shift,
+      value: state.factorTop * digit * (10 ** shift)
+    }));
+}
+
 function renderBoard() {
   if (state.operation === "addition") {
     renderAdditionBoard();
@@ -867,7 +880,7 @@ function renderBoard() {
   const answer = digitsOf(state.answer, width);
 
   els.board.innerHTML = "";
-  els.board.classList.remove("division-board");
+  els.board.classList.remove("division-board", "multiplication-board");
   els.board.style.setProperty("--places", String(width));
 
   const topRow = makeNumberRow("", top, "top number", "top");
@@ -899,10 +912,10 @@ function renderBoard() {
   els.board.append(topRow, bottomRow, inputRow);
 }
 
-function makeAnswerRow(width) {
+function makeAnswerRow(width, extraClass = "") {
   const answer = digitsOf(state.answer, width);
   const inputRow = document.createElement("div");
-  inputRow.className = "number-row answer-row";
+  inputRow.className = `number-row answer-row ${extraClass}`.trim();
   inputRow.setAttribute("aria-label", copy().answer);
 
   const equals = document.createElement("span");
@@ -933,7 +946,7 @@ function renderAdditionBoard() {
   const bottom = displayDigitsOf(state.addendB, width);
 
   els.board.innerHTML = "";
-  els.board.classList.remove("division-board");
+  els.board.classList.remove("division-board", "multiplication-board");
   els.board.style.setProperty("--places", String(width));
 
   const carryRow = document.createElement("div");
@@ -962,18 +975,42 @@ function renderAdditionBoard() {
 function renderMultiplicationBoard() {
   const answer = answerText();
   const topWidth = String(state.factorTop).length;
-  const width = Math.max(topWidth, answer.length);
+  const partials = multiplicationPartialProducts();
+  const width = Math.max(topWidth, String(state.factorBottom).length, answer.length);
   const top = displayDigitsOf(state.factorTop, width);
   const bottom = displayDigitsOf(state.factorBottom, width);
 
   els.board.innerHTML = "";
   els.board.classList.remove("division-board");
+  els.board.classList.add("multiplication-board");
   els.board.style.setProperty("--places", String(width));
 
+  const topRow = makeNumberRow("", top, "top number", "top");
+  const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
+  bottomRow.classList.add("bottom-row");
+  els.board.append(makeMultiplyCarryRow(width, 0, partials[0].digit), topRow, bottomRow);
+
+  if (partials.length === 1) {
+    els.board.append(makeAnswerRow(width));
+    return;
+  }
+
+  partials.forEach((partial, rowIndex) => {
+    els.board.append(makePartialProductRow(partial, width, rowIndex));
+  });
+  els.board.append(makeAnswerRow(width, "total-row"));
+}
+
+function makeMultiplyCarryRow(width, rowIndex, multiplierDigit) {
   const carryRow = document.createElement("div");
   carryRow.className = "number-row multiply-carry-row";
-  carryRow.append(document.createElement("span"));
-  top.forEach((_, index) => {
+
+  const label = document.createElement("span");
+  label.className = "operator carry-label";
+  label.textContent = `×${multiplierDigit}`;
+  carryRow.append(label);
+
+  for (let index = 0; index < width; index += 1) {
     const input = document.createElement("input");
     input.className = "carry-input";
     input.inputMode = "numeric";
@@ -982,14 +1019,48 @@ function renderMultiplicationBoard() {
     input.pattern = "[0-9]*";
     input.ariaLabel = (copy().carryDigit || translations.en.carryDigit)(placeName(width - index - 1));
     input.dataset.index = String(index);
+    input.dataset.row = String(rowIndex);
     input.addEventListener("input", handleCarryInput);
     carryRow.append(input);
+  }
+
+  return carryRow;
+}
+
+function makePartialProductRow(partial, width, rowIndex) {
+  const row = document.createElement("div");
+  row.className = "number-row partial-row";
+  row.setAttribute("aria-label", `${copy().operations?.multiplication || translations.en.operations.multiplication} ${partial.digit}`);
+
+  const op = document.createElement("span");
+  op.className = "operator";
+  op.textContent = rowIndex === 0 ? "=" : "+";
+  row.append(op);
+
+  const display = String(partial.value).padStart(width, " ");
+  display.split("").forEach((digit, index) => {
+    if (digit === " ") {
+      const spacer = document.createElement("span");
+      spacer.className = "partial-spacer";
+      row.append(spacer);
+      return;
+    }
+
+    const input = document.createElement("input");
+    input.className = "partial-input";
+    input.inputMode = "numeric";
+    input.maxLength = 1;
+    input.autocomplete = "off";
+    input.pattern = "[0-9]";
+    input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
+    input.dataset.expected = digit;
+    input.dataset.row = String(rowIndex);
+    input.addEventListener("input", handlePartialInput);
+    input.addEventListener("keydown", handlePartialKeys);
+    row.append(input);
   });
 
-  const topRow = makeNumberRow("", top, "top number", "top");
-  const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
-  bottomRow.classList.add("bottom-row");
-  els.board.append(carryRow, topRow, bottomRow, makeAnswerRow(width));
+  return row;
 }
 
 function renderDivisionBoard() {
@@ -999,6 +1070,7 @@ function renderDivisionBoard() {
   const dividendWidth = dividend.length;
 
   els.board.innerHTML = "";
+  els.board.classList.remove("multiplication-board");
   els.board.classList.add("division-board");
   els.board.style.setProperty("--places", String(Math.max(quotientWidth, dividendWidth)));
 
@@ -1118,15 +1190,18 @@ function toggleCarry(index) {
   playTone("borrow");
 }
 
-function multiplicationCarries() {
+function multiplicationCarries(rowIndex = 0) {
+  const partial = multiplicationPartialProducts()[rowIndex] || multiplicationPartialProducts()[0];
+  const multiplierDigit = partial?.digit || state.factorBottom;
   const digits = String(state.factorTop).split("").map(Number).reverse();
   const carries = new Map();
   let carry = 0;
+  const width = answerWidth();
 
   digits.forEach((digit, reverseIndex) => {
-    const product = digit * state.factorBottom + carry;
+    const product = digit * multiplierDigit + carry;
     carry = Math.floor(product / 10);
-    const displayIndex = String(state.answer).length - reverseIndex - 2;
+    const displayIndex = width - reverseIndex - 2;
     if (carry > 0 && displayIndex >= 0) {
       carries.set(displayIndex, String(carry));
     }
@@ -1144,12 +1219,59 @@ function handleCarryInput(event) {
     return;
   }
 
-  const expected = multiplicationCarries().get(Number(input.dataset.index));
+  const expected = multiplicationCarries(Number(input.dataset.row)).get(Number(input.dataset.index));
   input.classList.toggle("correct", input.value === expected);
   input.classList.toggle("wrong", input.value !== expected);
   if (input.value === expected) {
     sparkleAt(input, 5);
     playTone("digit");
+  }
+}
+
+function handlePartialInput(event) {
+  const input = event.currentTarget;
+  input.value = input.value.replace(/\D/g, "").slice(-1);
+  input.classList.remove("wrong");
+
+  if (!input.value) {
+    input.classList.remove("correct");
+    input.dataset.celebrated = "";
+    return;
+  }
+
+  if (input.value === input.dataset.expected) {
+    input.classList.add("correct");
+    if (input.dataset.celebrated !== "true") {
+      input.dataset.celebrated = "true";
+      sparkleAt(input, 5);
+      playTone("digit");
+    }
+  } else {
+    input.classList.remove("correct");
+    input.dataset.celebrated = "";
+  }
+
+  const next = input.nextElementSibling;
+  if (input.value && next?.classList.contains("partial-input")) {
+    next.focus();
+    next.select();
+  }
+  maybeCompleteAnswer();
+}
+
+function handlePartialKeys(event) {
+  const input = event.currentTarget;
+  if (event.key === "Backspace" && !input.value) {
+    const previous = input.previousElementSibling;
+    if (previous?.classList.contains("partial-input")) {
+      previous.focus();
+      previous.value = "";
+      previous.classList.remove("wrong", "correct");
+      previous.dataset.celebrated = "";
+    }
+  }
+  if (event.key === "Enter") {
+    checkAnswer();
   }
 }
 
@@ -1214,12 +1336,13 @@ function renderAdditionLab() {
 
 function renderMultiplicationLab() {
   els.placeLab.innerHTML = "";
+  const bottomDigits = String(state.factorBottom).split("").reverse();
   const card = document.createElement("div");
   card.className = "place-card active";
   card.innerHTML = `
     <span>${copy().operations?.multiplication || translations.en.operations.multiplication}</span>
     <strong>× ${state.factorBottom}</strong>
-    <small>${copy().optionalCarry || translations.en.optionalCarry}</small>
+    <small>${bottomDigits.length > 1 ? `${bottomDigits.length} rows, then add` : (copy().optionalCarry || translations.en.optionalCarry)}</small>
   `;
   els.placeLab.append(card);
 }
@@ -1299,12 +1422,20 @@ function maybeCompleteAnswer() {
   if (state.completing) {
     return;
   }
+  if (state.operation === "multiplication" && !partialProductsComplete()) {
+    return;
+  }
   const inputs = [...document.querySelectorAll(".digit-input")];
   const expected = answerText().padStart(answerWidth(), "0");
   const typed = inputs.map((input) => input.value).join("");
   if (typed.length === expected.length && typed === expected) {
     rescueTreasure();
   }
+}
+
+function partialProductsComplete() {
+  const partialInputs = [...document.querySelectorAll(".partial-input")];
+  return partialInputs.every((input) => input.value === input.dataset.expected);
 }
 
 function checkAnswer() {
@@ -1320,7 +1451,14 @@ function checkAnswer() {
     input.classList.toggle("wrong", typed[index] !== expected[index]);
   });
 
-  if (Number(typed) === state.answer) {
+  if (state.operation === "multiplication") {
+    document.querySelectorAll(".partial-input").forEach((input) => {
+      input.classList.toggle("wrong", input.value !== input.dataset.expected);
+      input.classList.toggle("correct", input.value === input.dataset.expected);
+    });
+  }
+
+  if (Number(typed) === state.answer && partialProductsComplete()) {
     rescueTreasure();
     return;
   }
@@ -1390,7 +1528,7 @@ function showHint() {
 }
 
 function clearAnswer() {
-  document.querySelectorAll(".digit-input").forEach((input) => {
+  document.querySelectorAll(".digit-input, .partial-input, .carry-input").forEach((input) => {
     input.value = "";
     input.classList.remove("wrong", "correct");
     input.dataset.celebrated = "";
@@ -1620,6 +1758,7 @@ function renderGame() {
 function applyTranslations() {
   const text = copy();
   const english = translations.en;
+  document.body.dataset.operation = state.operation;
   document.documentElement.lang = text.htmlLang;
   document.title = state.operation === "subtraction" ? text.title : "Treasure Rescue Math";
   els.topBar.setAttribute("aria-label", text.controlsLabel);

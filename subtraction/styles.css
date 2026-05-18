@@ -516,7 +516,8 @@ input:focus-visible {
 
 .operator,
 .digit-cell,
-.digit-input {
+.digit-input,
+.partial-input {
   height: clamp(38px, 7vh, 56px);
   display: grid;
   place-items: center;
@@ -581,7 +582,8 @@ button.digit-cell:disabled {
   transform: translateX(-50%);
 }
 
-.digit-input {
+.digit-input,
+.partial-input {
   width: 100%;
   border: 3px solid rgba(23, 50, 51, 0.28);
   color: var(--ink);
@@ -589,15 +591,61 @@ button.digit-cell:disabled {
   text-align: center;
 }
 
-.digit-input.wrong {
+.digit-input.wrong,
+.partial-input.wrong {
   border-color: var(--coral);
   background: #ffe7df;
   animation: wiggle 230ms ease;
 }
 
-.digit-input.correct {
+.digit-input.correct,
+.partial-input.correct {
   border-color: var(--leaf);
   background: #ecf8e9;
+}
+
+.multiplication-board .multiply-carry-row {
+  margin-top: 1px;
+}
+
+.multiplication-board .partial-row {
+  margin-top: 1px;
+}
+
+.multiplication-board {
+  padding: 4px;
+}
+
+.multiplication-board .number-row {
+  gap: 3px;
+  margin-top: 1px;
+}
+
+.multiplication-board .bottom-row {
+  padding-bottom: 3px;
+  border-bottom-width: 3px;
+}
+
+.multiplication-board .operator,
+.multiplication-board .digit-cell,
+.multiplication-board .digit-input,
+.multiplication-board .partial-input {
+  height: clamp(22px, 3.5vh, 26px);
+  font-size: clamp(1rem, 2.1vw, 1.55rem);
+}
+
+.multiplication-board .carry-input {
+  height: clamp(18px, 3vh, 22px);
+  font-size: clamp(0.78rem, 1.5vw, 1rem);
+}
+
+.partial-spacer {
+  min-height: clamp(22px, 3.5vh, 26px);
+}
+
+.total-row {
+  padding-top: 3px;
+  border-top: 3px solid var(--ink);
 }
 
 .division-board {
@@ -653,6 +701,56 @@ button.digit-cell:disabled {
   font-size: clamp(0.95rem, 1.7vw, 1.18rem);
   font-weight: 1000;
   text-align: center;
+}
+
+body[data-operation="multiplication"] h1 {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+}
+
+body[data-operation="multiplication"] .map-band {
+  height: 42px;
+  padding: 4px 12px;
+}
+
+body[data-operation="multiplication"] .path {
+  height: 14px;
+}
+
+body[data-operation="multiplication"] .explorer {
+  transform: scale(0.48);
+}
+
+body[data-operation="multiplication"] .chest {
+  transform: scale(0.56);
+}
+
+body[data-operation="multiplication"] .chest.open {
+  transform: translateY(-8px) rotate(-2deg) scale(0.56);
+}
+
+body[data-operation="multiplication"] .operation-tab,
+body[data-operation="multiplication"] .level-button,
+body[data-operation="multiplication"] .primary-button,
+body[data-operation="multiplication"] .secondary-button,
+body[data-operation="multiplication"] .icon-button {
+  min-height: 38px;
+}
+
+body[data-operation="multiplication"] .problem-card {
+  padding-block: 8px;
+}
+
+body[data-operation="multiplication"] .problem-head {
+  margin-bottom: 4px;
+}
+
+body[data-operation="multiplication"] .answer-actions {
+  margin-top: 6px;
+}
+
+body[data-operation="multiplication"] .feedback {
+  min-height: 1.35em;
+  margin-top: 4px;
 }
 
 .helper-panel {
@@ -1219,7 +1317,8 @@ button.digit-cell:disabled {
 
   .operator,
   .digit-cell,
-  .digit-input {
+  .digit-input,
+  .partial-input {
     height: clamp(34px, 8.2vh, 45px);
     font-size: clamp(1.35rem, 7vw, 1.9rem);
   }
