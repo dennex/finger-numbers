@@ -432,22 +432,11 @@ input:focus-visible {
   border-radius: 8px;
 }
 
-.place-row,
 .number-row {
   display: grid;
   grid-template-columns: minmax(34px, 0.45fr) repeat(var(--places, 6), minmax(42px, 1fr));
   gap: clamp(5px, 1.2vw, 10px);
   align-items: center;
-}
-
-.place-row.labels {
-  margin-bottom: 8px;
-  color: var(--muted);
-  font-size: clamp(0.58rem, 1.6vw, 0.78rem);
-  font-weight: 900;
-  text-align: center;
-  text-transform: uppercase;
-  white-space: pre-line;
 }
 
 .number-row {
@@ -921,7 +910,6 @@ button.digit-cell:disabled {
     padding: 8px;
   }
 
-  .place-row,
   .number-row {
     grid-template-columns: minmax(24px, 0.35fr) repeat(var(--places, 6), minmax(29px, 1fr));
     gap: 4px;

@@ -561,18 +561,6 @@ function renderBoard() {
 
   els.board.innerHTML = "";
   els.board.style.setProperty("--places", String(width));
-  const labelRow = document.createElement("div");
-  labelRow.className = "place-row labels";
-
-  const blank = document.createElement("span");
-  labelRow.append(blank);
-  top.forEach((_, index) => {
-    const place = document.createElement("span");
-    place.textContent = shortPlaceName(width - index - 1);
-    place.title = placeName(width - index - 1);
-    labelRow.append(place);
-  });
-  els.board.append(labelRow);
 
   const topRow = makeNumberRow("", top, "top number", "top");
   const bottomRow = makeNumberRow("-", bottom, "take away", "bottom");
