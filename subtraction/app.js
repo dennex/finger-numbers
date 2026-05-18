@@ -1,7 +1,16 @@
 const placeNames = ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"];
 const shortPlaceNames = ["1s", "10s", "100s", "1,000s", "10,000s", "100,000s"];
 const rewards = ["Map", "Hat", "Key", "Boat", "Crown"];
-const fruitTreasure = ["🍒", "🍎", "🍉", "🍓"];
+const treasureContents = [
+  { kind: "emoji", value: "🍒", label: "cherries" },
+  { kind: "emoji", value: "🍎", label: "apple" },
+  { kind: "emoji", value: "🍉", label: "watermelon" },
+  { kind: "emoji", value: "🍓", label: "strawberry" },
+  { kind: "emoji", value: "💎", label: "diamond" },
+  { kind: "emoji", value: "💍", label: "jewel" },
+  { kind: "coin", value: "$", label: "gold coin" },
+  { kind: "bill", value: "50", label: "play Canadian fifty dollar bill" }
+];
 const treasureGoal = 5;
 
 const translations = {
@@ -892,18 +901,25 @@ function speakTreasure() {
 function explodeFruit() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2 + 70;
-  for (let index = 0; index < 80; index += 1) {
-    const fruit = document.createElement("span");
+  for (let index = 0; index < 96; index += 1) {
+    const treasure = treasureContents[index % treasureContents.length];
+    const item = document.createElement("span");
     const angle = (Math.PI * 2 * index) / 80 + Math.random() * 0.5;
     const distance = randomInt(120, Math.max(220, Math.min(window.innerWidth, window.innerHeight)));
-    fruit.textContent = fruitTreasure[index % fruitTreasure.length];
-    fruit.style.left = `${centerX}px`;
-    fruit.style.top = `${centerY}px`;
-    fruit.style.setProperty("--tx", `${Math.cos(angle) * distance}px`);
-    fruit.style.setProperty("--ty", `${Math.sin(angle) * distance - randomInt(30, 190)}px`);
-    fruit.style.setProperty("--spin", `${randomInt(-720, 720)}deg`);
-    fruit.style.animationDelay = `${randomInt(0, 420)}ms`;
-    els.fruitField.append(fruit);
+    item.className = `treasure-item ${treasure.kind}`;
+    item.setAttribute("aria-label", treasure.label);
+    if (treasure.kind === "bill") {
+      item.innerHTML = `<b>PLAY $${treasure.value}</b><small>CANADA</small><em>Carney</em>`;
+    } else {
+      item.textContent = treasure.value;
+    }
+    item.style.left = `${centerX}px`;
+    item.style.top = `${centerY}px`;
+    item.style.setProperty("--tx", `${Math.cos(angle) * distance}px`);
+    item.style.setProperty("--ty", `${Math.sin(angle) * distance - randomInt(30, 190)}px`);
+    item.style.setProperty("--spin", `${randomInt(-720, 720)}deg`);
+    item.style.animationDelay = `${randomInt(0, 420)}ms`;
+    els.fruitField.append(item);
   }
 }
 
