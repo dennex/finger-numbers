@@ -79,6 +79,12 @@ const translations = {
     partyQuestion: "What's inside?",
     closeTreasure: "Close treasure",
     introSpeech: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
+    introSpeeches: {
+      subtraction: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
+      addition: "Let's practice addition. Start with the ones. Type each answer digit under the line. If you carry, tap the little carry box above the next column.",
+      multiplication: "Let's practice multiplication. Multiply by the bottom number, starting on the right. Type the answer under the line. Carry boxes are there if you want to use them.",
+      division: "Let's practice division. Put the answer boxes on top of the division house. Think: divide, multiply, subtract, and bring down."
+    },
     treasureSpeech: "Awesome job, you got to the treasure. What's inside?",
     places: ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"],
     shortPlaces: ["1s", "10s", "100s", "1,000s", "10,000s", "100,000s"],
@@ -154,6 +160,12 @@ const translations = {
     partyQuestion: "Qu'est-ce qu'il y a dedans ?",
     closeTreasure: "Fermer le trésor",
     introSpeech: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
+    introSpeeches: {
+      subtraction: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
+      addition: "On s'entraîne à additionner. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu reportes, touche la petite case de report au-dessus de la colonne suivante.",
+      multiplication: "On s'entraîne à multiplier. Multiplie par le nombre du bas, en commençant à droite. Écris la réponse sous la ligne. Les cases de report sont là si tu veux les utiliser.",
+      division: "On s'entraîne à diviser. Mets les chiffres de la réponse au-dessus de la maison de division. Pense : diviser, multiplier, soustraire, puis descendre."
+    },
     treasureSpeech: "Bravo, tu es arrivé au trésor. Qu'est-ce qu'il y a dedans ?",
     places: ["unités", "dizaines", "centaines", "milliers", "dizaines de milliers", "centaines de milliers"],
     shortPlaces: ["1", "10", "100", "1 000", "10 000", "100 000"],
@@ -229,6 +241,12 @@ const translations = {
     partyQuestion: "入面有咩呢？",
     closeTreasure: "關閉寶藏",
     introSpeech: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
+    introSpeeches: {
+      subtraction: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
+      addition: "一齊練習加數。由個位開始。喺線下面輸入答案數字。如果要進位，就撳下一欄上面嘅細格。",
+      multiplication: "一齊練習乘數。用下面個數去乘，由右邊開始。喺線下面輸入答案。進位格想用就用。",
+      division: "一齊練習除數。將答案寫喺除數屋頂上面。記住：除、乘、減，再拉下一位落嚟。"
+    },
     treasureSpeech: "好叻呀，你去到寶藏喇。入面有咩呢？",
     places: ["個位", "十位", "百位", "千位", "萬位", "十萬位"],
     shortPlaces: ["個", "十", "百", "千", "萬", "十萬"],
@@ -304,6 +322,12 @@ const translations = {
     partyQuestion: "里面有什么？",
     closeTreasure: "关闭宝藏",
     introSpeech: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
+    introSpeeches: {
+      subtraction: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
+      addition: "我们来练习加法。从个位开始。把每个答案数字写在线下面。如果要进位，就点下一列上方的小进位格。",
+      multiplication: "我们来练习乘法。用下面的数去乘，从右边开始。把答案写在线下面。进位格想用就用。",
+      division: "我们来练习除法。把答案写在除法屋顶上。记住：除、乘、减，再把下一位带下来。"
+    },
     treasureSpeech: "太棒了，你到达宝藏了。里面有什么？",
     places: ["个位", "十位", "百位", "千位", "万位", "十万位"],
     shortPlaces: ["个", "十", "百", "千", "万", "十万"],
@@ -379,6 +403,12 @@ const translations = {
     partyQuestion: "안에 뭐가 있을까?",
     closeTreasure: "보물 닫기",
     introSpeech: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
+    introSpeeches: {
+      subtraction: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
+      addition: "더하기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 써. 올림이 있으면 다음 자리 위의 작은 올림 칸을 눌러.",
+      multiplication: "곱하기를 연습하자. 아래 숫자로 오른쪽부터 곱해. 선 아래에 답을 써. 올림 칸은 쓰고 싶을 때 쓰면 돼.",
+      division: "나누기를 연습하자. 나눗셈 집 위에 답을 써. 나누고, 곱하고, 빼고, 다음 숫자를 내려."
+    },
     treasureSpeech: "정말 잘했어, 보물에 도착했어. 안에 뭐가 있을까?",
     places: ["일의 자리", "십의 자리", "백의 자리", "천의 자리", "만의 자리", "십만의 자리"],
     shortPlaces: ["1", "10", "100", "1천", "1만", "10만"],
@@ -454,6 +484,12 @@ const translations = {
     partyQuestion: "中には何があるかな？",
     closeTreasure: "宝物を閉じる",
     introSpeech: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
+    introSpeeches: {
+      subtraction: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
+      addition: "たし算を練習しよう。一の位から始めてね。線の下に答えを書こう。くり上がりがある時は、次の位の上の小さい箱をタップしてね。",
+      multiplication: "かけ算を練習しよう。下の数を使って、右からかけてね。線の下に答えを書こう。くり上がりの箱は使いたい時に使えるよ。",
+      division: "わり算を練習しよう。わり算の家の上に答えを書いてね。わって、かけて、ひいて、次を下ろそう。"
+    },
     treasureSpeech: "すごい、宝物まで来たよ。中には何があるかな？",
     places: ["一の位", "十の位", "百の位", "千の位", "万の位", "十万の位"],
     shortPlaces: ["1", "10", "100", "千", "万", "十万"],
@@ -529,6 +565,12 @@ const translations = {
     partyQuestion: "Bên trong có gì nhỉ?",
     closeTreasure: "Đóng kho báu",
     introSpeech: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
+    introSpeeches: {
+      subtraction: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
+      addition: "Mình cùng luyện phép cộng nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu có nhớ, hãy chạm vào ô nhớ nhỏ phía trên hàng tiếp theo.",
+      multiplication: "Mình cùng luyện phép nhân nhé. Nhân với số ở dưới, bắt đầu từ bên phải. Nhập đáp án dưới đường kẻ. Ô nhớ có thể dùng nếu con muốn.",
+      division: "Mình cùng luyện phép chia nhé. Nhập đáp án phía trên ngôi nhà chia. Hãy nghĩ: chia, nhân, trừ, rồi hạ xuống."
+    },
     treasureSpeech: "Tuyệt vời, con đã đến kho báu. Bên trong có gì nhỉ?",
     places: ["hàng đơn vị", "hàng chục", "hàng trăm", "hàng nghìn", "hàng chục nghìn", "hàng trăm nghìn"],
     shortPlaces: ["1", "10", "100", "1 nghìn", "10 nghìn", "100 nghìn"],
@@ -1490,6 +1532,13 @@ function getSpeechVoice() {
   return state.preferredVoice;
 }
 
+function introSpeechText() {
+  const text = copy();
+  return text.introSpeeches?.[state.operation]
+    || translations.en.introSpeeches[state.operation]
+    || text.introSpeech;
+}
+
 function speak(message, important = false) {
   if (!("speechSynthesis" in window) || !message) {
     return false;
@@ -1506,7 +1555,7 @@ function speak(message, important = false) {
   utterance.rate = 0.9;
   utterance.pitch = 1.08;
   utterance.onstart = () => {
-    if (message === copy().introSpeech) {
+    if (message === introSpeechText()) {
       state.introSpoken = true;
     }
   };
@@ -1518,7 +1567,7 @@ function speakIntro(force = false) {
   if (state.introSpoken && !force) {
     return;
   }
-  speak(copy().introSpeech, true);
+  speak(introSpeechText(), true);
 }
 
 function playTone(type) {
@@ -1633,8 +1682,10 @@ els.levelButtons.forEach((button) => {
 els.operationTabs.forEach((button) => {
   button.addEventListener("click", () => {
     state.operation = button.dataset.operation;
+    state.introSpoken = false;
     makeProblem();
     renderGame();
+    speakIntro(true);
   });
 });
 
