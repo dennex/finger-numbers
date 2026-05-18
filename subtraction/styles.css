@@ -21,7 +21,9 @@
 
 html,
 body {
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -44,11 +46,13 @@ button {
 
 .game-shell {
   width: min(1180px, 100%);
-  min-height: 100svh;
+  height: 100svh;
   margin: 0 auto;
-  padding: clamp(12px, 2.4vw, 28px);
+  padding: clamp(8px, 1.4vw, 16px);
   display: grid;
-  gap: clamp(12px, 2vw, 20px);
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: clamp(6px, 1vw, 10px);
+  overflow: hidden;
 }
 
 .top-bar,
@@ -64,7 +68,7 @@ button {
 
 .top-bar {
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .top-actions {
@@ -105,13 +109,13 @@ p {
 
 h1 {
   margin: 0;
-  font-size: clamp(2.25rem, 6.6vw, 5.4rem);
+  font-size: clamp(2.15rem, 5.2vw, 4rem);
   line-height: 0.95;
 }
 
 h2 {
   margin: 0;
-  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  font-size: clamp(1.1rem, 2.1vw, 1.65rem);
   line-height: 1.05;
 }
 
@@ -122,8 +126,8 @@ h2 {
 }
 
 .score-board div {
-  min-width: 92px;
-  padding: 10px 12px;
+  min-width: 82px;
+  padding: 7px 10px;
   background: var(--white);
   border: 2px solid var(--line);
   border-radius: 8px;
@@ -139,18 +143,18 @@ h2 {
 
 .score-board strong {
   display: block;
-  font-size: 2rem;
+  font-size: 1.65rem;
   line-height: 1;
 }
 
 .map-band {
-  min-height: 128px;
+  height: 76px;
   position: relative;
   display: grid;
-  grid-template-columns: 110px 1fr 118px;
-  align-items: end;
+  grid-template-columns: 1fr;
+  align-items: center;
   gap: 10px;
-  padding: 18px;
+  padding: 8px 14px;
   overflow: hidden;
   background:
     linear-gradient(transparent 58%, rgba(104, 163, 87, 0.26) 58%),
@@ -160,9 +164,9 @@ h2 {
 }
 
 .path {
-  height: 26px;
+  height: 20px;
   position: relative;
-  margin-bottom: 18px;
+  margin: 0 130px;
   background: linear-gradient(90deg, var(--gold) var(--progress, 0%), rgba(23, 50, 51, 0.14) 0);
   border: 3px solid rgba(23, 50, 51, 0.18);
   border-radius: 999px;
@@ -192,8 +196,11 @@ h2 {
 .explorer {
   width: 82px;
   height: 102px;
-  position: relative;
-  justify-self: center;
+  position: absolute;
+  left: 36px;
+  bottom: 4px;
+  transform: scale(0.68);
+  transform-origin: bottom center;
 }
 
 .explorer span,
@@ -257,14 +264,17 @@ h2 {
 .chest {
   width: 104px;
   height: 76px;
-  position: relative;
-  justify-self: center;
+  position: absolute;
+  right: 36px;
+  bottom: 4px;
   margin-bottom: 8px;
   background: #a95f2b;
   border: 4px solid var(--ink);
   border-radius: 8px;
   box-shadow: inset 0 20px 0 rgba(255, 255, 255, 0.14);
   transition: transform 260ms ease;
+  transform: scale(0.78);
+  transform-origin: bottom center;
 }
 
 .chest::before {
@@ -286,7 +296,7 @@ h2 {
 }
 
 .chest.open {
-  transform: translateY(-8px) rotate(-2deg);
+  transform: translateY(-8px) rotate(-2deg) scale(0.78);
 }
 
 .chest.open::after {
@@ -300,9 +310,9 @@ h2 {
 
 .controls-panel {
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
-  padding: 10px;
+  padding: 6px;
   background: rgba(255, 255, 255, 0.72);
   border: 2px solid var(--line);
   border-radius: 8px;
@@ -311,7 +321,7 @@ h2 {
 .level-picker {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .level-button,
@@ -336,12 +346,12 @@ h2 {
 }
 
 .level-button {
-  padding: 0 13px;
+  padding: 0 11px;
 }
 
 .language-button {
-  width: 44px;
-  min-height: 44px;
+  width: 40px;
+  min-height: 40px;
   padding: 0;
   font-size: 1.28rem;
 }
@@ -394,8 +404,10 @@ input:focus-visible {
 }
 
 .play-area {
+  min-height: 0;
+  min-width: 0;
   align-items: stretch;
-  gap: clamp(12px, 2vw, 20px);
+  gap: clamp(8px, 1vw, 12px);
 }
 
 .problem-card,
@@ -408,13 +420,16 @@ input:focus-visible {
 
 .problem-card {
   flex: 1 1 670px;
-  padding: clamp(14px, 2.4vw, 24px);
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(10px, 1.5vw, 16px);
+  overflow: hidden;
 }
 
 .problem-head {
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 #roundLabel {
@@ -426,7 +441,7 @@ input:focus-visible {
 .subtraction-board {
   width: min(100%, 780px);
   margin: 0 auto;
-  padding: clamp(12px, 2.2vw, 22px);
+  padding: clamp(6px, 1vw, 10px);
   background: var(--white);
   border: 3px solid rgba(23, 50, 51, 0.18);
   border-radius: 8px;
@@ -435,27 +450,27 @@ input:focus-visible {
 .number-row {
   display: grid;
   grid-template-columns: minmax(34px, 0.45fr) repeat(var(--places, 6), minmax(42px, 1fr));
-  gap: clamp(5px, 1.2vw, 10px);
+  gap: clamp(4px, 0.8vw, 8px);
   align-items: center;
 }
 
 .number-row {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .bottom-row {
-  padding-bottom: 12px;
+  padding-bottom: 6px;
   border-bottom: 5px solid var(--ink);
 }
 
 .operator,
 .digit-cell,
 .digit-input {
-  height: clamp(48px, 10vw, 78px);
+  height: clamp(38px, 7vh, 56px);
   display: grid;
   place-items: center;
   border-radius: 8px;
-  font-size: clamp(1.8rem, 6vw, 4.25rem);
+  font-size: clamp(1.55rem, 4vw, 3rem);
   font-weight: 1000;
   line-height: 1;
 }
@@ -537,25 +552,28 @@ button.digit-cell:disabled {
 .answer-actions {
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .feedback {
-  min-height: 2.8em;
-  margin: 14px 0 0;
+  min-height: 2.2em;
+  margin: 8px 0 0;
   color: var(--teal-dark);
-  font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+  font-size: clamp(0.95rem, 1.7vw, 1.18rem);
   font-weight: 1000;
   text-align: center;
 }
 
 .helper-panel {
   flex: 0 1 360px;
+  min-width: 0;
   display: grid;
   align-content: start;
-  gap: 14px;
-  padding: clamp(14px, 2vw, 20px);
+  gap: 8px;
+  padding: clamp(10px, 1.4vw, 14px);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .buddy {
@@ -563,8 +581,8 @@ button.digit-cell:disabled {
 }
 
 .buddy-face {
-  width: 58px;
-  height: 58px;
+  width: 48px;
+  height: 48px;
   position: relative;
   flex: 0 0 auto;
   background: var(--gold);
@@ -593,7 +611,8 @@ button.digit-cell:disabled {
 
 .place-lab {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+  overflow: hidden;
 }
 
 .place-card {
@@ -601,7 +620,7 @@ button.digit-cell:disabled {
   grid-template-columns: 1fr auto;
   gap: 4px 10px;
   align-items: center;
-  padding: 9px 10px;
+  padding: 6px 8px;
   background: var(--white);
   border: 2px solid var(--line);
   border-radius: 8px;
@@ -621,7 +640,7 @@ button.digit-cell:disabled {
 
 .place-card strong {
   grid-row: span 2;
-  font-size: 1.8rem;
+  font-size: 1.55rem;
 }
 
 .place-card small {
@@ -635,7 +654,7 @@ button.digit-cell:disabled {
 }
 
 .reward {
-  min-height: 46px;
+  min-height: 38px;
   display: grid;
   place-items: center;
   padding: 5px;
@@ -912,6 +931,15 @@ button.digit-cell:disabled {
 }
 
 @media (max-width: 860px) {
+  body {
+    overflow: hidden;
+  }
+
+  .game-shell {
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    gap: 6px;
+  }
+
   .top-bar,
   .play-area {
     flex-direction: column;
@@ -942,9 +970,20 @@ button.digit-cell:disabled {
   }
 
   .map-band {
-    grid-template-columns: 74px 1fr 82px;
-    min-height: 104px;
-    padding: 12px;
+    height: 60px;
+    padding: 6px 10px;
+  }
+
+  .path {
+    margin: 0 82px;
+  }
+
+  .explorer {
+    left: 12px;
+  }
+
+  .chest {
+    right: 10px;
   }
 
   .explorer {
@@ -962,36 +1001,148 @@ button.digit-cell:disabled {
     width: 100%;
     flex-basis: auto;
   }
+
+  .play-area {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .helper-panel {
+    max-height: 112px;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+  }
+
+  .helper-panel .place-lab,
+  .helper-panel .reward-case {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
+  :root {
+    --phone-scale: 0.68;
+  }
+
   .game-shell {
-    padding: 10px;
+    padding: 6px;
+    width: calc(100vw / var(--phone-scale));
+    max-width: none;
+    height: calc(100svh / var(--phone-scale));
+    transform: scale(var(--phone-scale));
+    transform-origin: top left;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 9vw, 2.7rem);
+  }
+
+  .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  .language-button {
+    width: 34px;
+    min-height: 34px;
+    font-size: 1.05rem;
+  }
+
+  .score-board div {
+    min-width: 0;
+    padding: 5px 8px;
+  }
+
+  .score-board strong {
+    font-size: 1.35rem;
+  }
+
+  .map-band {
+    height: 46px;
+  }
+
+  .controls-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .toggle-row {
+    width: 100%;
+    padding-block: 5px;
+  }
+
+  .level-picker {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .level-button,
+  .primary-button,
+  .secondary-button,
+  .icon-button {
+    min-height: 36px;
+    font-size: 0.9rem;
   }
 
   .subtraction-board {
-    padding: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 6px;
   }
 
   .number-row {
-    grid-template-columns: minmax(24px, 0.35fr) repeat(var(--places, 6), minmax(29px, 1fr));
+    grid-template-columns: minmax(18px, 0.28fr) repeat(var(--places, 6), minmax(0, 1fr));
     gap: 4px;
   }
 
   .operator,
   .digit-cell,
   .digit-input {
-    height: 45px;
-    font-size: 1.65rem;
+    height: clamp(34px, 8.2vh, 45px);
+    font-size: clamp(1.35rem, 7vw, 1.9rem);
   }
 
   .level-button,
   .primary-button,
   .secondary-button {
-    flex: 1 1 auto;
+    min-width: 0;
+    padding-inline: 6px;
   }
 
   .reward-case {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .problem-card {
+    padding: 8px;
+  }
+
+  .problem-head {
+    margin-bottom: 5px;
+  }
+
+  .answer-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 7px;
+  }
+
+  .feedback {
+    min-height: 1.5em;
+    margin-top: 5px;
+    font-size: 0.88rem;
+  }
+
+  .helper-panel {
+    max-height: 70px;
+  }
+
+  .buddy-face {
+    width: 38px;
+    height: 38px;
+    border-width: 3px;
   }
 }
