@@ -60,6 +60,7 @@ const translations = {
     freshBoxes: "Fresh boxes. Try from the ones place.",
     partyLine: "Awesome job, you got to the treasure...",
     partyQuestion: "What's inside?",
+    closeTreasure: "Close treasure",
     introSpeech: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
     treasureSpeech: "Awesome job, you got to the treasure. What's inside?",
     places: ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands"],
@@ -115,6 +116,7 @@ const translations = {
     freshBoxes: "Cases toutes neuves. Essaie depuis les unités.",
     partyLine: "Bravo, tu es arrivé au trésor...",
     partyQuestion: "Qu'est-ce qu'il y a dedans ?",
+    closeTreasure: "Fermer le trésor",
     introSpeech: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
     treasureSpeech: "Bravo, tu es arrivé au trésor. Qu'est-ce qu'il y a dedans ?",
     places: ["unités", "dizaines", "centaines", "milliers", "dizaines de milliers", "centaines de milliers"],
@@ -170,6 +172,7 @@ const translations = {
     freshBoxes: "格仔清空咗。由個位再試。",
     partyLine: "好叻呀，你去到寶藏喇...",
     partyQuestion: "入面有咩呢？",
+    closeTreasure: "關閉寶藏",
     introSpeech: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
     treasureSpeech: "好叻呀，你去到寶藏喇。入面有咩呢？",
     places: ["個位", "十位", "百位", "千位", "萬位", "十萬位"],
@@ -225,6 +228,7 @@ const translations = {
     freshBoxes: "格子清空了。从个位再试。",
     partyLine: "太棒了，你到达宝藏了...",
     partyQuestion: "里面有什么？",
+    closeTreasure: "关闭宝藏",
     introSpeech: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
     treasureSpeech: "太棒了，你到达宝藏了。里面有什么？",
     places: ["个位", "十位", "百位", "千位", "万位", "十万位"],
@@ -280,6 +284,7 @@ const translations = {
     freshBoxes: "칸을 비웠어. 일의 자리부터 다시 해 봐.",
     partyLine: "정말 잘했어, 보물에 도착했어...",
     partyQuestion: "안에 뭐가 있을까?",
+    closeTreasure: "보물 닫기",
     introSpeech: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
     treasureSpeech: "정말 잘했어, 보물에 도착했어. 안에 뭐가 있을까?",
     places: ["일의 자리", "십의 자리", "백의 자리", "천의 자리", "만의 자리", "십만의 자리"],
@@ -335,6 +340,7 @@ const translations = {
     freshBoxes: "箱を空にしたよ。一の位からもう一度。",
     partyLine: "すごい、宝物まで来たよ...",
     partyQuestion: "中には何があるかな？",
+    closeTreasure: "宝物を閉じる",
     introSpeech: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
     treasureSpeech: "すごい、宝物まで来たよ。中には何があるかな？",
     places: ["一の位", "十の位", "百の位", "千の位", "万の位", "十万の位"],
@@ -390,6 +396,7 @@ const translations = {
     freshBoxes: "Ô đã trống. Thử lại từ hàng đơn vị.",
     partyLine: "Tuyệt vời, con đã đến kho báu...",
     partyQuestion: "Bên trong có gì nhỉ?",
+    closeTreasure: "Đóng kho báu",
     introSpeech: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
     treasureSpeech: "Tuyệt vời, con đã đến kho báu. Bên trong có gì nhỉ?",
     places: ["hàng đơn vị", "hàng chục", "hàng trăm", "hàng nghìn", "hàng chục nghìn", "hàng trăm nghìn"],
@@ -443,6 +450,7 @@ const els = {
   rewardCase: document.querySelector(".reward-case"),
   partyLine: document.querySelector(".party-card p"),
   partyQuestion: document.querySelector(".party-card h2"),
+  partyCloseButton: document.querySelector("#partyCloseButton"),
   board: document.querySelector("#subtractionBoard"),
   placeLab: document.querySelector("#placeLab"),
   feedback: document.querySelector("#feedbackText"),
@@ -882,13 +890,13 @@ function showTreasureParty() {
     explodeFruit();
     playTone("fruit");
   }, 1000);
+}
 
-  window.setTimeout(() => {
-    els.treasureParty.hidden = true;
-    els.treasureParty.classList.remove("revealed");
-    els.fruitField.innerHTML = "";
-    restartTreasureRun();
-  }, 5000);
+function closeTreasureParty() {
+  els.treasureParty.hidden = true;
+  els.treasureParty.classList.remove("revealed");
+  els.fruitField.innerHTML = "";
+  restartTreasureRun();
 }
 
 function speakTreasure() {
@@ -1060,6 +1068,8 @@ function applyTranslations() {
   els.rewardCase.setAttribute("aria-label", text.rewardsLabel);
   els.partyLine.textContent = text.partyLine;
   els.partyQuestion.textContent = text.partyQuestion;
+  els.partyCloseButton.setAttribute("aria-label", text.closeTreasure);
+  els.partyCloseButton.title = text.closeTreasure;
   els.languageButtons.forEach((button) => {
     const active = button.dataset.lang === state.lang;
     button.classList.toggle("active", active);
@@ -1102,6 +1112,7 @@ document.querySelector("#newProblemButton").addEventListener("click", () => {
   makeProblem();
   renderGame();
 });
+els.partyCloseButton.addEventListener("click", closeTreasureParty);
 
 makeProblem();
 renderGame();

@@ -731,6 +731,25 @@ button.digit-cell:disabled {
   z-index: 2;
 }
 
+.party-close {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--white);
+  background: var(--coral);
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 0 5px 0 rgba(14, 50, 48, 0.28);
+  font-size: 2rem;
+  font-weight: 1000;
+  line-height: 1;
+}
+
 .party-card p {
   max-width: 480px;
   margin: 0;
@@ -806,7 +825,7 @@ button.digit-cell:disabled {
   font-size: clamp(2rem, 6vw, 4.8rem);
   filter: drop-shadow(0 5px 0 rgba(14, 50, 48, 0.22));
   transform: translate(-50%, -50%) scale(0.2);
-  animation: fruit-burst 3.7s cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
+  animation: fruit-burst 2.4s cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
 }
 
 .treasure-item.coin {
@@ -912,8 +931,8 @@ button.digit-cell:disabled {
     transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05) rotate(var(--spin));
   }
   100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 80px)) scale(0.8) rotate(var(--spin));
+    opacity: 1;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) rotate(var(--spin));
   }
 }
 
