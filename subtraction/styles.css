@@ -888,7 +888,7 @@ button.digit-cell:disabled {
   font-family: "Brush Script MT", "Comic Sans MS", cursive;
   font-size: 0.9em;
   font-weight: 700;
-  transform: rotate(-6deg);
+  transform: translateY(-0.45em) rotate(-6deg);
 }
 
 @keyframes pop {
