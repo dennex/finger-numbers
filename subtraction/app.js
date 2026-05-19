@@ -601,6 +601,8 @@ const state = {
   attempts: 0,
   borrowMarks: new Set(),
   carryMarks: new Set(),
+  multiplicationStep: 0,
+  multiplyAddCarryMarks: new Set(),
   completing: false,
   audioContext: null,
   preferredVoice: null,
@@ -747,6 +749,8 @@ function makeProblem() {
   state.attempts = 0;
   state.borrowMarks.clear();
   state.carryMarks.clear();
+  state.multiplicationStep = 0;
+  state.multiplyAddCarryMarks.clear();
   state.completing = false;
 }
 
@@ -770,6 +774,8 @@ function makeAdditionProblem() {
   state.attempts = 0;
   state.borrowMarks.clear();
   state.carryMarks.clear();
+  state.multiplicationStep = 0;
+  state.multiplyAddCarryMarks.clear();
   state.completing = false;
 }
 
@@ -783,6 +789,8 @@ function makeMultiplicationProblem() {
   state.attempts = 0;
   state.borrowMarks.clear();
   state.carryMarks.clear();
+  state.multiplicationStep = 0;
+  state.multiplyAddCarryMarks.clear();
   state.completing = false;
 }
 
@@ -796,6 +804,8 @@ function makeDivisionProblem() {
   state.attempts = 0;
   state.borrowMarks.clear();
   state.carryMarks.clear();
+  state.multiplicationStep = 0;
+  state.multiplyAddCarryMarks.clear();
   state.completing = false;
 }
 
@@ -912,7 +922,7 @@ function renderBoard() {
   els.board.append(topRow, bottomRow, inputRow);
 }
 
-function makeAnswerRow(width, extraClass = "") {
+function makeAnswerRow(width, extraClass = "", disabled = false) {
   const answer = digitsOf(state.answer, width);
   const inputRow = document.createElement("div");
   inputRow.className = `number-row answer-row ${extraClass}`.trim();
@@ -932,6 +942,7 @@ function makeAnswerRow(width, extraClass = "") {
     input.pattern = "[0-9]";
     input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
     input.dataset.index = String(index);
+    input.disabled = disabled;
     input.addEventListener("input", handleDigitInput);
     input.addEventListener("keydown", handleDigitKeys);
     inputRow.append(input);
@@ -988,7 +999,12 @@ function renderMultiplicationBoard() {
   const topRow = makeNumberRow("", top, "top number", "top");
   const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
   bottomRow.classList.add("bottom-row");
-  els.board.append(makeMultiplyCarryRow(width, 0, partials[0].digit), topRow, bottomRow);
+  const activePartialIndex = Math.min(state.multiplicationStep, partials.length - 1);
+  els.board.append(
+    makeMultiplyCarryRow(width, activePartialIndex, partials[activePartialIndex].digit, state.multiplicationStep >= partials.length),
+    topRow,
+    bottomRow
+  );
 
   if (partials.length === 1) {
     els.board.append(makeAnswerRow(width));
@@ -998,16 +1014,16 @@ function renderMultiplicationBoard() {
   partials.forEach((partial, rowIndex) => {
     els.board.append(makePartialProductRow(partial, width, rowIndex));
   });
-  els.board.append(makeAnswerRow(width, "total-row"));
+  els.board.append(makeAnswerRow(width, "total-row", state.multiplicationStep < partials.length));
 }
 
-function makeMultiplyCarryRow(width, rowIndex, multiplierDigit) {
+function makeMultiplyCarryRow(width, rowIndex, multiplierDigit, disabled = false) {
   const carryRow = document.createElement("div");
   carryRow.className = "number-row multiply-carry-row";
 
   const label = document.createElement("span");
   label.className = "operator carry-label";
-  label.textContent = `×${multiplierDigit}`;
+  label.textContent = disabled ? "+" : `×${multiplierDigit}`;
   carryRow.append(label);
 
   for (let index = 0; index < width; index += 1) {
@@ -1020,6 +1036,7 @@ function makeMultiplyCarryRow(width, rowIndex, multiplierDigit) {
     input.ariaLabel = (copy().carryDigit || translations.en.carryDigit)(placeName(width - index - 1));
     input.dataset.index = String(index);
     input.dataset.row = String(rowIndex);
+    input.disabled = disabled;
     input.addEventListener("input", handleCarryInput);
     carryRow.append(input);
   }
@@ -1029,7 +1046,10 @@ function makeMultiplyCarryRow(width, rowIndex, multiplierDigit) {
 
 function makePartialProductRow(partial, width, rowIndex) {
   const row = document.createElement("div");
-  row.className = "number-row partial-row";
+  const isComplete = rowIndex < state.multiplicationStep;
+  const isActive = rowIndex === state.multiplicationStep;
+  const isFinalAddition = state.multiplicationStep >= multiplicationPartialProducts().length;
+  row.className = `number-row partial-row ${isActive ? "active-row" : ""}`.trim();
   row.setAttribute("aria-label", `${copy().operations?.multiplication || translations.en.operations.multiplication} ${partial.digit}`);
 
   const op = document.createElement("span");
@@ -1046,6 +1066,24 @@ function makePartialProductRow(partial, width, rowIndex) {
       return;
     }
 
+    if (isComplete) {
+      const cell = document.createElement(isFinalAddition && rowIndex === 0 ? "button" : "span");
+      cell.className = "digit-cell partial-complete";
+      cell.textContent = digit;
+      cell.dataset.index = String(index);
+      if (isFinalAddition && rowIndex === 0) {
+        cell.type = "button";
+        cell.ariaLabel = (copy().carryInto || translations.en.carryInto)(placeName(width - index - 1));
+        cell.disabled = index === width - 1;
+        cell.addEventListener("click", () => toggleMultiplyAddCarry(index));
+        if (state.multiplyAddCarryMarks.has(index)) {
+          cell.classList.add("add-carry");
+        }
+      }
+      row.append(cell);
+      return;
+    }
+
     const input = document.createElement("input");
     input.className = "partial-input";
     input.inputMode = "numeric";
@@ -1055,6 +1093,7 @@ function makePartialProductRow(partial, width, rowIndex) {
     input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
     input.dataset.expected = digit;
     input.dataset.row = String(rowIndex);
+    input.disabled = !isActive;
     input.addEventListener("input", handlePartialInput);
     input.addEventListener("keydown", handlePartialKeys);
     row.append(input);
@@ -1190,6 +1229,20 @@ function toggleCarry(index) {
   playTone("borrow");
 }
 
+function toggleMultiplyAddCarry(index) {
+  if (state.multiplicationStep < multiplicationPartialProducts().length || index === answerWidth() - 1) {
+    return;
+  }
+  if (state.multiplyAddCarryMarks.has(index)) {
+    state.multiplyAddCarryMarks.delete(index);
+  } else {
+    state.multiplyAddCarryMarks.add(index);
+  }
+  renderBoard();
+  els.feedback.textContent = copy().carryMessage || translations.en.carryMessage;
+  playTone("borrow");
+}
+
 function multiplicationCarries(rowIndex = 0) {
   const partial = multiplicationPartialProducts()[rowIndex] || multiplicationPartialProducts()[0];
   const multiplierDigit = partial?.digit || state.factorBottom;
@@ -1256,6 +1309,7 @@ function handlePartialInput(event) {
     next.focus();
     next.select();
   }
+  maybeAdvanceMultiplicationStep(Number(input.dataset.row));
   maybeCompleteAnswer();
 }
 
@@ -1273,6 +1327,26 @@ function handlePartialKeys(event) {
   if (event.key === "Enter") {
     checkAnswer();
   }
+}
+
+function maybeAdvanceMultiplicationStep(rowIndex) {
+  if (state.operation !== "multiplication" || rowIndex !== state.multiplicationStep) {
+    return;
+  }
+  const rowInputs = [...document.querySelectorAll(`.partial-input[data-row="${rowIndex}"]`)];
+  if (!rowInputs.length || rowInputs.some((input) => input.value !== input.dataset.expected)) {
+    return;
+  }
+
+  state.multiplicationStep += 1;
+  state.multiplyAddCarryMarks.clear();
+  window.setTimeout(() => {
+    renderGame();
+    const nextInput = state.multiplicationStep < multiplicationPartialProducts().length
+      ? document.querySelector(`.partial-input[data-row="${state.multiplicationStep}"]`)
+      : document.querySelector(".answer-row .digit-input");
+    nextInput?.focus();
+  }, 500);
 }
 
 function renderPlaceLab(stepIndex = -1) {
@@ -1528,6 +1602,13 @@ function showHint() {
 }
 
 function clearAnswer() {
+  if (state.operation === "multiplication") {
+    state.multiplicationStep = 0;
+    state.multiplyAddCarryMarks.clear();
+    renderGame();
+    document.querySelector(".partial-input")?.focus();
+    return;
+  }
   document.querySelectorAll(".digit-input, .partial-input, .carry-input").forEach((input) => {
     input.value = "";
     input.classList.remove("wrong", "correct");

@@ -509,6 +509,13 @@ input:focus-visible {
   animation: wiggle 230ms ease;
 }
 
+.carry-input:disabled,
+.partial-input:disabled,
+.digit-input:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
 .bottom-row {
   padding-bottom: 6px;
   border-bottom: 5px solid var(--ink);
@@ -612,6 +619,10 @@ button.digit-cell:disabled {
   margin-top: 1px;
 }
 
+.multiplication-board .partial-row.active-row .partial-input {
+  border-color: #1f76d2;
+}
+
 .multiplication-board {
   padding: 4px;
 }
@@ -646,6 +657,34 @@ button.digit-cell:disabled {
 .total-row {
   padding-top: 3px;
   border-top: 3px solid var(--ink);
+}
+
+.digit-cell.partial-complete {
+  border-color: var(--leaf);
+  background: #ecf8e9;
+}
+
+button.digit-cell.partial-complete {
+  color: var(--ink);
+}
+
+.digit-cell.add-carry::before {
+  content: "1";
+  width: clamp(14px, 2.2vw, 20px);
+  height: clamp(14px, 2.2vw, 20px);
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: clamp(3px, 0.8vw, 7px);
+  top: clamp(3px, 0.8vw, 7px);
+  color: var(--white);
+  background: var(--coral);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-size: clamp(0.68rem, 1.5vw, 0.9rem);
+  font-weight: 1000;
+  line-height: 1;
+  z-index: 2;
 }
 
 .division-board {
