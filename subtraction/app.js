@@ -1000,11 +1000,10 @@ function renderMultiplicationBoard() {
   const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
   bottomRow.classList.add("bottom-row");
   const activePartialIndex = Math.min(state.multiplicationStep, partials.length - 1);
-  els.board.append(
-    makeMultiplyCarryRow(width, activePartialIndex, partials[activePartialIndex].digit, state.multiplicationStep >= partials.length),
-    topRow,
-    bottomRow
-  );
+  if (state.multiplicationStep < partials.length) {
+    els.board.append(makeMultiplyCarryRow(width, activePartialIndex, partials[activePartialIndex].digit));
+  }
+  els.board.append(topRow, bottomRow);
 
   if (partials.length === 1) {
     els.board.append(makeAnswerRow(width));
