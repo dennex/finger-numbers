@@ -1087,11 +1087,23 @@ body[data-operation="multiplication"] .feedback {
 }
 
 .treasure-item.bill::before {
-  content: "50";
+  content: attr(data-value);
   grid-row: 1 / 3;
   color: #ad4c65;
   font-size: clamp(1.55rem, 5vw, 3.4rem);
   line-height: 1;
+}
+
+.treasure-item.bill-100 {
+  background:
+    radial-gradient(circle at 82% 50%, rgba(47, 121, 151, 0.28) 0 20%, transparent 22%),
+    linear-gradient(135deg, #d9ecf6 0%, #fff8e8 48%, #dcefd2 100%);
+  border-color: #2f7997;
+}
+
+.treasure-item.bill-100::before {
+  color: #2f7997;
+  font-size: clamp(1.25rem, 4.2vw, 2.9rem);
 }
 
 .treasure-item.bill b,

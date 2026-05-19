@@ -7,7 +7,8 @@ const treasureContents = [
   { kind: "emoji", value: "💎", label: "diamond" },
   { kind: "emoji", value: "💍", label: "jewel" },
   { kind: "coin", value: "$", label: "gold coin" },
-  { kind: "bill", value: "50", label: "play Canadian fifty dollar bill" }
+  { kind: "bill", value: "50", label: "play Canadian fifty dollar bill" },
+  { kind: "bill", value: "100", label: "play Canadian one hundred dollar bill" }
 ];
 const treasureGoal = 5;
 
@@ -1702,6 +1703,8 @@ function explodeFruit() {
     item.className = `treasure-item ${treasure.kind}`;
     item.setAttribute("aria-label", treasure.label);
     if (treasure.kind === "bill") {
+      item.classList.add(`bill-${treasure.value}`);
+      item.dataset.value = treasure.value;
       item.innerHTML = `<b>PLAY $${treasure.value}</b><small>CANADA</small><em>Carney</em>`;
     } else {
       item.textContent = treasure.value;
