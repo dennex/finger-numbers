@@ -7,8 +7,8 @@ const treasureContents = [
   { kind: "emoji", value: "💎", label: "diamond" },
   { kind: "emoji", value: "💍", label: "jewel" },
   { kind: "coin", value: "$", label: "gold coin" },
-  { kind: "bill", value: "50", label: "play Canadian fifty dollar bill" },
-  { kind: "bill", value: "100", label: "play Canadian one hundred dollar bill" }
+  { kind: "bill", value: "50", label: "Canadian fifty dollar bill" },
+  { kind: "bill", value: "100", label: "Canadian one hundred dollar bill" }
 ];
 const treasureGoal = 5;
 
@@ -1712,7 +1712,7 @@ function explodeFruit() {
     if (treasure.kind === "bill") {
       item.classList.add(`bill-${treasure.value}`);
       item.dataset.value = treasure.value;
-      item.innerHTML = `<b>PLAY $${treasure.value}</b><small>CANADA</small><em>Carney</em>`;
+      item.innerHTML = `<b>$${treasure.value}</b><small>CANADA</small><em>Carney</em>`;
     } else {
       item.textContent = treasure.value;
     }
@@ -1843,6 +1843,19 @@ function renderGame() {
   } else {
     els.helperTitle.textContent = state.includeRegrouping ? copy().helperTrade : copy().helperStart;
   }
+  focusDivisionAnswer();
+}
+
+function focusDivisionAnswer() {
+  if (state.operation !== "division" || state.completing) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const input = document.querySelector(".division-quotient-row .digit-input");
+    input?.focus({ preventScroll: true });
+    input?.select();
+  });
 }
 
 function applyTranslations() {
