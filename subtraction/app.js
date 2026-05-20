@@ -1673,8 +1673,13 @@ function showTreasureParty() {
 
   window.setTimeout(() => {
     els.treasureParty.classList.add("revealed");
-    explodeFruit();
-    playTone("fruit");
+    window.setTimeout(() => {
+      if (els.treasureParty.hidden) {
+        return;
+      }
+      explodeFruit();
+      playTone("fruit");
+    }, 1200);
   }, 1000);
 }
 

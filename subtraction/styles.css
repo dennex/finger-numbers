@@ -999,7 +999,10 @@ body[data-operation="multiplication"] .feedback {
   background: #a95f2b;
   border: 6px solid var(--ink);
   border-radius: 8px;
-  box-shadow: inset 0 36px 0 rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 36px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -16px 0 rgba(92, 45, 20, 0.25);
+  perspective: 420px;
 }
 
 .party-chest::before {
@@ -1024,20 +1027,58 @@ body[data-operation="multiplication"] .feedback {
 }
 
 .party-chest span {
-  width: 100%;
-  height: 44%;
+  width: 106%;
+  height: 52%;
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -3%;
+  top: -8%;
   background: #b87037;
-  border-bottom: 6px solid var(--ink);
-  border-radius: 8px 8px 0 0;
-  transform-origin: left bottom;
-  transition: transform 520ms ease;
+  border: 6px solid var(--ink);
+  border-radius: 18px 18px 8px 8px;
+  box-shadow:
+    inset 0 18px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -12px 0 rgba(90, 42, 17, 0.22);
+  transform-origin: 50% 100%;
+  z-index: 2;
+}
+
+.party-chest span::before,
+.party-chest span::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  pointer-events: none;
+}
+
+.party-chest span::before {
+  top: 44%;
+  border-top: 6px solid var(--ink);
+}
+
+.party-chest span::after {
+  top: 14%;
+  height: 20%;
+  border-radius: 999px;
+  background: rgba(255, 244, 180, 0.24);
 }
 
 .treasure-party.revealed .party-chest span {
-  transform: translateY(-18px) rotate(-12deg);
+  animation: party-lid-pop 780ms steps(2, end) forwards;
+}
+
+@keyframes party-lid-pop {
+  0% {
+    transform: translateY(0) rotateX(0deg) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-36px) rotateX(22deg) rotate(-7deg);
+  }
+
+  100% {
+    transform: translateY(-74px) rotateX(34deg) rotate(-14deg);
+  }
 }
 
 .fruit-field {
