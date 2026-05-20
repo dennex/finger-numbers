@@ -583,7 +583,7 @@ const translations = {
 };
 
 const state = {
-  lang: "en",
+  lang: "fr",
   operation: "subtraction",
   digits: 2,
   includeRegrouping: true,
