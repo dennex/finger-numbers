@@ -369,6 +369,10 @@ h2 {
   font-size: 1.28rem;
 }
 
+.language-button[data-lang="en"] {
+  display: none;
+}
+
 .operation-tab.active,
 .level-button.active,
 .language-button.active,

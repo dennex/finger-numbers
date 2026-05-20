@@ -611,6 +611,8 @@ const state = {
   treasureSpeechStarted: false
 };
 
+document.querySelectorAll('.language-button[data-lang="en"]').forEach((button) => button.remove());
+
 const els = {
   gameShell: document.querySelector(".game-shell"),
   topBar: document.querySelector(".top-bar"),
