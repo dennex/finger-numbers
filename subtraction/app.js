@@ -604,6 +604,7 @@ const state = {
   carryMarks: new Set(),
   multiplicationStep: 0,
   multiplyAddCarryMarks: new Set(),
+  divisionStep: 0,
   completing: false,
   audioContext: null,
   preferredVoice: null,
@@ -754,6 +755,7 @@ function makeProblem() {
   state.carryMarks.clear();
   state.multiplicationStep = 0;
   state.multiplyAddCarryMarks.clear();
+  state.divisionStep = 0;
   state.completing = false;
 }
 
@@ -779,6 +781,7 @@ function makeAdditionProblem() {
   state.carryMarks.clear();
   state.multiplicationStep = 0;
   state.multiplyAddCarryMarks.clear();
+  state.divisionStep = 0;
   state.completing = false;
 }
 
@@ -794,21 +797,35 @@ function makeMultiplicationProblem() {
   state.carryMarks.clear();
   state.multiplicationStep = 0;
   state.multiplyAddCarryMarks.clear();
+  state.divisionStep = 0;
   state.completing = false;
 }
 
 function makeDivisionProblem() {
   const digits = getDigitCount();
-  const quotientRange = rangeForDigits(Math.max(1, digits - 1));
-  state.divisor = randomInt(2, 9);
-  state.quotient = randomInt(quotientRange.min, quotientRange.max);
-  state.dividend = state.divisor * state.quotient;
+  const { min, max } = rangeForDigits(digits);
+  let divisor = 0;
+  let quotient = 0;
+  let dividend = 0;
+  let tries = 0;
+
+  do {
+    divisor = randomInt(2, 9);
+    quotient = randomInt(Math.ceil(min / divisor), Math.floor(max / divisor));
+    dividend = divisor * quotient;
+    tries += 1;
+  } while (tries < 900 && (String(dividend).length !== digits || String(quotient).length !== digits));
+
+  state.divisor = divisor;
+  state.quotient = quotient;
+  state.dividend = dividend;
   state.answer = state.quotient;
   state.attempts = 0;
   state.borrowMarks.clear();
   state.carryMarks.clear();
   state.multiplicationStep = 0;
   state.multiplyAddCarryMarks.clear();
+  state.divisionStep = 0;
   state.completing = false;
 }
 
@@ -858,7 +875,35 @@ function answerWidth() {
   if (state.operation === "subtraction") {
     return String(state.minuend).length;
   }
+  if (state.operation === "division") {
+    return String(state.dividend).length;
+  }
   return answerText().length;
+}
+
+function divisionSteps() {
+  const dividendDigits = String(state.dividend).split("").map(Number);
+  let remainder = 0;
+  return dividendDigits.map((digit, index) => {
+    const partial = remainder * 10 + digit;
+    const quotientDigit = Math.floor(partial / state.divisor);
+    const product = quotientDigit * state.divisor;
+    const nextRemainder = partial - product;
+    const nextDigit = dividendDigits[index + 1];
+    const step = {
+      index,
+      digit,
+      partial,
+      quotientDigit,
+      product,
+      remainder: nextRemainder,
+      previousRemainder: remainder,
+      nextDigit,
+      bringDown: nextDigit === undefined ? null : nextRemainder * 10 + nextDigit
+    };
+    remainder = nextRemainder;
+    return step;
+  });
 }
 
 function multiplicationPartialProducts() {
@@ -1105,15 +1150,15 @@ function makePartialProductRow(partial, width, rowIndex) {
 }
 
 function renderDivisionBoard() {
-  const quotient = answerText();
   const dividend = String(state.dividend);
-  const quotientWidth = quotient.length;
   const dividendWidth = dividend.length;
+  const quotientWidth = dividendWidth;
+  const steps = divisionSteps();
 
   els.board.innerHTML = "";
   els.board.classList.remove("multiplication-board");
   els.board.classList.add("division-board");
-  els.board.style.setProperty("--places", String(Math.max(quotientWidth, dividendWidth)));
+  els.board.style.setProperty("--places", String(dividendWidth));
 
   const shell = document.createElement("div");
   shell.className = "division-shell";
@@ -1128,7 +1173,7 @@ function renderDivisionBoard() {
   const quotientRow = document.createElement("div");
   quotientRow.className = "division-quotient-row";
   quotientRow.style.gridTemplateColumns = `repeat(${quotientWidth}, minmax(42px, 1fr))`;
-  digitsOf(state.answer, quotientWidth).forEach((_, index) => {
+  digitsOf(state.answer, quotientWidth).forEach((digit, index) => {
     const input = document.createElement("input");
     input.className = "digit-input";
     input.inputMode = "numeric";
@@ -1137,6 +1182,8 @@ function renderDivisionBoard() {
     input.pattern = "[0-9]";
     input.ariaLabel = copy().answerDigit(placeName(quotientWidth - index - 1));
     input.dataset.index = String(index);
+    input.dataset.expected = digit;
+    input.dataset.step = String(index);
     input.addEventListener("input", handleDigitInput);
     input.addEventListener("keydown", handleDigitKeys);
     quotientRow.append(input);
@@ -1152,7 +1199,36 @@ function renderDivisionBoard() {
     dividendRow.append(cell);
   });
 
-  work.append(quotientRow, dividendRow);
+  const process = document.createElement("div");
+  process.className = "division-process";
+  if (dividendWidth > 4) {
+    process.classList.add("compact-process");
+  }
+  process.style.gridTemplateColumns = `repeat(${dividendWidth}, minmax(70px, 1fr))`;
+  steps.forEach((step) => {
+    const card = document.createElement("div");
+    card.className = "division-step";
+    card.dataset.step = String(step.index);
+    card.innerHTML = `
+      <span class="division-partial">${step.partial}</span>
+      <label class="division-line">
+        <span>-</span>
+        <input class="division-process-input" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="2" data-step="${step.index}" data-kind="product" data-expected="${step.product}" aria-label="${state.divisor} times quotient digit">
+      </label>
+      <label class="division-line">
+        <span>=</span>
+        <input class="division-process-input" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="1" data-step="${step.index}" data-kind="remainder" data-expected="${step.remainder}" aria-label="remainder">
+      </label>
+      ${step.nextDigit === undefined ? "" : `<small>${step.remainder} × 10 + ${step.nextDigit} = ${step.bringDown}</small>`}
+    `;
+    card.querySelectorAll(".division-process-input").forEach((input) => {
+      input.addEventListener("input", handleDivisionProcessInput);
+      input.addEventListener("keydown", handleDivisionProcessKeys);
+    });
+    process.append(card);
+  });
+
+  work.append(quotientRow, dividendRow, process);
   shell.append(divisor, work);
   els.board.append(shell);
 }
@@ -1446,11 +1522,64 @@ function handleDigitInput(event) {
   checkDigitInput(input);
 
   if (input.value) {
+    if (state.operation === "division") {
+      focusDivisionProduct(input);
+      return;
+    }
     const next = input.nextElementSibling;
     if (next?.classList.contains("digit-input")) {
       next.focus();
       next.select();
     }
+  }
+}
+
+function focusDivisionProduct(input) {
+  if (!input.classList.contains("correct")) {
+    return;
+  }
+  const product = document.querySelector(`.division-process-input[data-step="${input.dataset.step}"][data-kind="product"]`);
+  product?.focus({ preventScroll: true });
+  product?.select();
+}
+
+function handleDivisionProcessInput(event) {
+  const input = event.currentTarget;
+  input.value = input.value.replace(/\D/g, "").slice(0, input.maxLength || 2);
+  input.classList.remove("wrong", "correct");
+  input.dataset.celebrated = "";
+
+  if (!input.value) {
+    return;
+  }
+
+  const isCorrect = input.value === input.dataset.expected;
+  input.classList.toggle("correct", isCorrect);
+  input.classList.toggle("wrong", !isCorrect);
+  if (!isCorrect) {
+    return;
+  }
+
+  input.dataset.celebrated = "true";
+  sparkleAt(input, 5);
+  playTone("digit");
+
+  if (input.dataset.kind === "product") {
+    const remainder = document.querySelector(`.division-process-input[data-step="${input.dataset.step}"][data-kind="remainder"]`);
+    remainder?.focus({ preventScroll: true });
+    remainder?.select();
+  } else {
+    const next = document.querySelector(`.division-quotient-row .digit-input[data-step="${Number(input.dataset.step) + 1}"]`);
+    next?.focus({ preventScroll: true });
+    next?.select();
+  }
+
+  maybeCompleteAnswer();
+}
+
+function handleDivisionProcessKeys(event) {
+  if (event.key === "Enter") {
+    checkAnswer();
   }
 }
 
@@ -1501,6 +1630,9 @@ function maybeCompleteAnswer() {
   if (state.operation === "multiplication" && !partialProductsComplete()) {
     return;
   }
+  if (state.operation === "division" && !divisionProcessComplete()) {
+    return;
+  }
   const inputs = [...document.querySelectorAll(".digit-input")];
   const expected = answerText().padStart(answerWidth(), "0");
   const typed = inputs.map((input) => input.value).join("");
@@ -1512,6 +1644,11 @@ function maybeCompleteAnswer() {
 function partialProductsComplete() {
   const partialInputs = [...document.querySelectorAll(".partial-input")];
   return partialInputs.every((input) => input.value === input.dataset.expected);
+}
+
+function divisionProcessComplete() {
+  const processInputs = [...document.querySelectorAll(".division-process-input")];
+  return processInputs.length > 0 && processInputs.every((input) => input.value === input.dataset.expected);
 }
 
 function checkAnswer() {
@@ -1533,13 +1670,20 @@ function checkAnswer() {
       input.classList.toggle("correct", input.value === input.dataset.expected);
     });
   }
+  if (state.operation === "division") {
+    document.querySelectorAll(".division-process-input").forEach((input) => {
+      input.classList.toggle("wrong", input.value !== input.dataset.expected);
+      input.classList.toggle("correct", input.value === input.dataset.expected);
+    });
+  }
 
-  if (Number(typed) === state.answer && partialProductsComplete()) {
+  if (Number(typed) === state.answer && partialProductsComplete() && (state.operation !== "division" || divisionProcessComplete())) {
     rescueTreasure();
     return;
   }
 
-  const firstWrong = inputs.find((input) => input.classList.contains("wrong"));
+  const firstWrong = inputs.find((input) => input.classList.contains("wrong"))
+    || document.querySelector(".division-process-input.wrong");
   firstWrong?.focus();
   els.feedback.textContent = state.attempts > 1
     ? copy().wrongAgain
@@ -1611,7 +1755,7 @@ function clearAnswer() {
     document.querySelector(".partial-input")?.focus();
     return;
   }
-  document.querySelectorAll(".digit-input, .partial-input, .carry-input").forEach((input) => {
+  document.querySelectorAll(".digit-input, .partial-input, .carry-input, .division-process-input").forEach((input) => {
     input.value = "";
     input.classList.remove("wrong", "correct");
     input.dataset.celebrated = "";

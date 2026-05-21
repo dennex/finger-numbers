@@ -698,12 +698,13 @@ button.digit-cell.partial-complete {
 .division-shell {
   display: grid;
   grid-template-columns: minmax(42px, 0.22fr) 1fr;
-  align-items: end;
+  align-items: start;
   gap: 8px;
 }
 
 .division-divisor {
   min-height: clamp(38px, 7vh, 56px);
+  margin-top: clamp(74px, 12vh, 100px);
   display: grid;
   place-items: center;
   color: var(--coral);
@@ -728,6 +729,115 @@ button.digit-cell.partial-complete {
 .division-dividend-row {
   padding-top: 8px;
   border-top: 5px solid var(--ink);
+}
+
+.division-process {
+  display: grid;
+  gap: 6px;
+}
+
+.division-step {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 6px;
+  background: rgba(240, 248, 246, 0.92);
+  border: 3px solid rgba(21, 122, 110, 0.2);
+  border-radius: 8px;
+}
+
+.division-partial {
+  display: grid;
+  place-items: center;
+  min-height: 28px;
+  color: var(--teal-dark);
+  font-size: 1.2rem;
+  font-weight: 1000;
+}
+
+.division-line {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: 3px;
+  color: var(--coral);
+  font-size: 1.05rem;
+  font-weight: 1000;
+}
+
+.division-process-input {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+  color: var(--ink);
+  background: var(--white);
+  border: 3px solid rgba(23, 50, 51, 0.28);
+  border-radius: 8px;
+  font: inherit;
+  text-align: center;
+}
+
+body[data-operation="division"] .subtraction-board {
+  padding: 8px;
+}
+
+body[data-operation="division"] .digit-cell,
+body[data-operation="division"] .digit-input {
+  height: clamp(34px, 6vh, 46px);
+  font-size: clamp(1.4rem, 3.4vw, 2.4rem);
+}
+
+.division-process-input:focus {
+  outline: 4px solid #1f76d2;
+  outline-offset: 2px;
+}
+
+.division-process-input.wrong {
+  border-color: var(--coral);
+  background: #ffe1d4;
+}
+
+.division-process-input.correct {
+  border-color: #5ba04f;
+  background: #e8f7e4;
+}
+
+.division-step small {
+  min-height: 1.2em;
+  color: var(--teal-dark);
+  font-size: 0.78rem;
+  font-weight: 1000;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.division-process.compact-process {
+  gap: 4px;
+}
+
+.division-process.compact-process .division-step {
+  gap: 3px;
+  padding: 4px;
+}
+
+.division-process.compact-process .division-partial {
+  min-height: 20px;
+  font-size: 0.95rem;
+}
+
+.division-process.compact-process .division-line {
+  grid-template-columns: 12px 1fr;
+  gap: 2px;
+  font-size: 0.9rem;
+}
+
+.division-process.compact-process .division-process-input {
+  height: 25px;
+  border-width: 2px;
+}
+
+.division-process.compact-process small {
+  display: none;
 }
 
 .answer-actions {
@@ -1431,10 +1541,23 @@ body[data-operation="multiplication"] .feedback {
     gap: 5px;
   }
 
+  .division-divisor {
+    margin-top: 70px;
+  }
+
   .division-quotient-row,
-  .division-dividend-row {
+  .division-dividend-row,
+  .division-process {
     grid-template-columns: repeat(var(--places, 6), minmax(0, 1fr));
     gap: 4px;
+  }
+
+  .division-step {
+    padding: 4px;
+  }
+
+  .division-process-input {
+    height: 30px;
   }
 
   .operation-tab,
