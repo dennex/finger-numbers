@@ -996,8 +996,10 @@ body[data-operation="multiplication"] .feedback {
 }
 
 .party-chest {
-  width: min(250px, 58vw);
-  aspect-ratio: 1.35;
+  width: 250px;
+  max-width: 58vw;
+  height: 185px;
+  max-height: 43vw;
   position: relative;
   margin-top: 12px;
   background: transparent;
@@ -1006,7 +1008,10 @@ body[data-operation="multiplication"] .feedback {
 .party-chest::before {
   content: "";
   position: absolute;
-  inset: 42% 0 0;
+  top: 42%;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: #a95f2b;
   border: 6px solid var(--ink);
   border-radius: 0 0 8px 8px;
