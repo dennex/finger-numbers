@@ -1209,8 +1209,11 @@ function renderDivisionBoard() {
     const card = document.createElement("div");
     card.className = "division-step";
     card.dataset.step = String(step.index);
+    const partialLabel = step.index === 0
+      ? `${step.partial}`
+      : `<span class="division-bridge">${step.previousRemainder} × 10 + ${step.digit} =</span>${step.partial}`;
     card.innerHTML = `
-      <span class="division-partial">${step.partial}</span>
+      <span class="division-partial">${partialLabel}</span>
       <label class="division-line">
         <span>-</span>
         <input class="division-process-input" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="2" data-step="${step.index}" data-kind="product" data-expected="${step.product}" aria-label="${state.divisor} times quotient digit">
@@ -1219,7 +1222,6 @@ function renderDivisionBoard() {
         <span>=</span>
         <input class="division-process-input" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="1" data-step="${step.index}" data-kind="remainder" data-expected="${step.remainder}" aria-label="remainder">
       </label>
-      ${step.nextDigit === undefined ? "" : `<small>${step.remainder} × 10 + ${step.nextDigit} = ${step.bringDown}</small>`}
     `;
     card.querySelectorAll(".division-process-input").forEach((input) => {
       input.addEventListener("input", handleDivisionProcessInput);

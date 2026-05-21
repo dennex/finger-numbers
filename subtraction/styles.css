@@ -753,6 +753,15 @@ button.digit-cell.partial-complete {
   color: var(--teal-dark);
   font-size: 1.2rem;
   font-weight: 1000;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.division-bridge {
+  display: block;
+  color: #0b6b63;
+  font-size: 0.62em;
+  line-height: 1;
 }
 
 .division-line {
@@ -822,7 +831,11 @@ body[data-operation="division"] .digit-input {
 
 .division-process.compact-process .division-partial {
   min-height: 20px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+}
+
+.division-process.compact-process .division-bridge {
+  font-size: 0.58em;
 }
 
 .division-process.compact-process .division-line {
