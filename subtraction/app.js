@@ -1192,10 +1192,17 @@ function renderDivisionBoard() {
   const dividendRow = document.createElement("div");
   dividendRow.className = "division-dividend-row";
   dividendRow.style.gridTemplateColumns = `repeat(${dividendWidth}, minmax(42px, 1fr))`;
-  digitsOf(state.dividend, dividendWidth).forEach((digit) => {
+  digitsOf(state.dividend, dividendWidth).forEach((digit, index) => {
     const cell = document.createElement("span");
     cell.className = "digit-cell";
-    cell.textContent = digit;
+    if (index > 0) {
+      cell.classList.add("locked");
+    }
+    cell.dataset.step = String(index);
+    const step = steps[index];
+    cell.innerHTML = index === 0
+      ? digit
+      : `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span>${step.partial}`;
     dividendRow.append(cell);
   });
 
@@ -1212,11 +1219,8 @@ function renderDivisionBoard() {
       card.classList.add("locked");
     }
     card.dataset.step = String(step.index);
-    const partialLabel = step.index === 0
-      ? `${step.partial}`
-      : `<span class="division-bridge">${step.previousRemainder} × 10 + ${step.digit} =</span>${step.partial}`;
     card.innerHTML = `
-      <span class="division-partial">${partialLabel}</span>
+      <span class="division-partial">${step.partial}</span>
       <label class="division-line">
         <span>-</span>
         <input class="division-process-input" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="2" data-step="${step.index}" data-kind="product" data-expected="${step.product}" aria-label="${state.divisor} times quotient digit">
@@ -1586,6 +1590,8 @@ function handleDivisionProcessInput(event) {
 function unlockDivisionStep(stepIndex) {
   const step = document.querySelector(`.division-step[data-step="${stepIndex}"]`);
   step?.classList.remove("locked");
+  const dividend = document.querySelector(`.division-dividend-row .digit-cell[data-step="${stepIndex}"]`);
+  dividend?.classList.remove("locked");
 }
 
 function handleDivisionProcessKeys(event) {

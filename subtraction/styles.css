@@ -731,6 +731,18 @@ button.digit-cell.partial-complete {
   border-top: 5px solid var(--ink);
 }
 
+.division-dividend-row .digit-cell {
+  line-height: 1.05;
+}
+
+.division-dividend-row .digit-cell.locked {
+  color: transparent;
+}
+
+.division-dividend-row .digit-cell.locked .division-bridge {
+  visibility: hidden;
+}
+
 .division-process {
   display: grid;
   gap: 6px;
