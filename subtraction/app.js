@@ -1208,6 +1208,9 @@ function renderDivisionBoard() {
   steps.forEach((step) => {
     const card = document.createElement("div");
     card.className = "division-step";
+    if (step.index > 0) {
+      card.classList.add("locked");
+    }
     card.dataset.step = String(step.index);
     const partialLabel = step.index === 0
       ? `${step.partial}`
@@ -1571,12 +1574,18 @@ function handleDivisionProcessInput(event) {
     remainder?.focus({ preventScroll: true });
     remainder?.select();
   } else {
+    unlockDivisionStep(Number(input.dataset.step) + 1);
     const next = document.querySelector(`.division-quotient-row .digit-input[data-step="${Number(input.dataset.step) + 1}"]`);
     next?.focus({ preventScroll: true });
     next?.select();
   }
 
   maybeCompleteAnswer();
+}
+
+function unlockDivisionStep(stepIndex) {
+  const step = document.querySelector(`.division-step[data-step="${stepIndex}"]`);
+  step?.classList.remove("locked");
 }
 
 function handleDivisionProcessKeys(event) {

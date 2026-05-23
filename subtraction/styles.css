@@ -764,6 +764,14 @@ button.digit-cell.partial-complete {
   line-height: 1;
 }
 
+.division-step.locked .division-partial {
+  color: transparent;
+}
+
+.division-step.locked .division-bridge {
+  visibility: hidden;
+}
+
 .division-line {
   display: grid;
   grid-template-columns: 18px 1fr;
