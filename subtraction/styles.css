@@ -732,16 +732,20 @@ button.digit-cell.partial-complete {
 }
 
 .division-dividend-row .digit-cell {
+  min-height: clamp(50px, 7.2vh, 64px);
   line-height: 1.05;
   overflow: hidden;
 }
 
 .division-dividend-row .digit-cell.bridge-revealed {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 1.15fr;
   align-items: center;
-  justify-content: center;
-  gap: 2px;
+  justify-items: center;
+  gap: 0;
+  overflow: visible;
+  z-index: 4;
+  padding: 2px 0 1px;
   animation: division-bridge-glow 620ms ease;
 }
 
@@ -773,15 +777,20 @@ button.digit-cell.partial-complete {
 
 .division-bridge {
   display: block;
+  width: max-content;
   color: #0b6b63;
-  font-size: 0.5em;
+  background: #edf8f2;
+  border-radius: 4px;
+  padding: 0 3px;
+  font-size: clamp(0.5rem, 1.45vw, 0.7rem);
   line-height: 1;
   white-space: nowrap;
 }
 
 .division-bridge-total {
   display: block;
-  line-height: 0.9;
+  font-size: clamp(1.15rem, 2.8vw, 1.75rem);
+  line-height: 0.95;
 }
 
 .division-step.bridge-carried .division-partial {
@@ -797,7 +806,7 @@ button.digit-cell.partial-complete {
   line-height: 1;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: division-remainder-fly 560ms cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
+  animation: division-remainder-fly 2000ms cubic-bezier(0.16, 0.8, 0.22, 1) forwards;
 }
 
 .division-step.locked .division-partial {
@@ -904,11 +913,11 @@ body[data-operation="division"] .digit-input {
 }
 
 .division-process.compact-process .division-bridge {
-  font-size: 0.43em;
+  font-size: clamp(0.44rem, 1vw, 0.58rem);
 }
 
 .division-process.compact-process .division-bridge-total {
-  font-size: 0.88em;
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
 }
 
 .division-process.compact-process .division-line {

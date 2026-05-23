@@ -11,6 +11,8 @@ const treasureContents = [
   { kind: "bill", value: "100", label: "Canadian one hundred dollar bill" }
 ];
 const treasureGoal = 5;
+const DIVISION_REMAINDER_FLY_MS = 2000;
+const DIVISION_REMAINDER_FOCUS_MS = DIVISION_REMAINDER_FLY_MS + 80;
 
 const translations = {
   en: {
@@ -1582,7 +1584,7 @@ function handleDivisionProcessInput(event) {
       const next = document.querySelector(`.division-quotient-row .digit-input[data-step="${nextStep}"]`);
       next?.focus({ preventScroll: true });
       next?.select();
-    }, 620);
+    }, DIVISION_REMAINDER_FOCUS_MS);
   }
 
   maybeCompleteAnswer();
@@ -1628,7 +1630,7 @@ function revealDivisionBridge(stepIndex, dividend, step) {
     dividend.classList.add("bridge-revealed");
     step?.classList.add("bridge-carried");
     sparkleAt(dividend, 10);
-  }, 560);
+  }, DIVISION_REMAINDER_FLY_MS);
 }
 
 function handleDivisionProcessKeys(event) {
