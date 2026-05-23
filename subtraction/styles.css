@@ -735,12 +735,8 @@ button.digit-cell.partial-complete {
   line-height: 1.05;
 }
 
-.division-dividend-row .digit-cell.locked {
-  color: transparent;
-}
-
-.division-dividend-row .digit-cell.locked .division-bridge {
-  visibility: hidden;
+.division-dividend-row .digit-cell.bridge-revealed {
+  animation: division-bridge-glow 620ms ease;
 }
 
 .division-process {
@@ -776,12 +772,47 @@ button.digit-cell.partial-complete {
   line-height: 1;
 }
 
+.division-remainder-fly {
+  position: fixed;
+  z-index: 50;
+  color: var(--coral);
+  font-size: 1.8rem;
+  font-weight: 1000;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: division-remainder-fly 560ms cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
+}
+
 .division-step.locked .division-partial {
   color: transparent;
 }
 
 .division-step.locked .division-bridge {
   visibility: hidden;
+}
+
+@keyframes division-remainder-fly {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0.85;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.72);
+  }
+}
+
+@keyframes division-bridge-glow {
+  0%,
+  100% {
+    background: var(--pale);
+  }
+
+  50% {
+    background: #fff2a6;
+  }
 }
 
 .division-line {

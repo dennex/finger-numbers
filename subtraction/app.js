@@ -1195,14 +1195,12 @@ function renderDivisionBoard() {
   digitsOf(state.dividend, dividendWidth).forEach((digit, index) => {
     const cell = document.createElement("span");
     cell.className = "digit-cell";
-    if (index > 0) {
-      cell.classList.add("locked");
-    }
     cell.dataset.step = String(index);
     const step = steps[index];
-    cell.innerHTML = index === 0
-      ? digit
-      : `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span>${step.partial}`;
+    if (index > 0) {
+      cell.dataset.bridge = `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span>${step.partial}`;
+    }
+    cell.textContent = digit;
     dividendRow.append(cell);
   });
 
@@ -1578,10 +1576,13 @@ function handleDivisionProcessInput(event) {
     remainder?.focus({ preventScroll: true });
     remainder?.select();
   } else {
-    unlockDivisionStep(Number(input.dataset.step) + 1);
-    const next = document.querySelector(`.division-quotient-row .digit-input[data-step="${Number(input.dataset.step) + 1}"]`);
-    next?.focus({ preventScroll: true });
-    next?.select();
+    const nextStep = Number(input.dataset.step) + 1;
+    unlockDivisionStep(nextStep);
+    window.setTimeout(() => {
+      const next = document.querySelector(`.division-quotient-row .digit-input[data-step="${nextStep}"]`);
+      next?.focus({ preventScroll: true });
+      next?.select();
+    }, 620);
   }
 
   maybeCompleteAnswer();
@@ -1591,7 +1592,40 @@ function unlockDivisionStep(stepIndex) {
   const step = document.querySelector(`.division-step[data-step="${stepIndex}"]`);
   step?.classList.remove("locked");
   const dividend = document.querySelector(`.division-dividend-row .digit-cell[data-step="${stepIndex}"]`);
-  dividend?.classList.remove("locked");
+  revealDivisionBridge(stepIndex, dividend);
+}
+
+function revealDivisionBridge(stepIndex, dividend) {
+  if (!dividend || !dividend.dataset.bridge || dividend.dataset.revealed === "true") {
+    return;
+  }
+
+  const previousRemainder = document.querySelector(`.division-process-input[data-step="${stepIndex - 1}"][data-kind="remainder"]`);
+  if (!previousRemainder) {
+    dividend.innerHTML = dividend.dataset.bridge;
+    dividend.dataset.revealed = "true";
+    sparkleAt(dividend, 8);
+    return;
+  }
+
+  const start = previousRemainder.getBoundingClientRect();
+  const end = dividend.getBoundingClientRect();
+  const flyer = document.createElement("span");
+  flyer.className = "division-remainder-fly";
+  flyer.textContent = previousRemainder.value || previousRemainder.dataset.expected;
+  flyer.style.left = `${start.left + start.width / 2}px`;
+  flyer.style.top = `${start.top + start.height / 2}px`;
+  flyer.style.setProperty("--dx", `${end.left + end.width / 2 - (start.left + start.width / 2)}px`);
+  flyer.style.setProperty("--dy", `${end.top + end.height / 2 - (start.top + start.height / 2)}px`);
+  document.body.append(flyer);
+
+  window.setTimeout(() => {
+    flyer.remove();
+    dividend.innerHTML = dividend.dataset.bridge;
+    dividend.dataset.revealed = "true";
+    dividend.classList.add("bridge-revealed");
+    sparkleAt(dividend, 10);
+  }, 560);
 }
 
 function handleDivisionProcessKeys(event) {
