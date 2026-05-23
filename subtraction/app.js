@@ -1198,7 +1198,7 @@ function renderDivisionBoard() {
     cell.dataset.step = String(index);
     const step = steps[index];
     if (index > 0) {
-      cell.dataset.bridge = `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span>${step.partial}`;
+      cell.dataset.bridge = `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span><span class="division-bridge-total">${step.partial}</span>`;
     }
     cell.textContent = digit;
     dividendRow.append(cell);
@@ -1592,10 +1592,10 @@ function unlockDivisionStep(stepIndex) {
   const step = document.querySelector(`.division-step[data-step="${stepIndex}"]`);
   step?.classList.remove("locked");
   const dividend = document.querySelector(`.division-dividend-row .digit-cell[data-step="${stepIndex}"]`);
-  revealDivisionBridge(stepIndex, dividend);
+  revealDivisionBridge(stepIndex, dividend, step);
 }
 
-function revealDivisionBridge(stepIndex, dividend) {
+function revealDivisionBridge(stepIndex, dividend, step) {
   if (!dividend || !dividend.dataset.bridge || dividend.dataset.revealed === "true") {
     return;
   }
@@ -1604,6 +1604,8 @@ function revealDivisionBridge(stepIndex, dividend) {
   if (!previousRemainder) {
     dividend.innerHTML = dividend.dataset.bridge;
     dividend.dataset.revealed = "true";
+    dividend.classList.add("bridge-revealed");
+    step?.classList.add("bridge-carried");
     sparkleAt(dividend, 8);
     return;
   }
@@ -1624,6 +1626,7 @@ function revealDivisionBridge(stepIndex, dividend) {
     dividend.innerHTML = dividend.dataset.bridge;
     dividend.dataset.revealed = "true";
     dividend.classList.add("bridge-revealed");
+    step?.classList.add("bridge-carried");
     sparkleAt(dividend, 10);
   }, 560);
 }

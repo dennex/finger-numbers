@@ -1,4 +1,4 @@
-const CACHE_NAME = "treasure-subtraction-v66";
+const CACHE_NAME = "treasure-subtraction-v68";
 const ASSETS = [
   "./",
   "./index.html",
