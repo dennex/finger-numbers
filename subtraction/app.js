@@ -13,6 +13,15 @@ const treasureContents = [
 const treasureGoal = 5;
 const DIVISION_REMAINDER_FLY_MS = 2000;
 const DIVISION_REMAINDER_FOCUS_MS = DIVISION_REMAINDER_FLY_MS + 80;
+const recordedSpeech = {
+  fr: {
+    subtraction: "audio/fr/intro-subtraction.wav",
+    addition: "audio/fr/intro-addition.wav",
+    multiplication: "audio/fr/intro-multiplication.wav",
+    division: "audio/fr/intro-division.wav",
+    treasure: "audio/fr/treasure.wav"
+  }
+};
 
 const translations = {
   en: {
@@ -609,6 +618,7 @@ const state = {
   divisionStep: 0,
   completing: false,
   audioContext: null,
+  currentSpeechAudio: null,
   preferredVoice: null,
   introSpoken: false,
   treasureSpeechStarted: false
@@ -1917,7 +1927,7 @@ function speakTreasure() {
   if (state.treasureSpeechStarted) {
     return;
   }
-  state.treasureSpeechStarted = speak(copy().treasureSpeech, true);
+  state.treasureSpeechStarted = speak(copy().treasureSpeech, true, "treasure");
 }
 
 function explodeFruit() {
@@ -1988,12 +1998,75 @@ function introSpeechText() {
     || text.introSpeech;
 }
 
-function speak(message, important = false) {
-  if (!("speechSynthesis" in window) || !message) {
+function stopSpeech() {
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+  if (state.currentSpeechAudio) {
+    state.currentSpeechAudio.pause();
+    state.currentSpeechAudio = null;
+  }
+}
+
+function recordedSpeechSource(key) {
+  return recordedSpeech[state.lang]?.[key] || null;
+}
+
+function markSpeechStarted(message) {
+  if (message === introSpeechText()) {
+    state.introSpoken = true;
+  }
+}
+
+function resetSpeechStarted(message) {
+  if (message === introSpeechText()) {
+    state.introSpoken = false;
+  }
+  if (message === copy().treasureSpeech) {
+    state.treasureSpeechStarted = false;
+  }
+}
+
+function playRecordedSpeech(message, key) {
+  const source = recordedSpeechSource(key);
+  if (!source || typeof Audio !== "function") {
+    return false;
+  }
+  const audio = new Audio(source);
+  state.currentSpeechAudio = audio;
+  audio.onplay = () => markSpeechStarted(message);
+  audio.onended = () => {
+    if (state.currentSpeechAudio === audio) {
+      state.currentSpeechAudio = null;
+    }
+  };
+  audio.onerror = () => {
+    resetSpeechStarted(message);
+    if (state.currentSpeechAudio === audio) {
+      state.currentSpeechAudio = null;
+    }
+  };
+  audio.play().catch(() => {
+    resetSpeechStarted(message);
+    if (state.currentSpeechAudio === audio) {
+      state.currentSpeechAudio = null;
+    }
+  });
+  return true;
+}
+
+function speak(message, important = false, audioKey = null) {
+  if (!message) {
     return false;
   }
   if (important) {
-    window.speechSynthesis.cancel();
+    stopSpeech();
+  }
+  if (audioKey && playRecordedSpeech(message, audioKey)) {
+    return true;
+  }
+  if (!("speechSynthesis" in window)) {
+    return false;
   }
   const utterance = new SpeechSynthesisUtterance(message);
   utterance.lang = copy().voiceLang;
@@ -2003,11 +2076,8 @@ function speak(message, important = false) {
   }
   utterance.rate = 0.9;
   utterance.pitch = 1.08;
-  utterance.onstart = () => {
-    if (message === introSpeechText()) {
-      state.introSpoken = true;
-    }
-  };
+  utterance.onstart = () => markSpeechStarted(message);
+  utterance.onerror = () => resetSpeechStarted(message);
   window.speechSynthesis.speak(utterance);
   return true;
 }
@@ -2016,7 +2086,7 @@ function speakIntro(force = false) {
   if (state.introSpoken && !force) {
     return;
   }
-  speak(introSpeechText(), true);
+  speak(introSpeechText(), true, state.operation);
 }
 
 function playTone(type) {

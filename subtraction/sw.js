@@ -1,11 +1,16 @@
-const CACHE_NAME = "treasure-subtraction-v71";
+const CACHE_NAME = "treasure-subtraction-v72";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
-  "./icon.svg"
+  "./icon.svg",
+  "./audio/fr/intro-subtraction.wav",
+  "./audio/fr/intro-addition.wav",
+  "./audio/fr/intro-multiplication.wav",
+  "./audio/fr/intro-division.wav",
+  "./audio/fr/treasure.wav"
 ];
 
 self.addEventListener("install", (event) => {
