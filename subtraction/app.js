@@ -921,6 +921,8 @@ function multiplicationPartialProducts() {
 }
 
 function renderBoard() {
+  clearDivisionMotionGuides();
+
   if (state.operation === "addition") {
     renderAdditionBoard();
     return;
@@ -1200,7 +1202,7 @@ function renderDivisionBoard() {
     cell.dataset.step = String(index);
     const step = steps[index];
     if (index > 0) {
-      cell.dataset.bridge = `<span class="division-bridge">${step.previousRemainder} × 10 + ${digit} =</span><span class="division-bridge-total">${step.partial}</span>`;
+      cell.dataset.bridge = `<span class="division-bridge"><span class="division-carried-remainder">${step.previousRemainder}</span> × 10 + ${digit} =</span><span class="division-bridge-total">${step.partial}</span>`;
     }
     cell.textContent = digit;
     dividendRow.append(cell);
@@ -1597,6 +1599,10 @@ function unlockDivisionStep(stepIndex) {
   revealDivisionBridge(stepIndex, dividend, step);
 }
 
+function clearDivisionMotionGuides() {
+  document.querySelectorAll(".division-remainder-fly, .division-remainder-path").forEach((item) => item.remove());
+}
+
 function revealDivisionBridge(stepIndex, dividend, step) {
   if (!dividend || !dividend.dataset.bridge || dividend.dataset.revealed === "true") {
     return;
@@ -1614,16 +1620,31 @@ function revealDivisionBridge(stepIndex, dividend, step) {
 
   const start = previousRemainder.getBoundingClientRect();
   const end = dividend.getBoundingClientRect();
+  const startX = start.left + start.width / 2;
+  const startY = start.top + start.height / 2;
+  const endX = end.left + end.width / 2;
+  const endY = end.top + end.height / 2;
+  const distance = Math.hypot(endX - startX, endY - startY);
+  const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+  const path = document.createElement("span");
+  path.className = "division-remainder-path";
+  path.style.left = `${startX}px`;
+  path.style.top = `${startY}px`;
+  path.style.width = `${distance}px`;
+  path.style.setProperty("--angle", `${angle}deg`);
+  document.body.append(path);
+
   const flyer = document.createElement("span");
   flyer.className = "division-remainder-fly";
   flyer.textContent = previousRemainder.value || previousRemainder.dataset.expected;
-  flyer.style.left = `${start.left + start.width / 2}px`;
-  flyer.style.top = `${start.top + start.height / 2}px`;
-  flyer.style.setProperty("--dx", `${end.left + end.width / 2 - (start.left + start.width / 2)}px`);
-  flyer.style.setProperty("--dy", `${end.top + end.height / 2 - (start.top + start.height / 2)}px`);
+  flyer.style.left = `${startX}px`;
+  flyer.style.top = `${startY}px`;
+  flyer.style.setProperty("--dx", `${endX - startX}px`);
+  flyer.style.setProperty("--dy", `${endY - startY}px`);
   document.body.append(flyer);
 
   window.setTimeout(() => {
+    path.classList.add("settled");
     flyer.remove();
     dividend.innerHTML = dividend.dataset.bridge;
     dividend.dataset.revealed = "true";
