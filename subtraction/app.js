@@ -1329,7 +1329,9 @@ function toggleCarry(index) {
 }
 
 function toggleMultiplyAddCarry(index) {
-  if (state.multiplicationStep < multiplicationPartialProducts().length || index === answerWidth() - 1) {
+  const typedDigits = [...document.querySelectorAll(".answer-row .digit-input")].map((input) => input.value);
+  const width = typedDigits.length || answerWidth();
+  if (state.multiplicationStep < multiplicationPartialProducts().length || index === width - 1) {
     return;
   }
   if (state.multiplyAddCarryMarks.has(index)) {
@@ -1338,6 +1340,11 @@ function toggleMultiplyAddCarry(index) {
     state.multiplyAddCarryMarks.add(index);
   }
   renderBoard();
+  document.querySelectorAll(".answer-row .digit-input").forEach((input, inputIndex) => {
+    input.value = typedDigits[inputIndex] || "";
+    checkDigitInput(input);
+  });
+  renderPlaceLab();
   els.feedback.textContent = copy().carryMessage || translations.en.carryMessage;
   playTone("borrow");
 }
