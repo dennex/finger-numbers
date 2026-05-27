@@ -1406,7 +1406,7 @@ function handlePartialInput(event) {
       playTone("digit");
     }
 
-    const next = input.nextElementSibling;
+    const next = input.previousElementSibling;
     if (next?.classList.contains("partial-input")) {
       next.focus();
       next.select();
@@ -1426,7 +1426,7 @@ function handlePartialInput(event) {
 function handlePartialKeys(event) {
   const input = event.currentTarget;
   if (event.key === "Backspace" && !input.value) {
-    const previous = input.previousElementSibling;
+    const previous = input.nextElementSibling;
     if (previous?.classList.contains("partial-input")) {
       previous.focus();
       previous.value = "";
@@ -1453,7 +1453,7 @@ function maybeAdvanceMultiplicationStep(rowIndex) {
   window.setTimeout(() => {
     renderGame();
     const nextInput = state.multiplicationStep < multiplicationPartialProducts().length
-      ? document.querySelector(`.partial-input[data-row="${state.multiplicationStep}"]`)
+      ? lastMultiplicationPartialInput()
       : document.querySelector(".answer-row .digit-input");
     nextInput?.focus();
     nextInput?.select();
@@ -1857,7 +1857,9 @@ function clearAnswer() {
     state.multiplicationStep = 0;
     state.multiplyAddCarryMarks.clear();
     renderGame();
-    document.querySelector(".partial-input")?.focus();
+    const input = lastMultiplicationPartialInput();
+    input?.focus();
+    input?.select();
     return;
   }
   document.querySelectorAll(".digit-input, .partial-input, .carry-input, .division-process-input").forEach((input) => {
@@ -2162,11 +2164,16 @@ function focusMultiplicationInput() {
   }
 
   window.requestAnimationFrame(() => {
-    const input = document.querySelector(".partial-row.active-row .partial-input:not(:disabled)")
+    const input = lastMultiplicationPartialInput()
       || document.querySelector(".answer-row .digit-input:not(:disabled)");
     input?.focus({ preventScroll: true });
     input?.select();
   });
+}
+
+function lastMultiplicationPartialInput() {
+  const inputs = [...document.querySelectorAll(".partial-row.active-row .partial-input:not(:disabled)")];
+  return inputs[inputs.length - 1] || null;
 }
 
 function focusDivisionAnswer() {
