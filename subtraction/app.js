@@ -1454,7 +1454,7 @@ function maybeAdvanceMultiplicationStep(rowIndex) {
     renderGame();
     const nextInput = state.multiplicationStep < multiplicationPartialProducts().length
       ? lastMultiplicationPartialInput()
-      : document.querySelector(".answer-row .digit-input");
+      : lastMultiplicationAnswerInput();
     nextInput?.focus();
     nextInput?.select();
   }, 500);
@@ -1565,7 +1565,9 @@ function handleDigitInput(event) {
       input.select();
       return;
     }
-    const next = input.nextElementSibling;
+    const next = state.operation === "multiplication"
+      ? input.previousElementSibling
+      : input.nextElementSibling;
     if (next?.classList.contains("digit-input")) {
       next.focus();
       next.select();
@@ -2165,7 +2167,7 @@ function focusMultiplicationInput() {
 
   window.requestAnimationFrame(() => {
     const input = lastMultiplicationPartialInput()
-      || document.querySelector(".answer-row .digit-input:not(:disabled)");
+      || lastMultiplicationAnswerInput();
     input?.focus({ preventScroll: true });
     input?.select();
   });
@@ -2173,6 +2175,11 @@ function focusMultiplicationInput() {
 
 function lastMultiplicationPartialInput() {
   const inputs = [...document.querySelectorAll(".partial-row.active-row .partial-input:not(:disabled)")];
+  return inputs[inputs.length - 1] || null;
+}
+
+function lastMultiplicationAnswerInput() {
+  const inputs = [...document.querySelectorAll(".answer-row .digit-input:not(:disabled)")];
   return inputs[inputs.length - 1] || null;
 }
 
