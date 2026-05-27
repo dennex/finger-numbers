@@ -1405,15 +1405,19 @@ function handlePartialInput(event) {
       sparkleAt(input, 5);
       playTone("digit");
     }
+
+    const next = input.nextElementSibling;
+    if (next?.classList.contains("partial-input")) {
+      next.focus();
+      next.select();
+    }
   } else {
     input.classList.remove("correct");
+    input.classList.add("wrong");
     input.dataset.celebrated = "";
-  }
-
-  const next = input.nextElementSibling;
-  if (input.value && next?.classList.contains("partial-input")) {
-    next.focus();
-    next.select();
+    input.focus();
+    input.select();
+    return;
   }
   maybeAdvanceMultiplicationStep(Number(input.dataset.row));
   maybeCompleteAnswer();
@@ -1452,6 +1456,7 @@ function maybeAdvanceMultiplicationStep(rowIndex) {
       ? document.querySelector(`.partial-input[data-row="${state.multiplicationStep}"]`)
       : document.querySelector(".answer-row .digit-input");
     nextInput?.focus();
+    nextInput?.select();
   }, 500);
 }
 
@@ -1552,6 +1557,12 @@ function handleDigitInput(event) {
   if (input.value) {
     if (state.operation === "division") {
       focusDivisionProduct(input);
+      return;
+    }
+    if (state.operation === "multiplication" && !input.classList.contains("correct")) {
+      input.classList.add("wrong");
+      input.focus();
+      input.select();
       return;
     }
     const next = input.nextElementSibling;
@@ -2141,7 +2152,21 @@ function renderGame() {
   } else {
     els.helperTitle.textContent = state.includeRegrouping ? copy().helperTrade : copy().helperStart;
   }
+  focusMultiplicationInput();
   focusDivisionAnswer();
+}
+
+function focusMultiplicationInput() {
+  if (state.operation !== "multiplication" || state.completing) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const input = document.querySelector(".partial-row.active-row .partial-input:not(:disabled)")
+      || document.querySelector(".answer-row .digit-input:not(:disabled)");
+    input?.focus({ preventScroll: true });
+    input?.select();
+  });
 }
 
 function focusDivisionAnswer() {
