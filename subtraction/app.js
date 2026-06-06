@@ -637,6 +637,7 @@ const state = {
   productScale: 0,
   decimalMultiplication: false,
   selectedDecimalSpot: null,
+  nextProblemDelay: 1000,
   dividend: 48,
   divisor: 4,
   quotient: 12,
@@ -809,6 +810,7 @@ function makeProblem() {
   state.factorBottomScale = 0;
   state.productScale = 0;
   state.selectedDecimalSpot = null;
+  state.nextProblemDelay = 1000;
   state.answer = top - bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -839,6 +841,7 @@ function makeAdditionProblem() {
   state.factorBottomScale = 0;
   state.productScale = 0;
   state.selectedDecimalSpot = null;
+  state.nextProblemDelay = 1000;
   state.answer = top + bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -865,6 +868,7 @@ function makeMultiplicationProblem() {
   state.factorBottomScale = bottomScale;
   state.productScale = topScale + bottomScale;
   state.selectedDecimalSpot = null;
+  state.nextProblemDelay = 1000;
   state.answer = state.factorTop * state.factorBottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -897,6 +901,7 @@ function makeDivisionProblem() {
   state.factorBottomScale = 0;
   state.productScale = 0;
   state.selectedDecimalSpot = null;
+  state.nextProblemDelay = 1000;
   state.answer = state.quotient;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -1102,6 +1107,7 @@ function makeInlineDecimalSlot(position) {
   const slot = document.createElement("button");
   slot.className = "decimal-slot inline-decimal-slot";
   slot.type = "button";
+  slot.textContent = ".";
   slot.disabled = state.selectedDecimalSpot === null;
   slot.dataset.position = String(position);
   slot.setAttribute("aria-label", `${copy().decimalPrompt || translations.en.decimalPrompt} ${position}`);
@@ -1724,6 +1730,7 @@ function placeDecimalSpot(position, slot) {
   const isCorrect = position === correctDecimalSpot();
   slot.classList.add(isCorrect ? "correct" : "wrong", "selected");
   if (isCorrect) {
+    state.nextProblemDelay = 5000;
     slot.closest(".decimal-answer-row")?.classList.add("decimal-finalized");
     sparkleAt(slot, 10);
     playTone("digit");
@@ -2002,7 +2009,7 @@ function rescueTreasure() {
   window.setTimeout(() => {
     makeProblem();
     renderGame();
-  }, 1000);
+  }, state.nextProblemDelay || 1000);
 }
 
 function showHint() {
