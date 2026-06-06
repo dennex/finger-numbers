@@ -1055,6 +1055,13 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
   const inputRow = document.createElement("div");
   inputRow.className = `number-row answer-row ${extraClass}`.trim();
   inputRow.setAttribute("aria-label", copy().answer);
+  const decimalAnswer = state.operation === "multiplication" && state.productScale > 0 && extraClass.includes("total-row");
+  if (decimalAnswer) {
+    inputRow.classList.add("decimal-answer-row");
+    if (state.selectedDecimalSpot === null) {
+      inputRow.classList.add("waiting-decimal");
+    }
+  }
 
   const equals = document.createElement("span");
   equals.className = "operator";
@@ -1062,6 +1069,13 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
   inputRow.append(equals);
 
   answer.forEach((_, index) => {
+    const holder = decimalAnswer ? document.createElement("span") : null;
+    if (holder) {
+      holder.className = "answer-digit-wrap";
+      holder.dataset.index = String(index);
+      holder.append(makeInlineDecimalSlot(index));
+    }
+
     const input = document.createElement("input");
     input.className = "digit-input";
     input.inputMode = "numeric";
@@ -1073,10 +1087,34 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
     input.disabled = disabled;
     input.addEventListener("input", handleDigitInput);
     input.addEventListener("keydown", handleDigitKeys);
-    inputRow.append(input);
+    if (holder) {
+      holder.append(input);
+      inputRow.append(holder);
+    } else {
+      inputRow.append(input);
+    }
   });
 
   return inputRow;
+}
+
+function makeInlineDecimalSlot(position) {
+  const slot = document.createElement("button");
+  slot.className = "decimal-slot inline-decimal-slot";
+  slot.type = "button";
+  slot.disabled = state.selectedDecimalSpot === null;
+  slot.dataset.position = String(position);
+  slot.setAttribute("aria-label", `${copy().decimalPrompt || translations.en.decimalPrompt} ${position}`);
+  slot.addEventListener("click", () => placeDecimalSpot(position, slot));
+  slot.addEventListener("dragover", (event) => event.preventDefault());
+  slot.addEventListener("drop", (event) => {
+    event.preventDefault();
+    placeDecimalSpot(position, slot);
+  });
+  if (state.selectedDecimalSpot === position) {
+    slot.classList.add(position === correctDecimalSpot() ? "correct" : "wrong");
+  }
+  return slot;
 }
 
 function correctDecimalSpot(width = answerWidth()) {
@@ -1090,63 +1128,13 @@ function answerDigitsComplete() {
   return inputs.length === expected.length && typed === expected;
 }
 
-function makeDecimalPlacementRow(width) {
-  const row = document.createElement("div");
-  row.className = "number-row decimal-placement-row";
-  if (state.selectedDecimalSpot === null) {
-    row.classList.add("waiting");
-  }
-  row.setAttribute("aria-label", copy().decimalPrompt || translations.en.decimalPrompt);
-
-  const operator = document.createElement("span");
-  operator.className = "operator";
-  operator.textContent = "";
-  row.append(operator);
-
-  const playground = document.createElement("div");
-  playground.className = "decimal-playground";
-  playground.style.setProperty("--decimal-spots", String(width + 1));
-
-  const token = document.createElement("button");
-  token.className = "decimal-token";
-  token.type = "button";
-  token.textContent = ".";
-  token.draggable = true;
-  token.disabled = state.selectedDecimalSpot === null;
-  token.setAttribute("aria-label", copy().decimalPrompt || translations.en.decimalPrompt);
-  token.addEventListener("dragstart", handleDecimalDragStart);
-  playground.append(token);
-
-  for (let position = 0; position <= width; position += 1) {
-    const slot = document.createElement("button");
-    slot.className = "decimal-slot";
-    slot.type = "button";
-    slot.disabled = state.selectedDecimalSpot === null;
-    slot.dataset.position = String(position);
-    slot.setAttribute("aria-label", `${copy().decimalPrompt || translations.en.decimalPrompt} ${position}`);
-    slot.addEventListener("click", () => placeDecimalSpot(position, slot));
-    slot.addEventListener("dragover", (event) => event.preventDefault());
-    slot.addEventListener("drop", (event) => {
-      event.preventDefault();
-      placeDecimalSpot(position, slot);
-    });
-    if (state.selectedDecimalSpot === position) {
-      slot.classList.add(position === correctDecimalSpot(width) ? "correct" : "wrong");
-    }
-    playground.append(slot);
-  }
-
-  row.append(playground);
-  return row;
-}
-
 function revealDecimalPlacement() {
-  const row = document.querySelector(".decimal-placement-row");
+  const row = document.querySelector(".decimal-answer-row");
   if (!row) {
     return;
   }
-  row.classList.remove("waiting");
-  row.querySelectorAll("button").forEach((button) => {
+  row.classList.remove("waiting-decimal");
+  row.querySelectorAll(".decimal-slot").forEach((button) => {
     button.disabled = false;
   });
 }
@@ -1214,9 +1202,6 @@ function renderMultiplicationBoard() {
     els.board.append(makePartialProductRow(partial, width, rowIndex));
   });
   els.board.append(makeAnswerRow(width, "total-row", state.multiplicationStep < partials.length));
-  if (state.productScale > 0 && state.multiplicationStep >= partials.length) {
-    els.board.append(makeDecimalPlacementRow(width));
-  }
 }
 
 function makeMultiplyCarryRow(width, rowIndex, multiplierDigit, disabled = false) {
@@ -1716,19 +1701,18 @@ function handleDigitInput(event) {
       input.select();
       return;
     }
-    const next = state.operation === "multiplication"
-      ? input.previousElementSibling
-      : input.nextElementSibling;
-    if (next?.classList.contains("digit-input")) {
+    const next = nextDigitInput(input, state.operation === "multiplication" ? -1 : 1);
+    if (next) {
       next.focus();
       next.select();
     }
   }
 }
 
-function handleDecimalDragStart(event) {
-  event.dataTransfer?.setData("text/plain", "decimal-dot");
-  event.dataTransfer?.setDragImage?.(event.currentTarget, 14, 14);
+function nextDigitInput(input, direction) {
+  const inputs = [...document.querySelectorAll(".digit-input:not(:disabled)")];
+  const index = inputs.indexOf(input);
+  return index >= 0 ? inputs[index + direction] : null;
 }
 
 function placeDecimalSpot(position, slot) {
@@ -1740,10 +1724,11 @@ function placeDecimalSpot(position, slot) {
   const isCorrect = position === correctDecimalSpot();
   slot.classList.add(isCorrect ? "correct" : "wrong", "selected");
   if (isCorrect) {
+    slot.closest(".decimal-answer-row")?.classList.add("decimal-finalized");
     sparkleAt(slot, 10);
     playTone("digit");
     els.feedback.textContent = copy().decimalCorrect || translations.en.decimalCorrect;
-    maybeCompleteAnswer();
+    window.setTimeout(() => maybeCompleteAnswer(), 700);
     return;
   }
   playTone("borrow");
@@ -1868,8 +1853,8 @@ function handleDivisionProcessKeys(event) {
 function handleDigitKeys(event) {
   const input = event.currentTarget;
   if (event.key === "Backspace" && !input.value) {
-    const previous = input.previousElementSibling;
-    if (previous?.classList.contains("digit-input")) {
+    const previous = nextDigitInput(input, -1);
+    if (previous) {
       previous.focus();
       previous.value = "";
       previous.classList.remove("wrong", "correct");

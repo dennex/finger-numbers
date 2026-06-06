@@ -674,79 +674,64 @@ button.digit-cell:disabled {
   border-top: 3px solid var(--ink);
 }
 
-.decimal-placement-row {
-  align-items: center;
-  margin-top: 4px;
+.answer-digit-wrap {
+  position: relative;
+  min-width: 0;
 }
 
-.decimal-playground {
-  grid-column: 2 / -1;
+.answer-digit-wrap .digit-input {
+  height: 100%;
+}
+
+.inline-decimal-slot {
+  width: clamp(18px, 3vw, 24px);
+  height: clamp(18px, 3vw, 24px);
   display: grid;
-  grid-template-columns: repeat(var(--decimal-spots, 4), minmax(0, 1fr));
-  align-items: center;
-  gap: 4px;
-  min-height: clamp(28px, 5vh, 38px);
-  padding: 4px 6px;
-  border: 2px dashed rgba(21, 122, 110, 0.24);
-  border-radius: 8px;
-  background: rgba(237, 248, 242, 0.62);
-}
-
-.decimal-placement-row.waiting .decimal-playground {
-  display: none;
-}
-
-.decimal-token,
-.decimal-slot {
-  width: clamp(24px, 4vw, 32px);
-  height: clamp(24px, 4vw, 32px);
-  justify-self: center;
+  place-items: center;
+  position: absolute;
+  left: clamp(-12px, -1.4vw, -7px);
+  top: 50%;
+  z-index: 3;
+  border: 3px dashed rgba(23, 50, 51, 0.34);
   border-radius: 999px;
-}
-
-.decimal-token {
-  grid-column: 1 / -1;
-  margin-bottom: 2px;
-  border: 3px solid var(--ink);
-  color: var(--white);
-  background: var(--coral);
-  box-shadow: 0 4px 0 var(--shadow);
-  font-size: clamp(1.35rem, 3vw, 1.9rem);
-  font-weight: 1000;
-  line-height: 0.6;
-  cursor: grab;
-}
-
-.decimal-token:active {
-  cursor: grabbing;
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--shadow);
-}
-
-.decimal-slot {
-  border: 3px dashed rgba(23, 50, 51, 0.28);
   background: var(--white);
+  transform: translateY(-50%);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
-.decimal-slot.correct {
+.decimal-answer-row.waiting-decimal .inline-decimal-slot {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.inline-decimal-slot:not(:disabled) {
+  cursor: pointer;
+}
+
+.inline-decimal-slot.correct {
   border-style: solid;
   border-color: var(--leaf);
   background: #ecf8e9;
+  animation: decimal-slot-pop 280ms ease;
 }
 
-.decimal-slot.correct::after {
+.inline-decimal-slot.correct::after {
   content: ".";
   color: var(--coral);
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
   font-weight: 1000;
-  line-height: 0.5;
+  line-height: 0.45;
 }
 
-.decimal-slot.wrong {
+.inline-decimal-slot.wrong {
   border-style: solid;
   border-color: var(--coral);
   background: #ffe7df;
   animation: wiggle 230ms ease;
+}
+
+.decimal-answer-row.decimal-finalized .answer-digit-wrap {
+  animation: decimal-settle 640ms ease both;
 }
 
 .digit-cell.partial-complete {
@@ -1538,6 +1523,31 @@ body[data-operation="multiplication"] .feedback {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes decimal-slot-pop {
+  0% {
+    transform: translateY(-50%) scale(0.35);
+  }
+  70% {
+    transform: translateY(-50%) scale(1.18);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes decimal-settle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-4px);
+  }
+  72% {
+    transform: translateY(2px);
   }
 }
 
