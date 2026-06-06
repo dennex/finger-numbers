@@ -48,6 +48,7 @@ const translations = {
     digits: (count) => `${count} digits`,
     mix: "Mix",
     includeTrading: "Include trading",
+    includeDecimals: "With decimals",
     subtractionProblem: "Subtraction problem",
     verticalSubtraction: "Vertical subtraction",
     gate: (count) => `Gate ${count}`,
@@ -82,6 +83,9 @@ const translations = {
     carryInto: (place) => `Carry into the ${place} column`,
     carryDigit: (place) => `${place} carry`,
     optionalCarry: "Carry boxes are optional.",
+    decimalPrompt: "Drag the dot to the right place.",
+    decimalCorrect: "Great decimal point!",
+    decimalWrong: "Count the decimal digits, then try the dot again.",
     divisionGuide: "Try each quotient box above the house. Multiply, subtract, then bring down.",
     wrongFirst: "Good try. Start on the right side and check each place.",
     wrongAgain: "Almost. Check the glowing box, then try again.",
@@ -94,7 +98,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
       addition: "Let's practice addition. Start with the ones. Type each answer digit under the line. If you carry, tap the little carry box above the next column.",
-      multiplication: "Let's practice decimal multiplication. Use one bottom digit at a time, like whole numbers. Fill each partial answer row, then add the rows. The decimal point is already shown in the final answer.",
+      multiplication: "Let's practice multiplication. Use one bottom digit at a time. If decimals are on, multiply like whole numbers first, then drag the dot to the right place in the final answer.",
       division: "Let's practice division. Put the answer boxes on top of the division house. Think: divide, multiply, subtract, and bring down."
     },
     treasureSpeech: "Awesome job, you got to the treasure. What's inside?",
@@ -129,6 +133,7 @@ const translations = {
     digits: (count) => `${count} chiffres`,
     mix: "Mélange",
     includeTrading: "Avec échange",
+    includeDecimals: "Avec décimales",
     subtractionProblem: "Soustraction",
     verticalSubtraction: "Soustraction posée",
     gate: (count) => `Porte ${count}`,
@@ -163,6 +168,9 @@ const translations = {
     carryInto: (place) => `Reporter dans la colonne ${place}`,
     carryDigit: (place) => `Report des ${place}`,
     optionalCarry: "Les cases de report sont facultatives.",
+    decimalPrompt: "Fais glisser le point au bon endroit.",
+    decimalCorrect: "Super point décimal !",
+    decimalWrong: "Compte les chiffres décimaux, puis essaie encore le point.",
     divisionGuide: "Essaie les cases du quotient en haut. Multiplie, soustrais, puis descends.",
     wrongFirst: "Bien essayé. Commence à droite et vérifie chaque colonne.",
     wrongAgain: "Presque. Regarde la case qui brille, puis réessaie.",
@@ -175,7 +183,7 @@ const translations = {
     introSpeeches: {
       subtraction: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
       addition: "On s'entraîne à additionner. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu reportes, touche la petite case de report au-dessus de la colonne suivante.",
-      multiplication: "On s'entraîne à multiplier avec des décimales. Utilise un chiffre du bas à la fois, comme avec les nombres entiers. Remplis chaque ligne, puis additionne les lignes. Le point décimal est déjà montré dans la réponse finale.",
+      multiplication: "On s'entraîne à multiplier. Utilise un chiffre du bas à la fois. Si les décimales sont activées, multiplie comme avec les nombres entiers, puis fais glisser le point au bon endroit dans la réponse finale.",
       division: "On s'entraîne à diviser. Mets les chiffres de la réponse au-dessus de la maison de division. Pense : diviser, multiplier, soustraire, puis descendre."
     },
     treasureSpeech: "Bravo, tu es arrivé au trésor. Qu'est-ce qu'il y a dedans ?",
@@ -210,6 +218,7 @@ const translations = {
     digits: (count) => `${count} 位數`,
     mix: "混合",
     includeTrading: "包括借位",
+    includeDecimals: "包括小數",
     subtractionProblem: "減數題",
     verticalSubtraction: "直式減數",
     gate: (count) => `第 ${count} 道門`,
@@ -244,6 +253,9 @@ const translations = {
     carryInto: (place) => `進位去${place}`,
     carryDigit: (place) => `${place}進位`,
     optionalCarry: "進位格可以填，唔填都得。",
+    decimalPrompt: "將個點拖去啱嘅位置。",
+    decimalCorrect: "小數點放得好！",
+    decimalWrong: "數吓小數位，再試放個點。",
     divisionGuide: "喺屋頂試商。乘、減，再拉落下一位。",
     wrongFirst: "好嘗試。由右邊開始，再睇每一位。",
     wrongAgain: "差少少。睇吓發光嗰格，再試。",
@@ -256,7 +268,7 @@ const translations = {
     introSpeeches: {
       subtraction: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
       addition: "一齊練習加數。由個位開始。喺線下面輸入答案數字。如果要進位，就撳下一欄上面嘅細格。",
-      multiplication: "一齊練習小數乘法。下面嘅數字逐個用，由右邊開始，好似整數乘法咁。填好每一行，再將幾行加埋。答案入面個小數點已經幫你放好。",
+      multiplication: "一齊練習乘數。下面嘅數字逐個用，由右邊開始。如果開咗小數，就先當整數咁乘，最後將個點拖去答案啱嘅位置。",
       division: "一齊練習除數。將答案寫喺除數屋頂上面。記住：除、乘、減，再拉下一位落嚟。"
     },
     treasureSpeech: "好叻呀，你去到寶藏喇。入面有咩呢？",
@@ -291,6 +303,7 @@ const translations = {
     digits: (count) => `${count} 位数`,
     mix: "混合",
     includeTrading: "包含借位",
+    includeDecimals: "包含小数",
     subtractionProblem: "减法题",
     verticalSubtraction: "竖式减法",
     gate: (count) => `第 ${count} 道门`,
@@ -325,6 +338,9 @@ const translations = {
     carryInto: (place) => `进位到${place}`,
     carryDigit: (place) => `${place}进位`,
     optionalCarry: "进位格可以填，也可以不填。",
+    decimalPrompt: "把小数点拖到正确的位置。",
+    decimalCorrect: "小数点放得好！",
+    decimalWrong: "数一数小数位，再试一次。",
     divisionGuide: "试着填上面的商。乘、减，再把下一位带下来。",
     wrongFirst: "试得很好。从右边开始，检查每一位。",
     wrongAgain: "快对了。看看发光的格子，再试一次。",
@@ -337,7 +353,7 @@ const translations = {
     introSpeeches: {
       subtraction: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
       addition: "我们来练习加法。从个位开始。把每个答案数字写在线下面。如果要进位，就点下一列上方的小进位格。",
-      multiplication: "我们来练习小数乘法。下面的数字一个一个用，从右边开始，像整数乘法一样。先填每一行，再把这些行加起来。答案里的小数点已经帮你放好。",
+      multiplication: "我们来练习乘法。下面的数字一个一个用，从右边开始。如果打开小数，先像整数一样乘，最后把小数点拖到答案里正确的位置。",
       division: "我们来练习除法。把答案写在除法屋顶上。记住：除、乘、减，再把下一位带下来。"
     },
     treasureSpeech: "太棒了，你到达宝藏了。里面有什么？",
@@ -372,6 +388,7 @@ const translations = {
     digits: (count) => `${count}자리`,
     mix: "섞기",
     includeTrading: "받아내림 포함",
+    includeDecimals: "소수 포함",
     subtractionProblem: "빼기 문제",
     verticalSubtraction: "세로 빼기",
     gate: (count) => `문 ${count}`,
@@ -406,6 +423,9 @@ const translations = {
     carryInto: (place) => `${place}에 올림`,
     carryDigit: (place) => `${place} 올림`,
     optionalCarry: "올림 칸은 안 써도 괜찮아.",
+    decimalPrompt: "점을 알맞은 곳으로 끌어 놓아.",
+    decimalCorrect: "소수점을 잘 놓았어!",
+    decimalWrong: "소수 자릿수를 세고 다시 놓아 봐.",
     divisionGuide: "위 칸에 몫을 써 봐. 곱하고, 빼고, 다음 숫자를 내려.",
     wrongFirst: "잘했어. 오른쪽부터 시작해서 각 자리를 확인해 봐.",
     wrongAgain: "거의 맞았어. 빛나는 칸을 보고 다시 해 봐.",
@@ -418,7 +438,7 @@ const translations = {
     introSpeeches: {
       subtraction: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
       addition: "더하기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 써. 올림이 있으면 다음 자리 위의 작은 올림 칸을 눌러.",
-      multiplication: "소수 곱하기를 연습하자. 아래 숫자를 오른쪽부터 하나씩 사용해, 정수 곱하기처럼 해 보자. 각 줄을 채우고 마지막에 더해. 답의 소수점은 미리 표시되어 있어.",
+      multiplication: "곱하기를 연습하자. 아래 숫자를 오른쪽부터 하나씩 사용해. 소수가 켜져 있으면 먼저 정수처럼 곱하고, 마지막에 점을 답의 알맞은 곳으로 끌어 놓아.",
       division: "나누기를 연습하자. 나눗셈 집 위에 답을 써. 나누고, 곱하고, 빼고, 다음 숫자를 내려."
     },
     treasureSpeech: "정말 잘했어, 보물에 도착했어. 안에 뭐가 있을까?",
@@ -453,6 +473,7 @@ const translations = {
     digits: (count) => `${count}けた`,
     mix: "ミックス",
     includeTrading: "くり下がりあり",
+    includeDecimals: "小数あり",
     subtractionProblem: "ひき算の問題",
     verticalSubtraction: "筆算のひき算",
     gate: (count) => `ゲート ${count}`,
@@ -487,6 +508,9 @@ const translations = {
     carryInto: (place) => `${place}にくり上がる`,
     carryDigit: (place) => `${place}のくり上がり`,
     optionalCarry: "くり上がりの箱は使っても使わなくてもいいよ。",
+    decimalPrompt: "点を正しい場所へ動かそう。",
+    decimalCorrect: "小数点、ばっちり！",
+    decimalWrong: "小数のけたを数えて、もう一度点を置こう。",
     divisionGuide: "上の商の箱に入れてみよう。かけて、ひいて、次を下ろすよ。",
     wrongFirst: "いいね。右から始めて、位を一つずつ見よう。",
     wrongAgain: "もう少し。光っている箱を見て、もう一度。",
@@ -499,7 +523,7 @@ const translations = {
     introSpeeches: {
       subtraction: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
       addition: "たし算を練習しよう。一の位から始めてね。線の下に答えを書こう。くり上がりがある時は、次の位の上の小さい箱をタップしてね。",
-      multiplication: "小数のかけ算を練習しよう。下の数字を右から一つずつ使って、整数のかけ算みたいにやってね。途中の答えの行を書いて、最後にたそう。答えの小数点はもう見えているよ。",
+      multiplication: "かけ算を練習しよう。下の数字を右から一つずつ使ってね。小数がオンの時は、まず整数みたいにかけて、最後に点を答えの正しい場所へ動かそう。",
       division: "わり算を練習しよう。わり算の家の上に答えを書いてね。わって、かけて、ひいて、次を下ろそう。"
     },
     treasureSpeech: "すごい、宝物まで来たよ。中には何があるかな？",
@@ -534,6 +558,7 @@ const translations = {
     digits: (count) => `${count} chữ số`,
     mix: "Trộn",
     includeTrading: "Có mượn",
+    includeDecimals: "Có thập phân",
     subtractionProblem: "Bài trừ",
     verticalSubtraction: "Phép trừ đặt dọc",
     gate: (count) => `Cổng ${count}`,
@@ -568,6 +593,9 @@ const translations = {
     carryInto: (place) => `Nhớ vào ${place}`,
     carryDigit: (place) => `Số nhớ ${place}`,
     optionalCarry: "Ô nhớ có thể điền hoặc bỏ qua.",
+    decimalPrompt: "Kéo dấu chấm vào đúng chỗ.",
+    decimalCorrect: "Đặt dấu thập phân giỏi lắm!",
+    decimalWrong: "Đếm các chữ số thập phân rồi thử lại.",
     divisionGuide: "Thử từng ô thương ở trên. Nhân, trừ, rồi hạ xuống.",
     wrongFirst: "Cố gắng tốt. Bắt đầu bên phải và kiểm tra từng hàng.",
     wrongAgain: "Gần đúng rồi. Nhìn ô sáng lên rồi thử lại.",
@@ -580,7 +608,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
       addition: "Mình cùng luyện phép cộng nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu có nhớ, hãy chạm vào ô nhớ nhỏ phía trên hàng tiếp theo.",
-      multiplication: "Mình cùng luyện nhân số thập phân nhé. Dùng từng chữ số ở dưới, bắt đầu từ bên phải, giống như nhân số nguyên. Điền từng hàng, rồi cộng các hàng. Dấu thập phân đã được đặt sẵn trong đáp án cuối.",
+      multiplication: "Mình cùng luyện phép nhân nhé. Dùng từng chữ số ở dưới, bắt đầu từ bên phải. Nếu bật số thập phân, hãy nhân như số nguyên trước, rồi kéo dấu chấm vào đúng chỗ trong đáp án cuối.",
       division: "Mình cùng luyện phép chia nhé. Nhập đáp án phía trên ngôi nhà chia. Hãy nghĩ: chia, nhân, trừ, rồi hạ xuống."
     },
     treasureSpeech: "Tuyệt vời, con đã đến kho báu. Bên trong có gì nhỉ?",
@@ -607,6 +635,8 @@ const state = {
   factorTopScale: 0,
   factorBottomScale: 0,
   productScale: 0,
+  decimalMultiplication: false,
+  selectedDecimalSpot: null,
   dividend: 48,
   divisor: 4,
   quotient: 12,
@@ -714,23 +744,6 @@ function formatDecimalNumber(integer, scale = 0) {
   return `${sign}${whole}.${fraction}`;
 }
 
-function decimalCharsOf(integer, scale = 0, width = null) {
-  const formatted = formatDecimalNumber(integer, scale);
-  return (width ? formatted.padStart(width, " ") : formatted).split("");
-}
-
-function multiplicationAnswerDisplayText() {
-  return formatDecimalNumber(state.answer, state.productScale);
-}
-
-function multiplicationDisplayWidth() {
-  return Math.max(
-    formatDecimalNumber(state.factorTop, state.factorTopScale).length,
-    formatDecimalNumber(state.factorBottom, state.factorBottomScale).length,
-    multiplicationAnswerDisplayText().length
-  );
-}
-
 function needsRegrouping(top, bottom) {
   let borrow = 0;
   const width = String(top).length;
@@ -795,6 +808,7 @@ function makeProblem() {
   state.factorTopScale = 0;
   state.factorBottomScale = 0;
   state.productScale = 0;
+  state.selectedDecimalSpot = null;
   state.answer = top - bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -824,6 +838,7 @@ function makeAdditionProblem() {
   state.factorTopScale = 0;
   state.factorBottomScale = 0;
   state.productScale = 0;
+  state.selectedDecimalSpot = null;
   state.answer = top + bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -838,13 +853,18 @@ function makeMultiplicationProblem() {
   const digits = getDigitCount();
   const { min, max } = rangeForDigits(digits);
   const bottomRange = rangeForDigits(2);
-  const topScale = Math.min(randomInt(1, 2), Math.max(1, digits - 1));
-  const bottomScale = 1;
-  state.factorTop = randomInt(min, max);
-  state.factorBottom = randomInt(bottomRange.min, bottomRange.max);
+  const topScale = state.decimalMultiplication ? Math.min(randomInt(1, 2), Math.max(1, digits - 1)) : 0;
+  const bottomScale = state.decimalMultiplication ? 1 : 0;
+  do {
+    state.factorTop = randomInt(min, max);
+  } while (topScale > 0 && state.factorTop % 10 === 0);
+  do {
+    state.factorBottom = randomInt(bottomRange.min, bottomRange.max);
+  } while (bottomScale > 0 && state.factorBottom % 10 === 0);
   state.factorTopScale = topScale;
   state.factorBottomScale = bottomScale;
   state.productScale = topScale + bottomScale;
+  state.selectedDecimalSpot = null;
   state.answer = state.factorTop * state.factorBottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -876,6 +896,7 @@ function makeDivisionProblem() {
   state.factorTopScale = 0;
   state.factorBottomScale = 0;
   state.productScale = 0;
+  state.selectedDecimalSpot = null;
   state.answer = state.quotient;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -1030,9 +1051,7 @@ function renderBoard() {
 }
 
 function makeAnswerRow(width, extraClass = "", disabled = false) {
-  const answer = state.operation === "multiplication"
-    ? decimalCharsOf(state.answer, state.productScale, width)
-    : digitsOf(state.answer, width);
+  const answer = digitsOf(state.answer, width);
   const inputRow = document.createElement("div");
   inputRow.className = `number-row answer-row ${extraClass}`.trim();
   inputRow.setAttribute("aria-label", copy().answer);
@@ -1042,23 +1061,7 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
   equals.textContent = "=";
   inputRow.append(equals);
 
-  let digitIndex = 0;
-  answer.forEach((char, index) => {
-    if (char === " ") {
-      const spacer = document.createElement("span");
-      spacer.className = "partial-spacer number-spacer";
-      inputRow.append(spacer);
-      return;
-    }
-    if (char === ".") {
-      const decimal = document.createElement("span");
-      decimal.className = "decimal-cell";
-      decimal.textContent = ".";
-      decimal.setAttribute("aria-hidden", "true");
-      inputRow.append(decimal);
-      return;
-    }
-
+  answer.forEach((_, index) => {
     const input = document.createElement("input");
     input.className = "digit-input";
     input.inputMode = "numeric";
@@ -1066,15 +1069,86 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
     input.autocomplete = "off";
     input.pattern = "[0-9]";
     input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
-    input.dataset.index = String(digitIndex);
+    input.dataset.index = String(index);
     input.disabled = disabled;
     input.addEventListener("input", handleDigitInput);
     input.addEventListener("keydown", handleDigitKeys);
     inputRow.append(input);
-    digitIndex += 1;
   });
 
   return inputRow;
+}
+
+function correctDecimalSpot(width = answerWidth()) {
+  return Math.max(0, width - state.productScale);
+}
+
+function answerDigitsComplete() {
+  const inputs = [...document.querySelectorAll(".answer-row .digit-input")];
+  const expected = answerText().padStart(answerWidth(), "0");
+  const typed = inputs.map((input) => input.value).join("");
+  return inputs.length === expected.length && typed === expected;
+}
+
+function makeDecimalPlacementRow(width) {
+  const row = document.createElement("div");
+  row.className = "number-row decimal-placement-row";
+  if (state.selectedDecimalSpot === null) {
+    row.classList.add("waiting");
+  }
+  row.setAttribute("aria-label", copy().decimalPrompt || translations.en.decimalPrompt);
+
+  const operator = document.createElement("span");
+  operator.className = "operator";
+  operator.textContent = "";
+  row.append(operator);
+
+  const playground = document.createElement("div");
+  playground.className = "decimal-playground";
+  playground.style.setProperty("--decimal-spots", String(width + 1));
+
+  const token = document.createElement("button");
+  token.className = "decimal-token";
+  token.type = "button";
+  token.textContent = ".";
+  token.draggable = true;
+  token.disabled = state.selectedDecimalSpot === null;
+  token.setAttribute("aria-label", copy().decimalPrompt || translations.en.decimalPrompt);
+  token.addEventListener("dragstart", handleDecimalDragStart);
+  playground.append(token);
+
+  for (let position = 0; position <= width; position += 1) {
+    const slot = document.createElement("button");
+    slot.className = "decimal-slot";
+    slot.type = "button";
+    slot.disabled = state.selectedDecimalSpot === null;
+    slot.dataset.position = String(position);
+    slot.setAttribute("aria-label", `${copy().decimalPrompt || translations.en.decimalPrompt} ${position}`);
+    slot.addEventListener("click", () => placeDecimalSpot(position, slot));
+    slot.addEventListener("dragover", (event) => event.preventDefault());
+    slot.addEventListener("drop", (event) => {
+      event.preventDefault();
+      placeDecimalSpot(position, slot);
+    });
+    if (state.selectedDecimalSpot === position) {
+      slot.classList.add(position === correctDecimalSpot(width) ? "correct" : "wrong");
+    }
+    playground.append(slot);
+  }
+
+  row.append(playground);
+  return row;
+}
+
+function revealDecimalPlacement() {
+  const row = document.querySelector(".decimal-placement-row");
+  if (!row) {
+    return;
+  }
+  row.classList.remove("waiting");
+  row.querySelectorAll("button").forEach((button) => {
+    button.disabled = false;
+  });
 }
 
 function renderAdditionBoard() {
@@ -1110,18 +1184,20 @@ function renderAdditionBoard() {
 }
 
 function renderMultiplicationBoard() {
+  const answer = answerText();
+  const topWidth = String(state.factorTop).length;
   const partials = multiplicationPartialProducts();
-  const width = multiplicationDisplayWidth();
-  const top = decimalCharsOf(state.factorTop, state.factorTopScale, width);
-  const bottom = decimalCharsOf(state.factorBottom, state.factorBottomScale, width);
+  const width = Math.max(topWidth, String(state.factorBottom).length, answer.length);
+  const top = displayDigitsOf(state.factorTop, width);
+  const bottom = displayDigitsOf(state.factorBottom, width);
 
   els.board.innerHTML = "";
   els.board.classList.remove("division-board");
   els.board.classList.add("multiplication-board");
   els.board.style.setProperty("--places", String(width));
 
-  const topRow = makeNumberRow("", top, "top number", "top");
-  const bottomRow = makeNumberRow("×", bottom, "multiply", "bottom");
+  const topRow = makeNumberRow("", top, "top number", { decimalScale: state.factorTopScale });
+  const bottomRow = makeNumberRow("×", bottom, "multiply", { decimalScale: state.factorBottomScale });
   bottomRow.classList.add("bottom-row");
   const activePartialIndex = Math.min(state.multiplicationStep, partials.length - 1);
   if (state.multiplicationStep < partials.length) {
@@ -1138,6 +1214,9 @@ function renderMultiplicationBoard() {
     els.board.append(makePartialProductRow(partial, width, rowIndex));
   });
   els.board.append(makeAnswerRow(width, "total-row", state.multiplicationStep < partials.length));
+  if (state.productScale > 0 && state.multiplicationStep >= partials.length) {
+    els.board.append(makeDecimalPlacementRow(width));
+  }
 }
 
 function makeMultiplyCarryRow(width, rowIndex, multiplierDigit, disabled = false) {
@@ -1316,10 +1395,11 @@ function renderDivisionBoard() {
   els.board.append(shell);
 }
 
-function makeNumberRow(operator, digits, label) {
+function makeNumberRow(operator, digits, label, options = {}) {
   const row = document.createElement("div");
   row.className = "number-row";
   row.setAttribute("aria-label", label === "top number" ? copy().topNumber : copy().takeAway);
+  const decimalIndex = options.decimalScale > 0 ? digits.length - options.decimalScale : -1;
 
   const op = document.createElement("span");
   op.className = "operator";
@@ -1333,20 +1413,14 @@ function makeNumberRow(operator, digits, label) {
       row.append(spacer);
       return;
     }
-    if (digit === ".") {
-      const decimal = document.createElement("span");
-      decimal.className = "decimal-cell";
-      decimal.textContent = ".";
-      decimal.setAttribute("aria-hidden", "true");
-      row.append(decimal);
-      return;
-    }
-
     const isBorrowButton = state.operation === "subtraction" && label === "top number";
     const cell = document.createElement(isBorrowButton ? "button" : "span");
     cell.className = "digit-cell";
     cell.dataset.index = String(index);
     cell.textContent = digit;
+    if (index === decimalIndex) {
+      cell.classList.add("decimal-before");
+    }
 
     if (isBorrowButton) {
       cell.type = "button";
@@ -1652,6 +1726,30 @@ function handleDigitInput(event) {
   }
 }
 
+function handleDecimalDragStart(event) {
+  event.dataTransfer?.setData("text/plain", "decimal-dot");
+  event.dataTransfer?.setDragImage?.(event.currentTarget, 14, 14);
+}
+
+function placeDecimalSpot(position, slot) {
+  if (state.operation !== "multiplication" || state.productScale <= 0) {
+    return;
+  }
+  document.querySelectorAll(".decimal-slot").forEach((item) => item.classList.remove("wrong", "correct", "selected"));
+  state.selectedDecimalSpot = position;
+  const isCorrect = position === correctDecimalSpot();
+  slot.classList.add(isCorrect ? "correct" : "wrong", "selected");
+  if (isCorrect) {
+    sparkleAt(slot, 10);
+    playTone("digit");
+    els.feedback.textContent = copy().decimalCorrect || translations.en.decimalCorrect;
+    maybeCompleteAnswer();
+    return;
+  }
+  playTone("borrow");
+  els.feedback.textContent = copy().decimalWrong || translations.en.decimalWrong;
+}
+
 function focusDivisionProduct(input) {
   if (!input.classList.contains("correct")) {
     return;
@@ -1821,6 +1919,11 @@ function maybeCompleteAnswer() {
   const expected = answerText().padStart(answerWidth(), "0");
   const typed = inputs.map((input) => input.value).join("");
   if (typed.length === expected.length && typed === expected) {
+    if (state.operation === "multiplication" && state.productScale > 0 && state.selectedDecimalSpot !== correctDecimalSpot()) {
+      revealDecimalPlacement();
+      els.feedback.textContent = copy().decimalPrompt || translations.en.decimalPrompt;
+      return;
+    }
     rescueTreasure();
   }
 }
@@ -1861,8 +1964,21 @@ function checkAnswer() {
     });
   }
 
-  if (Number(typed) === state.answer && partialProductsComplete() && (state.operation !== "division" || divisionProcessComplete())) {
+  if (
+    Number(typed) === state.answer
+    && partialProductsComplete()
+    && (state.operation !== "division" || divisionProcessComplete())
+    && (state.operation !== "multiplication" || state.productScale === 0 || state.selectedDecimalSpot === correctDecimalSpot())
+  ) {
     rescueTreasure();
+    return;
+  }
+
+  if (state.operation === "multiplication" && state.productScale > 0 && answerDigitsComplete()) {
+    revealDecimalPlacement();
+    els.feedback.textContent = state.selectedDecimalSpot === null
+      ? (copy().decimalPrompt || translations.en.decimalPrompt)
+      : (copy().decimalWrong || translations.en.decimalWrong);
     return;
   }
 
@@ -1935,6 +2051,7 @@ function clearAnswer() {
   if (state.operation === "multiplication") {
     state.multiplicationStep = 0;
     state.multiplyAddCarryMarks.clear();
+    state.selectedDecimalSpot = null;
     renderGame();
     const input = lastMultiplicationPartialInput();
     input?.focus();
@@ -2303,7 +2420,12 @@ function applyTranslations() {
   els.levelButtons.forEach((button) => {
     button.textContent = button.dataset.digits === "mix" ? text.mix : text.digits(button.dataset.digits);
   });
-  els.toggleLabel.textContent = text.includeTrading;
+  els.toggleLabel.textContent = state.operation === "multiplication"
+    ? (text.includeDecimals || translations.en.includeDecimals)
+    : text.includeTrading;
+  els.regroupToggle.checked = state.operation === "multiplication"
+    ? state.decimalMultiplication
+    : state.includeRegrouping;
   els.problemCard.setAttribute("aria-label", text.subtractionProblem);
   els.problemTitle.textContent = text.problemTitles?.[state.operation] || english.problemTitles[state.operation];
   els.newProblemButton.textContent = text.newProblem;
@@ -2361,7 +2483,11 @@ els.languageButtons.forEach((button) => {
 });
 
 els.regroupToggle.addEventListener("change", () => {
-  state.includeRegrouping = els.regroupToggle.checked;
+  if (state.operation === "multiplication") {
+    state.decimalMultiplication = els.regroupToggle.checked;
+  } else {
+    state.includeRegrouping = els.regroupToggle.checked;
+  }
   makeProblem();
   renderGame();
 });

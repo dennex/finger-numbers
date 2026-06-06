@@ -527,7 +527,6 @@ input:focus-visible {
 
 .operator,
 .digit-cell,
-.decimal-cell,
 .digit-input,
 .partial-input {
   height: clamp(38px, 7vh, 56px);
@@ -543,18 +542,21 @@ input:focus-visible {
   color: var(--coral);
 }
 
-.decimal-cell {
-  align-items: end;
-  color: var(--coral);
-  background: transparent;
-  border: 0;
-  padding-bottom: 3px;
-}
-
 .digit-cell {
   position: relative;
   background: #edf8f2;
   border: 2px solid rgba(21, 122, 110, 0.18);
+}
+
+.digit-cell.decimal-before::before {
+  content: ".";
+  position: absolute;
+  left: clamp(-10px, -1.3vw, -5px);
+  bottom: 5px;
+  color: var(--coral);
+  font-size: clamp(1.4rem, 3vw, 2.3rem);
+  font-weight: 1000;
+  line-height: 0.5;
 }
 
 button.digit-cell {
@@ -652,16 +654,10 @@ button.digit-cell:disabled {
 
 .multiplication-board .operator,
 .multiplication-board .digit-cell,
-.multiplication-board .decimal-cell,
 .multiplication-board .digit-input,
 .multiplication-board .partial-input {
   height: clamp(22px, 3.5vh, 26px);
   font-size: clamp(1rem, 2.1vw, 1.55rem);
-}
-
-.multiplication-board .decimal-cell {
-  font-size: clamp(1.1rem, 2.3vw, 1.7rem);
-  padding-bottom: 0;
 }
 
 .multiplication-board .carry-input {
@@ -676,6 +672,81 @@ button.digit-cell:disabled {
 .total-row {
   padding-top: 3px;
   border-top: 3px solid var(--ink);
+}
+
+.decimal-placement-row {
+  align-items: center;
+  margin-top: 4px;
+}
+
+.decimal-playground {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(var(--decimal-spots, 4), minmax(0, 1fr));
+  align-items: center;
+  gap: 4px;
+  min-height: clamp(28px, 5vh, 38px);
+  padding: 4px 6px;
+  border: 2px dashed rgba(21, 122, 110, 0.24);
+  border-radius: 8px;
+  background: rgba(237, 248, 242, 0.62);
+}
+
+.decimal-placement-row.waiting .decimal-playground {
+  display: none;
+}
+
+.decimal-token,
+.decimal-slot {
+  width: clamp(24px, 4vw, 32px);
+  height: clamp(24px, 4vw, 32px);
+  justify-self: center;
+  border-radius: 999px;
+}
+
+.decimal-token {
+  grid-column: 1 / -1;
+  margin-bottom: 2px;
+  border: 3px solid var(--ink);
+  color: var(--white);
+  background: var(--coral);
+  box-shadow: 0 4px 0 var(--shadow);
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  font-weight: 1000;
+  line-height: 0.6;
+  cursor: grab;
+}
+
+.decimal-token:active {
+  cursor: grabbing;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--shadow);
+}
+
+.decimal-slot {
+  border: 3px dashed rgba(23, 50, 51, 0.28);
+  background: var(--white);
+}
+
+.decimal-slot.correct {
+  border-style: solid;
+  border-color: var(--leaf);
+  background: #ecf8e9;
+}
+
+.decimal-slot.correct::after {
+  content: ".";
+  color: var(--coral);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 1000;
+  line-height: 0.5;
+}
+
+.decimal-slot.wrong {
+  border-style: solid;
+  border-color: var(--coral);
+  background: #ffe7df;
+  animation: wiggle 230ms ease;
 }
 
 .digit-cell.partial-complete {
