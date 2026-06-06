@@ -94,7 +94,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Let's practice subtraction. Start with the ones. Type each answer digit under the line. If you need to trade, tap the top number.",
       addition: "Let's practice addition. Start with the ones. Type each answer digit under the line. If you carry, tap the little carry box above the next column.",
-      multiplication: "Let's practice multiplication. Use one bottom digit at a time. Fill each partial answer row, then add the rows for the final answer. Carry boxes are there if you want them.",
+      multiplication: "Let's practice decimal multiplication. Use one bottom digit at a time, like whole numbers. Fill each partial answer row, then add the rows. The decimal point is already shown in the final answer.",
       division: "Let's practice division. Put the answer boxes on top of the division house. Think: divide, multiply, subtract, and bring down."
     },
     treasureSpeech: "Awesome job, you got to the treasure. What's inside?",
@@ -175,7 +175,7 @@ const translations = {
     introSpeeches: {
       subtraction: "On s'entraîne à soustraire. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu dois échanger, touche le nombre du haut.",
       addition: "On s'entraîne à additionner. Commence par les unités. Écris chaque chiffre de la réponse sous la ligne. Si tu reportes, touche la petite case de report au-dessus de la colonne suivante.",
-      multiplication: "On s'entraîne à multiplier. Utilise un chiffre du bas à la fois. Remplis chaque ligne de réponse, puis additionne les lignes pour la réponse finale. Les cases de report sont là si tu veux.",
+      multiplication: "On s'entraîne à multiplier avec des décimales. Utilise un chiffre du bas à la fois, comme avec les nombres entiers. Remplis chaque ligne, puis additionne les lignes. Le point décimal est déjà montré dans la réponse finale.",
       division: "On s'entraîne à diviser. Mets les chiffres de la réponse au-dessus de la maison de division. Pense : diviser, multiplier, soustraire, puis descendre."
     },
     treasureSpeech: "Bravo, tu es arrivé au trésor. Qu'est-ce qu'il y a dedans ?",
@@ -256,7 +256,7 @@ const translations = {
     introSpeeches: {
       subtraction: "一齊練習減數。由個位開始。喺線下面輸入每一個答案數字。如果要借位，就撳上面個數。",
       addition: "一齊練習加數。由個位開始。喺線下面輸入答案數字。如果要進位，就撳下一欄上面嘅細格。",
-      multiplication: "一齊練習乘數。下面嘅數字逐個用，由右邊開始。填好每一行中間答案，最後將幾行加埋。進位格想用就用。",
+      multiplication: "一齊練習小數乘法。下面嘅數字逐個用，由右邊開始，好似整數乘法咁。填好每一行，再將幾行加埋。答案入面個小數點已經幫你放好。",
       division: "一齊練習除數。將答案寫喺除數屋頂上面。記住：除、乘、減，再拉下一位落嚟。"
     },
     treasureSpeech: "好叻呀，你去到寶藏喇。入面有咩呢？",
@@ -337,7 +337,7 @@ const translations = {
     introSpeeches: {
       subtraction: "我们来练习减法。从个位开始。把每个答案数字写在线下面。如果需要借位，就点上面的数。",
       addition: "我们来练习加法。从个位开始。把每个答案数字写在线下面。如果要进位，就点下一列上方的小进位格。",
-      multiplication: "我们来练习乘法。下面的数字一个一个用，从右边开始。先填每一行中间答案，最后把这些行加起来。进位格想用就用。",
+      multiplication: "我们来练习小数乘法。下面的数字一个一个用，从右边开始，像整数乘法一样。先填每一行，再把这些行加起来。答案里的小数点已经帮你放好。",
       division: "我们来练习除法。把答案写在除法屋顶上。记住：除、乘、减，再把下一位带下来。"
     },
     treasureSpeech: "太棒了，你到达宝藏了。里面有什么？",
@@ -418,7 +418,7 @@ const translations = {
     introSpeeches: {
       subtraction: "빼기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 하나씩 써. 받아내림이 필요하면 위 숫자를 눌러.",
       addition: "더하기를 연습하자. 일의 자리부터 시작해. 선 아래에 답 숫자를 써. 올림이 있으면 다음 자리 위의 작은 올림 칸을 눌러.",
-      multiplication: "곱하기를 연습하자. 아래 숫자를 하나씩 오른쪽부터 사용해. 각 중간 답 줄을 채우고, 마지막에 줄들을 더해 최종 답을 써. 올림 칸은 쓰고 싶을 때 쓰면 돼.",
+      multiplication: "소수 곱하기를 연습하자. 아래 숫자를 오른쪽부터 하나씩 사용해, 정수 곱하기처럼 해 보자. 각 줄을 채우고 마지막에 더해. 답의 소수점은 미리 표시되어 있어.",
       division: "나누기를 연습하자. 나눗셈 집 위에 답을 써. 나누고, 곱하고, 빼고, 다음 숫자를 내려."
     },
     treasureSpeech: "정말 잘했어, 보물에 도착했어. 안에 뭐가 있을까?",
@@ -499,7 +499,7 @@ const translations = {
     introSpeeches: {
       subtraction: "ひき算を練習しよう。一の位から始めてね。線の下に答えの数字を一つずつ書こう。くり下がりが必要なら、上の数をタップしてね。",
       addition: "たし算を練習しよう。一の位から始めてね。線の下に答えを書こう。くり上がりがある時は、次の位の上の小さい箱をタップしてね。",
-      multiplication: "かけ算を練習しよう。下の数字を右から一つずつ使ってね。途中の答えの行をそれぞれ書いて、最後にその行をたして答えを書こう。くり上がりの箱は使いたい時に使えるよ。",
+      multiplication: "小数のかけ算を練習しよう。下の数字を右から一つずつ使って、整数のかけ算みたいにやってね。途中の答えの行を書いて、最後にたそう。答えの小数点はもう見えているよ。",
       division: "わり算を練習しよう。わり算の家の上に答えを書いてね。わって、かけて、ひいて、次を下ろそう。"
     },
     treasureSpeech: "すごい、宝物まで来たよ。中には何があるかな？",
@@ -580,7 +580,7 @@ const translations = {
     introSpeeches: {
       subtraction: "Mình cùng luyện phép trừ nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu cần mượn, hãy chạm vào số ở trên.",
       addition: "Mình cùng luyện phép cộng nhé. Bắt đầu từ hàng đơn vị. Nhập từng chữ số của đáp án dưới đường kẻ. Nếu có nhớ, hãy chạm vào ô nhớ nhỏ phía trên hàng tiếp theo.",
-      multiplication: "Mình cùng luyện phép nhân nhé. Dùng từng chữ số ở dưới, bắt đầu từ bên phải. Điền từng hàng kết quả tạm, rồi cộng các hàng để ra đáp án cuối. Ô nhớ có thể dùng nếu con muốn.",
+      multiplication: "Mình cùng luyện nhân số thập phân nhé. Dùng từng chữ số ở dưới, bắt đầu từ bên phải, giống như nhân số nguyên. Điền từng hàng, rồi cộng các hàng. Dấu thập phân đã được đặt sẵn trong đáp án cuối.",
       division: "Mình cùng luyện phép chia nhé. Nhập đáp án phía trên ngôi nhà chia. Hãy nghĩ: chia, nhân, trừ, rồi hạ xuống."
     },
     treasureSpeech: "Tuyệt vời, con đã đến kho báu. Bên trong có gì nhỉ?",
@@ -604,6 +604,9 @@ const state = {
   addendB: 18,
   factorTop: 24,
   factorBottom: 3,
+  factorTopScale: 0,
+  factorBottomScale: 0,
+  productScale: 0,
   dividend: 48,
   divisor: 4,
   quotient: 12,
@@ -700,6 +703,34 @@ function rangeForDigits(digits) {
   };
 }
 
+function formatDecimalNumber(integer, scale = 0) {
+  if (!scale) {
+    return String(integer);
+  }
+  const sign = integer < 0 ? "-" : "";
+  const padded = String(Math.abs(integer)).padStart(scale + 1, "0");
+  const whole = padded.slice(0, -scale) || "0";
+  const fraction = padded.slice(-scale);
+  return `${sign}${whole}.${fraction}`;
+}
+
+function decimalCharsOf(integer, scale = 0, width = null) {
+  const formatted = formatDecimalNumber(integer, scale);
+  return (width ? formatted.padStart(width, " ") : formatted).split("");
+}
+
+function multiplicationAnswerDisplayText() {
+  return formatDecimalNumber(state.answer, state.productScale);
+}
+
+function multiplicationDisplayWidth() {
+  return Math.max(
+    formatDecimalNumber(state.factorTop, state.factorTopScale).length,
+    formatDecimalNumber(state.factorBottom, state.factorBottomScale).length,
+    multiplicationAnswerDisplayText().length
+  );
+}
+
 function needsRegrouping(top, bottom) {
   let borrow = 0;
   const width = String(top).length;
@@ -761,6 +792,9 @@ function makeProblem() {
 
   state.minuend = top;
   state.subtrahend = bottom;
+  state.factorTopScale = 0;
+  state.factorBottomScale = 0;
+  state.productScale = 0;
   state.answer = top - bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -787,6 +821,9 @@ function makeAdditionProblem() {
 
   state.addendA = top;
   state.addendB = bottom;
+  state.factorTopScale = 0;
+  state.factorBottomScale = 0;
+  state.productScale = 0;
   state.answer = top + bottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -801,8 +838,13 @@ function makeMultiplicationProblem() {
   const digits = getDigitCount();
   const { min, max } = rangeForDigits(digits);
   const bottomRange = rangeForDigits(2);
+  const topScale = Math.min(randomInt(1, 2), Math.max(1, digits - 1));
+  const bottomScale = 1;
   state.factorTop = randomInt(min, max);
   state.factorBottom = randomInt(bottomRange.min, bottomRange.max);
+  state.factorTopScale = topScale;
+  state.factorBottomScale = bottomScale;
+  state.productScale = topScale + bottomScale;
   state.answer = state.factorTop * state.factorBottom;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -831,6 +873,9 @@ function makeDivisionProblem() {
   state.divisor = divisor;
   state.quotient = quotient;
   state.dividend = dividend;
+  state.factorTopScale = 0;
+  state.factorBottomScale = 0;
+  state.productScale = 0;
   state.answer = state.quotient;
   state.attempts = 0;
   state.borrowMarks.clear();
@@ -985,7 +1030,9 @@ function renderBoard() {
 }
 
 function makeAnswerRow(width, extraClass = "", disabled = false) {
-  const answer = digitsOf(state.answer, width);
+  const answer = state.operation === "multiplication"
+    ? decimalCharsOf(state.answer, state.productScale, width)
+    : digitsOf(state.answer, width);
   const inputRow = document.createElement("div");
   inputRow.className = `number-row answer-row ${extraClass}`.trim();
   inputRow.setAttribute("aria-label", copy().answer);
@@ -995,7 +1042,23 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
   equals.textContent = "=";
   inputRow.append(equals);
 
-  answer.forEach((_, index) => {
+  let digitIndex = 0;
+  answer.forEach((char, index) => {
+    if (char === " ") {
+      const spacer = document.createElement("span");
+      spacer.className = "partial-spacer number-spacer";
+      inputRow.append(spacer);
+      return;
+    }
+    if (char === ".") {
+      const decimal = document.createElement("span");
+      decimal.className = "decimal-cell";
+      decimal.textContent = ".";
+      decimal.setAttribute("aria-hidden", "true");
+      inputRow.append(decimal);
+      return;
+    }
+
     const input = document.createElement("input");
     input.className = "digit-input";
     input.inputMode = "numeric";
@@ -1003,11 +1066,12 @@ function makeAnswerRow(width, extraClass = "", disabled = false) {
     input.autocomplete = "off";
     input.pattern = "[0-9]";
     input.ariaLabel = copy().answerDigit(placeName(width - index - 1));
-    input.dataset.index = String(index);
+    input.dataset.index = String(digitIndex);
     input.disabled = disabled;
     input.addEventListener("input", handleDigitInput);
     input.addEventListener("keydown", handleDigitKeys);
     inputRow.append(input);
+    digitIndex += 1;
   });
 
   return inputRow;
@@ -1046,12 +1110,10 @@ function renderAdditionBoard() {
 }
 
 function renderMultiplicationBoard() {
-  const answer = answerText();
-  const topWidth = String(state.factorTop).length;
   const partials = multiplicationPartialProducts();
-  const width = Math.max(topWidth, String(state.factorBottom).length, answer.length);
-  const top = displayDigitsOf(state.factorTop, width);
-  const bottom = displayDigitsOf(state.factorBottom, width);
+  const width = multiplicationDisplayWidth();
+  const top = decimalCharsOf(state.factorTop, state.factorTopScale, width);
+  const bottom = decimalCharsOf(state.factorBottom, state.factorBottomScale, width);
 
   els.board.innerHTML = "";
   els.board.classList.remove("division-board");
@@ -1265,6 +1327,21 @@ function makeNumberRow(operator, digits, label) {
   row.append(op);
 
   digits.forEach((digit, index) => {
+    if (digit === " ") {
+      const spacer = document.createElement("span");
+      spacer.className = "partial-spacer number-spacer";
+      row.append(spacer);
+      return;
+    }
+    if (digit === ".") {
+      const decimal = document.createElement("span");
+      decimal.className = "decimal-cell";
+      decimal.textContent = ".";
+      decimal.setAttribute("aria-hidden", "true");
+      row.append(decimal);
+      return;
+    }
+
     const isBorrowButton = state.operation === "subtraction" && label === "top number";
     const cell = document.createElement(isBorrowButton ? "button" : "span");
     cell.className = "digit-cell";
@@ -1526,7 +1603,7 @@ function renderMultiplicationLab() {
   card.className = "place-card active";
   card.innerHTML = `
     <span>${copy().operations?.multiplication || translations.en.operations.multiplication}</span>
-    <strong>× ${state.factorBottom}</strong>
+    <strong>× ${formatDecimalNumber(state.factorBottom, state.factorBottomScale)}</strong>
     <small>${bottomDigits.length > 1 ? `${bottomDigits.length} rows, then add` : (copy().optionalCarry || translations.en.optionalCarry)}</small>
   `;
   els.placeLab.append(card);
@@ -2031,6 +2108,9 @@ function stopSpeech() {
 }
 
 function recordedSpeechSource(key) {
+  if (key === "multiplication") {
+    return null;
+  }
   return recordedSpeech[state.lang]?.[key] || null;
 }
 

@@ -527,6 +527,7 @@ input:focus-visible {
 
 .operator,
 .digit-cell,
+.decimal-cell,
 .digit-input,
 .partial-input {
   height: clamp(38px, 7vh, 56px);
@@ -540,6 +541,14 @@ input:focus-visible {
 
 .operator {
   color: var(--coral);
+}
+
+.decimal-cell {
+  align-items: end;
+  color: var(--coral);
+  background: transparent;
+  border: 0;
+  padding-bottom: 3px;
 }
 
 .digit-cell {
@@ -643,10 +652,16 @@ button.digit-cell:disabled {
 
 .multiplication-board .operator,
 .multiplication-board .digit-cell,
+.multiplication-board .decimal-cell,
 .multiplication-board .digit-input,
 .multiplication-board .partial-input {
   height: clamp(22px, 3.5vh, 26px);
   font-size: clamp(1rem, 2.1vw, 1.55rem);
+}
+
+.multiplication-board .decimal-cell {
+  font-size: clamp(1.1rem, 2.3vw, 1.7rem);
+  padding-bottom: 0;
 }
 
 .multiplication-board .carry-input {
