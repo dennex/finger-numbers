@@ -684,23 +684,24 @@ button.digit-cell:disabled {
 }
 
 .inline-decimal-slot {
-  width: clamp(22px, 3.2vw, 28px);
-  height: clamp(22px, 3.2vw, 28px);
+  width: clamp(28px, 4vw, 36px);
+  height: clamp(28px, 4vw, 36px);
   display: grid;
   place-items: center;
   position: absolute;
-  left: clamp(-14px, -1.6vw, -8px);
+  left: clamp(-18px, -2vw, -12px);
   top: 50%;
   z-index: 3;
   border: 0;
   border-radius: 999px;
   color: var(--coral);
-  background: transparent;
+  background: var(--white);
+  box-shadow: 0 2px 0 var(--shadow);
   font-size: clamp(1.45rem, 3vw, 2rem);
   font-weight: 1000;
   line-height: 0.45;
   transform: translateY(-50%);
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+  transition: opacity 220ms ease, transform 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .decimal-answer-row.waiting-decimal .inline-decimal-slot {
@@ -733,6 +734,18 @@ button.digit-cell:disabled {
 
 .decimal-answer-row.decimal-finalized .answer-digit-wrap {
   animation: decimal-settle 640ms ease both;
+}
+
+.decimal-answer-row.decimal-finalized .inline-decimal-slot:not(.correct) {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.4);
+}
+
+.decimal-answer-row.decimal-finalized .inline-decimal-slot.correct {
+  background: transparent;
+  box-shadow: none;
+  outline: 0;
 }
 
 .digit-cell.partial-complete {
