@@ -11,6 +11,21 @@ const treasureContents = [
   { kind: "bill", value: "100", label: "Canadian one hundred dollar bill" }
 ];
 const treasureGoal = 5;
+const gemColors = [
+  { light: "#9ef5ff", mid: "#42b8d8", dark: "#2d609f" },
+  { light: "#ffe27a", mid: "#f2a341", dark: "#b8572e" },
+  { light: "#ff9fcb", mid: "#df5a92", dark: "#8d356f" },
+  { light: "#b8f27a", mid: "#65b85a", dark: "#2f7c51" },
+  { light: "#c8b6ff", mid: "#7667d8", dark: "#3c347f" }
+];
+const pathGemPositions = [13, 31, 50, 69, 87];
+const pileGemPositions = [
+  { x: -26, y: 0 },
+  { x: -7, y: 3 },
+  { x: 15, y: 0 },
+  { x: -16, y: 20 },
+  { x: 6, y: 22 }
+];
 const DIVISION_REMAINDER_FLY_MS = 2000;
 const DIVISION_REMAINDER_FOCUS_MS = DIVISION_REMAINDER_FLY_MS + 80;
 const recordedSpeech = {
@@ -621,6 +636,15 @@ const translations = {
   }
 };
 
+translations["fr-ca"] = {
+  ...translations.fr,
+  htmlLang: "fr-CA",
+  voiceLang: "fr-CA",
+  title: "Sauvetage du trésor",
+  languageLabel: "Langue",
+  closeTreasure: "Fermer le trésor"
+};
+
 const state = {
   lang: "fr",
   operation: "subtraction",
@@ -1162,6 +1186,7 @@ function renderAdditionBoard() {
     const marker = document.createElement("button");
     marker.className = "carry-marker";
     marker.type = "button";
+    marker.dataset.index = String(index);
     marker.textContent = state.carryMarks.has(index) ? "1" : "";
     marker.ariaLabel = (copy().carryInto || translations.en.carryInto)(placeName(width - index - 1));
     marker.disabled = index === width - 1;
@@ -1439,16 +1464,21 @@ function toggleBorrow(index) {
     return;
   }
   const typedDigits = [...document.querySelectorAll(".digit-input")].map((input) => input.value);
+  let shouldFocusAnswer = false;
   if (state.borrowMarks.has(index)) {
     state.borrowMarks.delete(index);
   } else {
     state.borrowMarks.add(index);
+    shouldFocusAnswer = true;
   }
   renderBoard();
   document.querySelectorAll(".digit-input").forEach((input, inputIndex) => {
     input.value = typedDigits[inputIndex] || "";
     checkDigitInput(input);
   });
+  if (shouldFocusAnswer) {
+    focusAnswerInputAt(index);
+  }
   renderPlaceLab(String(state.minuend).length - index - 1);
   els.feedback.textContent = copy().borrowMessage;
   playTone("borrow");
@@ -1456,19 +1486,32 @@ function toggleBorrow(index) {
 
 function toggleCarry(index) {
   const typedDigits = [...document.querySelectorAll(".digit-input")].map((input) => input.value);
+  let shouldFocusAnswer = false;
   if (state.carryMarks.has(index)) {
     state.carryMarks.delete(index);
   } else {
     state.carryMarks.add(index);
+    shouldFocusAnswer = true;
   }
   renderBoard();
   document.querySelectorAll(".digit-input").forEach((input, inputIndex) => {
     input.value = typedDigits[inputIndex] || "";
     checkDigitInput(input);
   });
+  if (shouldFocusAnswer) {
+    focusAnswerInputAt(index);
+  }
   renderPlaceLab();
   els.feedback.textContent = (copy().carryMessage || translations.en.carryMessage);
   playTone("borrow");
+}
+
+function focusAnswerInputAt(index) {
+  window.requestAnimationFrame(() => {
+    const input = document.querySelector(`.answer-row .digit-input[data-index="${index}"]:not(:disabled)`);
+    input?.focus({ preventScroll: true });
+    input?.select();
+  });
 }
 
 function toggleMultiplyAddCarry(index) {
@@ -1993,6 +2036,7 @@ function rescueTreasure() {
     return;
   }
   state.completing = true;
+  const collectedIndex = Math.min(state.solved, treasureGoal - 1);
   state.solved += 1;
   state.gems += 1;
   els.feedback.textContent = copy().gateOpen;
@@ -2002,14 +2046,15 @@ function rescueTreasure() {
     input.classList.add("correct");
   });
   els.chest.classList.add("open");
-  updateScore();
-  renderGemPile(Math.min(state.solved, treasureGoal) - 1);
+  updateScore({ skipPile: true, collectingIndex: collectedIndex });
+  renderGemPile(-1, collectedIndex);
+  animatePathGemToPile(collectedIndex);
   sparkle();
   playTone("treasure");
   if (state.solved >= treasureGoal) {
     state.treasureSpeechStarted = false;
     speakTreasure();
-    window.setTimeout(showTreasureParty, 700);
+    window.setTimeout(showTreasureParty, 980);
     return;
   }
   window.setTimeout(() => {
@@ -2069,39 +2114,105 @@ function clearAnswer() {
   els.feedback.textContent = copy().freshBoxes;
 }
 
-function updateScore() {
+function updateScore(options = {}) {
+  const { skipPile = false, collectingIndex = -1 } = options;
   els.gemCount.textContent = String(state.gems);
   els.rescuedCount.textContent = String(state.solved);
   els.roundLabel.textContent = copy().gate(Math.min(state.solved + 1, treasureGoal));
   els.path.style.setProperty("--progress", `${Math.min(100, (state.solved / treasureGoal) * 100)}%`);
-  renderGemPile();
+  renderPathGems(collectingIndex);
+  if (!skipPile) {
+    renderGemPile();
+  }
   els.rewardBadges.forEach((badge, index) => {
     badge.classList.toggle("unlocked", index <= Math.floor(state.solved / 2));
     badge.textContent = copy().rewards[index];
   });
 }
 
-function renderGemPile(newIndex = -1) {
+function applyGemColor(element, index) {
+  const color = gemColors[index % gemColors.length];
+  element.style.setProperty("--gem-light", color.light);
+  element.style.setProperty("--gem-mid", color.mid);
+  element.style.setProperty("--gem-dark", color.dark);
+}
+
+function renderPathGems(collectingIndex = -1) {
+  if (!els.path) {
+    return;
+  }
+  els.path.querySelectorAll(".path-gem").forEach((gem) => gem.remove());
+  for (let index = 0; index < treasureGoal; index += 1) {
+    const gem = document.createElement("span");
+    gem.className = "path-gem";
+    gem.dataset.gemIndex = String(index);
+    gem.style.setProperty("--path-x", `${pathGemPositions[index]}%`);
+    gem.style.animationDelay = `${index * 90}ms`;
+    applyGemColor(gem, index);
+    if (index < state.solved) {
+      gem.classList.add(index === collectingIndex ? "collecting" : "collected");
+    }
+    els.path.append(gem);
+  }
+}
+
+function renderGemPile(newIndex = -1, countOverride = Math.min(state.solved, treasureGoal)) {
   if (!els.gemPile) {
     return;
   }
-  const positions = [
-    { x: -26, y: 0 },
-    { x: -7, y: 3 },
-    { x: 15, y: 0 },
-    { x: -16, y: 20 },
-    { x: 6, y: 22 }
-  ];
   els.gemPile.innerHTML = "";
-  const count = Math.min(state.solved, treasureGoal);
+  const count = Math.min(countOverride, treasureGoal);
   for (let index = 0; index < count; index += 1) {
     const gem = document.createElement("span");
-    const position = positions[index] || { x: 0, y: index * 5 };
+    const position = pileGemPositions[index] || { x: 0, y: index * 5 };
     gem.className = `pile-gem ${index === newIndex ? "new" : ""}`.trim();
     gem.style.setProperty("--gx", `${position.x}px`);
     gem.style.setProperty("--gy", `${position.y}px`);
+    applyGemColor(gem, index);
     els.gemPile.append(gem);
   }
+}
+
+function animatePathGemToPile(index) {
+  const source = els.path?.querySelector(`.path-gem[data-gem-index="${index}"]`);
+  if (!source || !els.gemPile) {
+    renderGemPile(index);
+    return;
+  }
+  const sourceBox = source.getBoundingClientRect();
+  const pileBox = els.gemPile.getBoundingClientRect();
+  const pileScale = pileBox.width / 92;
+  const position = pileGemPositions[index] || { x: 0, y: index * 5 };
+  const startX = sourceBox.left + sourceBox.width / 2;
+  const startY = sourceBox.top + sourceBox.height / 2;
+  const endX = pileBox.left + pileBox.width / 2 + position.x * pileScale;
+  const endY = pileBox.bottom - (position.y + 11) * pileScale;
+  const flyingGem = document.createElement("span");
+  flyingGem.className = "fly-gem";
+  flyingGem.style.left = `${startX}px`;
+  flyingGem.style.top = `${startY}px`;
+  applyGemColor(flyingGem, index);
+  document.body.append(flyingGem);
+
+  const animation = flyingGem.animate([
+    { transform: "translate(-50%, -50%) rotate(45deg) scale(1)", offset: 0 },
+    { transform: `translate(calc(${(endX - startX) * 0.48}px - 50%), calc(${(endY - startY) * 0.25 - 28}px - 50%)) rotate(205deg) scale(1.16)`, offset: 0.55 },
+    { transform: `translate(calc(${endX - startX}px - 50%), calc(${endY - startY}px - 50%)) rotate(405deg) scale(0.92)`, offset: 1 }
+  ], {
+    duration: 760,
+    easing: "cubic-bezier(0.22, 0.92, 0.28, 1)",
+    fill: "forwards"
+  });
+
+  animation.onfinish = () => {
+    flyingGem.remove();
+    renderGemPile(index);
+    sparkleAt(els.gemPile, 8);
+  };
+  animation.oncancel = () => {
+    flyingGem.remove();
+    renderGemPile(index);
+  };
 }
 
 function sparkle() {

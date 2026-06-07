@@ -170,6 +170,7 @@ h2 {
   background: linear-gradient(90deg, var(--gold) var(--progress, 0%), rgba(23, 50, 51, 0.14) 0);
   border: 3px solid rgba(23, 50, 51, 0.18);
   border-radius: 999px;
+  overflow: visible;
 }
 
 .path::before,
@@ -193,6 +194,46 @@ h2 {
   background: var(--violet);
 }
 
+.path-gem,
+.pile-gem,
+.fly-gem {
+  background:
+    linear-gradient(135deg, var(--gem-light) 0 35%, var(--gem-mid) 36% 68%, var(--gem-dark) 69%);
+  border: 3px solid var(--ink);
+  border-radius: 5px;
+  box-shadow: 0 3px 0 var(--shadow);
+}
+
+.path-gem {
+  width: 19px;
+  height: 19px;
+  position: absolute;
+  left: var(--path-x, 50%);
+  top: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%) rotate(45deg);
+  animation: path-gem-bob 1700ms ease-in-out infinite;
+  transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.path-gem.collected,
+.path-gem.collecting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.path-gem::after,
+.fly-gem::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  background: rgba(255, 255, 255, 0.84);
+  border-radius: 2px;
+}
+
 .gem-pile {
   width: 92px;
   height: 48px;
@@ -210,11 +251,15 @@ h2 {
   position: absolute;
   left: calc(50% + var(--gx, 0px));
   bottom: var(--gy, 0px);
-  background: linear-gradient(135deg, #9ef5ff 0 35%, #6d63dc 36% 68%, #3b2f8f 69%);
-  border: 3px solid var(--ink);
-  border-radius: 5px;
-  box-shadow: 0 3px 0 var(--shadow);
   transform: translateX(-50%) rotate(45deg) scale(0.92);
+}
+
+.fly-gem {
+  width: 22px;
+  height: 22px;
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
 }
 
 .pile-gem.new {
@@ -409,6 +454,43 @@ h2 {
 }
 
 .language-button[data-lang="en"] {
+  display: none;
+}
+
+.quebec-flag {
+  width: 26px;
+  height: 18px;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background:
+    linear-gradient(#ffffff, #ffffff) 50% 0 / 4px 100% no-repeat,
+    linear-gradient(90deg, #ffffff, #ffffff) 0 50% / 100% 4px no-repeat,
+    #1f66c1;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(23, 50, 51, 0.28);
+}
+
+.quebec-flag::before,
+.quebec-flag::after {
+  content: "";
+  width: 5px;
+  height: 7px;
+  position: absolute;
+  background:
+    radial-gradient(circle at 50% 1px, #ffffff 0 1.5px, transparent 1.7px),
+    linear-gradient(45deg, transparent 0 37%, #ffffff 38% 62%, transparent 63%),
+    linear-gradient(-45deg, transparent 0 37%, #ffffff 38% 62%, transparent 63%);
+  border-radius: 5px 5px 2px 2px;
+}
+
+.quebec-flag::before {
+  left: 5px;
+  top: 2px;
+  filter: drop-shadow(12px 0 0 #ffffff) drop-shadow(0 9px 0 #ffffff) drop-shadow(12px 9px 0 #ffffff);
+}
+
+.quebec-flag::after {
   display: none;
 }
 
@@ -1341,15 +1423,16 @@ body[data-operation="multiplication"] .feedback {
   border: 5px solid var(--ink);
   border-radius: 8px;
   box-shadow: 0 18px 0 rgba(14, 50, 48, 0.28);
-  z-index: 2;
+  z-index: 4;
 }
 
 .party-close {
   width: 48px;
   height: 48px;
-  position: absolute;
-  top: 12px;
-  right: 12px;
+  position: fixed;
+  top: max(18px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 70;
   display: grid;
   place-items: center;
   padding: 0;
@@ -1472,7 +1555,7 @@ body[data-operation="multiplication"] .feedback {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 6;
 }
 
 .treasure-item {
@@ -1622,6 +1705,16 @@ body[data-operation="multiplication"] .feedback {
   100% {
     opacity: 1;
     transform: translateX(-50%) rotate(45deg) scale(0.92);
+  }
+}
+
+@keyframes path-gem-bob {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(45deg) translateY(-5px);
   }
 }
 
