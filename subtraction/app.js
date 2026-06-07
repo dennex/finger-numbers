@@ -1702,13 +1702,13 @@ function handleDigitInput(event) {
       focusDivisionProduct(input);
       return;
     }
-    if (state.operation === "multiplication" && !input.classList.contains("correct")) {
+    if (state.operation !== "division" && !input.classList.contains("correct")) {
       input.classList.add("wrong");
       input.focus();
       input.select();
       return;
     }
-    const next = nextDigitInput(input, state.operation === "multiplication" ? -1 : 1);
+    const next = nextDigitInput(input, answerInputDirection());
     if (next) {
       next.focus();
       next.select();
@@ -1720,6 +1720,10 @@ function nextDigitInput(input, direction) {
   const inputs = [...document.querySelectorAll(".digit-input:not(:disabled)")];
   const index = inputs.indexOf(input);
   return index >= 0 ? inputs[index + direction] : null;
+}
+
+function answerInputDirection() {
+  return state.operation === "division" ? 1 : -1;
 }
 
 function placeDecimalSpot(position, slot) {
@@ -1861,7 +1865,7 @@ function handleDivisionProcessKeys(event) {
 function handleDigitKeys(event) {
   const input = event.currentTarget;
   if (event.key === "Backspace" && !input.value) {
-    const previous = nextDigitInput(input, -1);
+    const previous = nextDigitInput(input, -answerInputDirection());
     if (previous) {
       previous.focus();
       previous.value = "";
@@ -2057,7 +2061,11 @@ function clearAnswer() {
     input.classList.remove("wrong", "correct");
     input.dataset.celebrated = "";
   });
-  document.querySelector(".digit-input")?.focus();
+  if (["addition", "subtraction"].includes(state.operation)) {
+    focusStandardAnswerInput();
+  } else {
+    document.querySelector(".digit-input")?.focus();
+  }
   els.feedback.textContent = copy().freshBoxes;
 }
 
@@ -2372,7 +2380,21 @@ function renderGame() {
     els.helperTitle.textContent = state.includeRegrouping ? copy().helperTrade : copy().helperStart;
   }
   focusMultiplicationInput();
+  focusStandardAnswerInput();
   focusDivisionAnswer();
+}
+
+function focusStandardAnswerInput() {
+  if (!["addition", "subtraction"].includes(state.operation) || state.completing) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const inputs = [...document.querySelectorAll(".answer-row .digit-input:not(:disabled)")];
+    const input = inputs[inputs.length - 1] || null;
+    input?.focus({ preventScroll: true });
+    input?.select();
+  });
 }
 
 function focusMultiplicationInput() {
