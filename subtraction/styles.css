@@ -193,6 +193,45 @@ h2 {
   background: var(--violet);
 }
 
+.gem-pile {
+  width: 92px;
+  height: 48px;
+  position: absolute;
+  right: 126px;
+  bottom: 6px;
+  display: grid;
+  place-items: end center;
+  pointer-events: none;
+}
+
+.pile-gem {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  left: calc(50% + var(--gx, 0px));
+  bottom: var(--gy, 0px);
+  background: linear-gradient(135deg, #9ef5ff 0 35%, #6d63dc 36% 68%, #3b2f8f 69%);
+  border: 3px solid var(--ink);
+  border-radius: 5px;
+  box-shadow: 0 3px 0 var(--shadow);
+  transform: translateX(-50%) rotate(45deg) scale(0.92);
+}
+
+.pile-gem.new {
+  animation: gem-drop 620ms cubic-bezier(0.2, 1.35, 0.36, 1) both;
+}
+
+.pile-gem::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  background: rgba(255, 255, 255, 0.84);
+  border-radius: 2px;
+}
+
 .explorer {
   width: 82px;
   height: 102px;
@@ -1096,6 +1135,12 @@ body[data-operation="multiplication"] .path {
   height: 14px;
 }
 
+body[data-operation="multiplication"] .gem-pile {
+  bottom: 0;
+  transform: scale(0.72);
+  transform-origin: bottom center;
+}
+
 body[data-operation="multiplication"] .explorer {
   transform: scale(0.48);
 }
@@ -1565,6 +1610,21 @@ body[data-operation="multiplication"] .feedback {
   }
 }
 
+@keyframes gem-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -34px) rotate(45deg) scale(0.25);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(-50%, 6px) rotate(45deg) scale(1.14);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) rotate(45deg) scale(0.92);
+  }
+}
+
 @keyframes fruit-burst {
   0% {
     opacity: 0;
@@ -1642,6 +1702,13 @@ body[data-operation="multiplication"] .feedback {
 
   .path {
     margin: 0 82px;
+  }
+
+  .gem-pile {
+    right: 78px;
+    bottom: 2px;
+    transform: scale(0.78);
+    transform-origin: bottom center;
   }
 
   .explorer {
@@ -1724,6 +1791,11 @@ body[data-operation="multiplication"] .feedback {
 
   .map-band {
     height: 46px;
+  }
+
+  .gem-pile {
+    right: 56px;
+    transform: scale(0.62);
   }
 
   .controls-panel {

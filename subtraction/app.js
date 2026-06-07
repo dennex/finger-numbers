@@ -694,6 +694,7 @@ const els = {
   gemCount: document.querySelector("#gemCount"),
   rescuedCount: document.querySelector("#rescuedCount"),
   path: document.querySelector("#treasurePath"),
+  gemPile: document.querySelector("#gemPile"),
   chest: document.querySelector("#treasureChest"),
   treasureParty: document.querySelector("#treasureParty"),
   partyChest: document.querySelector("#partyChest"),
@@ -1989,7 +1990,7 @@ function rescueTreasure() {
   }
   state.completing = true;
   state.solved += 1;
-  state.gems += Math.max(1, 4 - state.attempts);
+  state.gems += 1;
   els.feedback.textContent = copy().gateOpen;
   els.helperTitle.textContent = copy().helperSparkly;
   document.querySelectorAll(".digit-input").forEach((input) => {
@@ -1998,8 +1999,9 @@ function rescueTreasure() {
   });
   els.chest.classList.add("open");
   updateScore();
+  renderGemPile(Math.min(state.solved, treasureGoal) - 1);
   sparkle();
-  playTone("win");
+  playTone("treasure");
   if (state.solved >= treasureGoal) {
     state.treasureSpeechStarted = false;
     speakTreasure();
@@ -2064,10 +2066,34 @@ function updateScore() {
   els.rescuedCount.textContent = String(state.solved);
   els.roundLabel.textContent = copy().gate(Math.min(state.solved + 1, treasureGoal));
   els.path.style.setProperty("--progress", `${Math.min(100, (state.solved / treasureGoal) * 100)}%`);
+  renderGemPile();
   els.rewardBadges.forEach((badge, index) => {
     badge.classList.toggle("unlocked", index <= Math.floor(state.solved / 2));
     badge.textContent = copy().rewards[index];
   });
+}
+
+function renderGemPile(newIndex = -1) {
+  if (!els.gemPile) {
+    return;
+  }
+  const positions = [
+    { x: -26, y: 0 },
+    { x: -7, y: 3 },
+    { x: 15, y: 0 },
+    { x: -16, y: 20 },
+    { x: 6, y: 22 }
+  ];
+  els.gemPile.innerHTML = "";
+  const count = Math.min(state.solved, treasureGoal);
+  for (let index = 0; index < count; index += 1) {
+    const gem = document.createElement("span");
+    const position = positions[index] || { x: 0, y: index * 5 };
+    gem.className = `pile-gem ${index === newIndex ? "new" : ""}`.trim();
+    gem.style.setProperty("--gx", `${position.x}px`);
+    gem.style.setProperty("--gy", `${position.y}px`);
+    els.gemPile.append(gem);
+  }
 }
 
 function sparkle() {
