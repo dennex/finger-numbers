@@ -646,7 +646,7 @@ translations["fr-ca"] = {
 };
 
 const state = {
-  lang: "fr",
+  lang: "fr-ca",
   operation: "subtraction",
   digits: 2,
   includeRegrouping: true,
