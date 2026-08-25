@@ -22,8 +22,9 @@
 html,
 body {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -46,13 +47,13 @@ button {
 
 .game-shell {
   width: min(1180px, 100%);
-  height: 100svh;
+  min-height: 100svh;
   margin: 0 auto;
   padding: clamp(8px, 1.4vw, 16px);
   display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, auto);
   gap: clamp(6px, 1vw, 10px);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .top-bar,
@@ -1751,11 +1752,12 @@ body[data-operation="multiplication"] .feedback {
 
 @media (max-width: 860px) {
   body {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .game-shell {
-    grid-template-rows: auto auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
     gap: 6px;
   }
 
@@ -1830,7 +1832,7 @@ body[data-operation="multiplication"] .feedback {
 
   .play-area {
     display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
   }
 
   .helper-panel {
@@ -1852,11 +1854,10 @@ body[data-operation="multiplication"] .feedback {
 
   .game-shell {
     padding: 6px;
-    width: calc(100vw / var(--phone-scale));
+    width: 100%;
     max-width: none;
-    height: calc(100svh / var(--phone-scale));
-    transform: scale(var(--phone-scale));
-    transform-origin: top left;
+    min-height: 100svh;
+    transform: none;
   }
 
   h1 {
